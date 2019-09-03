@@ -1,220 +1,184 @@
+﻿---
+逻辑阵列块：
+    标题：'在Azure区域之间实施Azure站点恢复'
+    单元：'迁移服务器'
 ---
-lab:
-    title: 'Azure Site Recovery between Azure regions'
-    module: 'Module 07 - Data Protection '
----
 
-# Lab: Implement Azure Site Recovery between Azure regions
+# 逻辑阵列块：在Azure区域之间实施Azure站点恢复
 
-All tasks in this lab are performed from the Azure portal
+本逻辑阵列块中的所有任务都是从Azure门户执行的
 
-Lab files: 
+逻辑阵列块文件： 
 
--  **Labfiles\\Module_07\\Azure_Site_Recovery_Between_Regions\\az-101-01_azuredeploy.json**
+-  **Labfiles\\AZ101\\Mod01\\az-101-01_azuredeploy.json**
 
--  **Labfiles\\Module_07\\Azure_Site_Recovery_Between_Regions\\az-101-01_azuredeploy.parameters.json**
+-  **Labfiles\\AZ101\\Mod01\\az-101-01_azuredeploy.parameters.json**
 
-### Scenario
+### 方案
   
-Adatum Corporation wants to implement Azure Site Recovery to facilitate migration and protection of Azure VMs between regions
+Adatum Corporation希望实施Azure站点恢复，以便于在区域之间迁移和保护Azure VMs
 
 
-### Objectives
+### 目标
   
-After completing this lab, you will be able to:
+完成本逻辑阵列块后，您将能够：
 
--  Implement Azure Site Recovery Vault
+-  实施Azure站点恢复保管库
 
--  Configure replication of Azure VMs between Azure regions by using Azure Site Recovery
+-  使用Azure站点恢复配置Azure区域之间的Azure VMs复制
 
 
-### Exercise 1: Implement prerequisites for migration of Azure VMs by using Azure Site Recovery 
+### 练习 1：使用Azure站点恢复实现Azure VMs迁移的先决条件 
   
-The main tasks for this exercise are as follows:
+本练习的主要任务如下：
 
-1. Deploy an Azure VM to be migrated by using an Azure Resource Manager template
+1. 使用Azure资源管理器模板部署要迁移的Azure VM
 
-1. Create an Azure Recovery Services vault
+1. 创建Azure恢复服务保管库
   
 
-#### Task 1: Deploy an Azure VM to be migrated by using an Azure Resource Manager template
+#### 任务 1：使用Azure资源管理器模板部署要迁移的Azure VM
 
-1. From the lab virtual machine, start Microsoft Edge, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using a Microsoft account that has the Owner role in the Azure subscription you intend to use in this lab.
+1. 从逻辑阵列块虚拟机启动Microsoft Edge，浏览到Azure门户 [**http://portal.azure.com**](http://portal.azure.com) 并使用您打算在本逻辑阵列块中使用的Azure订阅中具有所有者角色的Microsoft帐户登录。
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+1. 在Azure门户中，导航到 **创建资源** 边栏选项卡。
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Template deployment**.
+1. 从 **创建资源** 边栏选项卡，在Azure 应用市场内搜索 **模板部署**。
 
-1. Use the list of search results to navigate to the **Deploy a custom template** blade.
+1. 使用搜索结果列表导航到 **部署自定义模板** 边栏选项卡。
 
-1. On the **Custom deployment** blade, click the **Build your own template in the editor** link. If you do not see this link, click **Edit template** instead.
+1. 在 **自定义部署** 边栏选项卡，选择 **在编辑器中构建自己的模板**。
 
-1. From the **Edit template** blade, load the template file **Labfiles\\Module_07\\Azure_Site_Recovery_Between_Regions\\az-101-01_azuredeploy.json**. 
+1. 从 **编辑模板** 边栏选项卡，加载模板文件 **Labfiles\\AZ101\\Mod01\\az-101-01_azuredeploy.json**. 
 
-   > **Note**: Review the content of the template and note that it defines deployment of an Azure VM hosting Windows Server 2016 Datacenter.
+   > **注意**: 查看模板的内容，并注意它定义了托管Windows Server 2016 数据中心的Azure VM的部署。
 
-1. Save the template and return to the **Custom deployment** blade. 
+1. 保存模板并返回到 **自定义部署** 边栏选项卡。 
 
-1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
+1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数** 边栏选项卡。
 
-1. From the **Edit parameters** blade, load the parameters file **Labfiles\\Module_07\\Azure_Site_Recovery_Between_Regions\\az-101-01_azuredeploy.parameters.json**. 
+1. 从 **编辑参数** 边栏选项卡，加载模板文件 **Labfiles\\AZ101\\Mod01\\az-101-01_azuredeploy.parameters.json**. 
 
-1. Save the parameters and return to the **Custom deployment** blade. 
+1. 保存参数并返回到 **自定义部署** 边栏选项卡。 
 
-1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
+1. 从 **自定义部署** 边栏选项卡，使用以下设置启动模板部署：
 
-    - Subscription: the name of the subscription you are using in this lab
+    - 订阅：您用于本逻辑阵列块的订阅名称
 
-    - Resource group: the name of a new resource group **az1010101-RG**
+    - 资源组：新资源组 **az1010101-RG** 的名称
 
-    - Location: the name of the Azure region which is closest to the lab location and where you can provision Azure VMs
+    - 位置：最靠近逻辑阵列块位置的Azure区域的名称以及可以在其中配置Azure VM的位置
 
-    - Vm Name: **az1010101-vm**
+    - Vm名称： **az1010101-vm**
 
-    - Admin Username: **Student**
+    - 管理员用户名： **学员**
 
-    - Admin Password: **Pa55w.rd1234**
+    - 管理员密码： **Pa55w.rd1234**
 
-    - Image Publisher: **MicrosoftWindowsServer**
+    - 映像发布者： **MicrosoftWindowsServer**
 
-    - Image Offer: **WindowsServer**
+    - 映射产品： **WindowsServer**
 
-    - Image SKU: **2016-Datacenter-Server-Core-smalldisk**
+    - 映像 SKU： **2016-数据中心-服务器核心-smalldisk**
 
-    - Vm Size: **Standard_DS1_v2**
+    - VM 大小： **Standard_DS1_v2**
 
-   > **Note**: To identify Azure regions where you can provision Azure VMs, refer to [**https://azure.microsoft.com/en-us/regions/offers/**](https://azure.microsoft.com/en-us/regions/offers/)
+   > **注意**: 要标识可以配置Azure VM的Azure区域，请登陆： [**https://azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)
 
-   > **Note**: Do not wait for the deployment to complete but proceed to the next task. You will use the virtual machine **az1010101-vm** in the second exercise of this lab.
+   > **注意**: 不要等待部署完成，而是继续执行下一个任务。您将在本逻辑阵列块的第二次练习中使用虚拟机 **az1010101-vm**。
 
 
-#### Task 2: Implement an Azure Site Recovery vault
+#### 任务 2：实施Azure站点恢复保险库
  
-1. In the Azure portal, navigate to the **Create a resource** blade.
+1. 在Azure门户中，导航到 **创建资源** 边栏选项卡。
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Backup and Site Recovery**.
+1. 从 **创建资源** 边栏选项卡，在Azure 应用市场内搜索 **备份和站点恢复(OMS)**。
 
-1. Use the list of search results to navigate to the **Recovery Services vault** blade.
+1. 使用搜索结果列表导航到 **恢复服务保险库** 边栏选项卡。
 
-1. Use the **Recovery Services vault** blade, to create a Site Recovery vault with the following settings:
+1. 使用 **恢复服务保险库** 边栏选项卡，使用以下设置创建站点保险库：
 
-    - Name: **vaultaz1010102**
+    - 名称： **vaultaz1010102**
 
-    - Subscription: the same Azure subscription you used in the previous task of this exercise
+    - 您在本练习的上一个任务中使用过的相同Azure订阅
 
-    - Resource group: the name of a new resource group **az1010102-RG**
+    - 资源组：新资源组 **az1010102-RG** 的名称
 
-    - Location: the name of an Azure region that is available in your subscription and which is different from the region you deployed the Azure VM in the previous task of this exercise
+    - 位置：订阅中可用的Azure区域名称，该名称与您在本练习的上一个任务中部署的Azure VM区域不同
 
-> **Result**: After you completed this exercise, you have initiated deployment of an Azure VM by using an Azure Resource Manager template and created an Azure Site Recovery vault that will be used to replicate content of the Azure VM disk files. 
-
-
-### Exercise 2: Migrate an Azure VM between Azure regions by using Azure Site Recovery 
-
-The main tasks for this exercise are as follows:
-
-1. Configure Azure VM replication
-
-1. Review Azure VM replication settings 
+> **结果**: 完成本练习后，您已使用Azure资源管理器模板启动了Azure VM的部署，并创建了一个Azure站点恢复保险库，该保险库将用于复制Azure VM磁盘文件的内容。 
 
 
-#### Task 1: Configure Azure VM replication
+### 练习 2：使用Azure站点恢复在Azure区域之间迁移Azure VM 
 
-   > **Note**: Before you start this task, ensure that the template deployment you started in the first exercise has completed. 
+本练习的主要任务如下：
 
-1. In the Azure portal, navigate to the blade of the newly provisioned Azure Recovery Services vault **vaultaz1010102**.
+1. 配置Azure VM复制
 
-1. From the **vaultaz1010102** blade, configure the following replication settings:
-
-    - Source: **Azure**
-
-    - Source location: the same Azure region into which you deployed the Azure VM in the previous exercise of this lab
-
-    - Azure virtual machine deployment model: **Resource Manager**
-
-    - Source subscription: the same Azure subscription you used in the previous exercise of this lab
-
-    - Source resource group: **az1010101-RG**
-
-    - Virtual machines: **az1010101-vm**
-
-    - Target location: the name of an Azure region that is available in your subscription and which is different from the region you deployed an Azure VM in the previous task. If possible, use the same Azure region into which you deployed the Azure Site Recovery vault.
-
-    - Target resource group: **(new) az1010101-RG-asr**
-
-    - Target virtual network: **(new) az1010101-vnet-asr**
-
-    - Cache storage account: accept the default setting
-
-    - Replica managed disks: **(new) 1 premium disk(s), 0 standard disk(s)**
-
-    - Target availability sets: **Not Applicable**
-
-    - Replication policy: the name of a new replication policy **12-hour-retention-policy**
-
-    - Recovery point retention: **12 Hours**
-
-    - App consistent snapshot frequency: **6 Hours**
-
-    - Multi-VM consistency: **No**
-
-1. From the **Configure settings** blade, initiate creation of target resources and wait until you are redirected to the **Enable replication** blade.
-
-1. From the **Enable replication** blade, enable the replication.
+1. 查看Azure VM复制设置 
 
 
-#### Task 2: Review Azure VM replication settings
+#### 任务 1：配置Azure VM复制
 
-1. In the Azure portal, navigate to the **vaultaz1010102 - Replicated items** blade.
+   > **注意**:在开始此任务之前，请确保您在第一个练习中启动的模板部署已完成。 
 
-1. On the **vaultaz1010102 - Replicated items** blade, ensure that there is an entry representing the **az1010101-vm** Azure VM and verify that its **REPLICATION HEALTH** is **Healthy** and that its **STATUS** is **Enabling protection**.
+1. 在Azure门户中，导航到新配置的Azure 恢复服务保险库的边栏选项卡 **vaultaz1010102**。
 
-1. From the **vaultaz1010102 - Replicated items** blade, display the replicated item blade of the **az1010101-vm** Azure VM.
+1. 从 **vaultaz1010102** 边栏选项卡，配置以下复制设置：
 
-1. On the **az1010101-vm** replicated item blade, review the **Health and status**, **Failover readiness**, **Latest recovery points**, and **Infrastructure view** sections. Note the **Failover** and **Test Failover** toolbar icons.
+    - 源：**Azure**
 
-   > **Note**: The remaining steps of this task are optional and not graded. 
+    - 源位置：在本逻辑阵列块的上一个练习中部署Azure VM的相同Azure区域
 
-1. If time permits, wait until the replication status changes to **100% synchronized**. This might take additional 90 minutes. 
+    - Azure虚拟机部署模型： **资源管理器**
 
-1. Examine the values of **RPO**, as well as **Crash-consistent** and **App-consistent** recovery points. 
+    - 您在本逻辑阵列块的上一个任务中使用过的相同Azure订阅
 
-1. Perform a test failover to the **az1010101-vnet-asr** virtual network.
+    - 源资源组： **az1010101-RG**
 
-> **Result**: After you completed this exercise, you have configured replication of an Azure VM and reviewed Azure VM replication settings.
+    - 虚拟机： **az1010101-vm**
 
-## Exercise 3: Remove lab resources
+    - 目标位置：订阅中可用的Azure区域的名称，该名称与您在上一个任务中部署Azure VM的区域不同。如果可能，请使用部署Azure站点恢复保险库的同一Azure区域。
 
-#### Task 1: Open Cloud Shell
+    - 目标资源组：**(新) az1010101-RG-asr**
 
-1. At the top of the portal, click the **Cloud Shell** icon to open the Cloud Shell pane.
+    - 目标虚拟网络：**(新) az1010101-vnet-asr**
 
-1. At the Cloud Shell interface, select **Bash**.
+    - 缓存存储帐户：接受默认设置
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to list all resource groups you created in this lab:
+    - 副本托管磁盘： **(新）1个高级磁盘，0个标准磁盘**
 
-   ```sh
-   az group list --query "[?starts_with(name,'az10101')].name" --output tsv
-   ```
+    - 目标可用性集： **不适用**
 
-1. Verify that the output contains only the resource groups you created in this lab. These groups will be deleted in the next task.
+    - 复制策略：新复制策略的名称 **12小时保留政策**
 
-#### Task 2: Delete resource groups
+    - 恢复点保留： **12 小时**
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
+    - App一致快照频率： **6 小时**
 
-   ```sh
-   az group list --query "[?starts_with(name,'az10101')].name" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-   ```
-   > **Note**: If you encounter an error similar to "...cannot perform delete operation because following scope(s) are locked..." then you need to run the following steps to remove the lock on the resource that prevents its deletion:
-   > ```sh
-   > lockedresource=$(az resource list --resource-group az1010101-RG-asr --resource-type Microsoft.Compute/disks --query "[?starts_with(name,'az10101')].name" --output tsv)
-   > az disk revoke-access -n $lockedresource --resource-group az1010101-RG-asr
-   > lockid=$(az lock show --name ASR-Lock --resource-group az1010101-RG-asr --resource-type Microsoft.Compute/disks --resource-name $lockedresource --output tsv --query id)
-   > az lock delete --ids $lockid
-   > az group list --query "[?starts_with(name,'az10101')].name" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-   >```
+    - 多虚拟机一致性： **否**
 
-1. Close the **Cloud Shell** prompt at the bottom of the portal.
+1. 从 **配置设置** 边栏选项卡，启动目标资源的创建，并等到您被重定向到 **启用复制** 边栏选项卡。
 
-> **Result**: In this exercise, you removed the resources used in this lab.
+1. 从 **启用复制** 边栏选项卡，启用复制。
+
+
+#### 任务 2：查看Azure VM复制设置
+
+1. 在Azure门户中，导航到 **vaultaz1010102 - 复制项** 边栏选项卡。
+
+1. 在 **vaultaz1010102 - 复制项** 边栏选项卡，确保有一个代表 **az1010101-VM** Azure VM的条目并验证 **REPLICATION HEALTH** 是否 **健康** ，其 **状态** 是否 **正在启用复制**。
+
+1. 从 **vaultaz1010102 - 复制项** 边栏选项卡，显示 **az1010101-VM** Azure VM的复制项边栏选项卡 。
+
+1. 在 **az1010101-VM** 复制项边栏选项卡，审查 **健康和状态**， **故障转移就绪**， **最新恢复点**，和 **基础架构视图** 部分。请注意 **故障转移** 和 **测试故障转移** 工具栏图标。
+
+   > **注意**: 此任务的其余步骤是可选的，不进行评分。 
+
+1. 如果时间允许，请等待复制状态更改为 **100％同步**。该操作可能需要额外的90分钟。 
+
+1. 检查 **RPO** 值， 以及 **崩溃一致** 和 **应用程序一致** 恢复点。 
+
+1. 执行测试故障转移到 **az1010101-vnet-asr** 虚拟网络。
+
+> **结果**: 完成本练习后，您已配置了Azure VM的复制并查看了Azure VM复制设置。

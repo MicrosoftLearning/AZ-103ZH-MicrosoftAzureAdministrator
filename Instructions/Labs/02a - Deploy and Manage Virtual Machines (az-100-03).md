@@ -1,534 +1,509 @@
+﻿---
+逻辑阵列模块：
+    标题：“部署和管理虚拟机”
+    模块：“部署和管理虚拟机”
 ---
-lab:
-    title: 'Deploy and Manage Virtual Machines'
-    module: 'Module 02 - Azure Virtual Machines'
----
 
-# Lab: Deploy and Manage Virtual Machines
+# 逻辑阵列模块：部署和管理虚拟机
 
-All tasks in this lab are performed from the Azure portal (including a PowerShell Cloud Shell session) except for Excercise 2 Task 2 and Exercise 2 Task 3, which include steps performed from a Remote Desktop session to an Azure VM
+本逻辑阵列模块中的所有任务均在 Azure 门户（包括 PowerShell Cloud Shell 会话）中执行，但练习 2 任务 2 和 练习 2 任务 3 除外，其中包括从远程桌面会话至 Azure VM 的执行步骤
 
-   > **Note**: When not using Cloud Shell, the lab virtual machine must have Azure PowerShell module installed [**https://docs.microsoft.com/en-us/powershell/azure/install-Az-ps**](https://docs.microsoft.com/en-us/powershell/azure/install-Az-ps)
+   > **注**：如果不使用 Cloud Shell ，则必须在逻辑阵列模块虚拟机上安装 Azure PowerShell 模块 **https://docs.microsoft.com/zh-cn/powershell/ Azure / Azure rm/install- Azure rm-ps**
 
-Lab files: 
+逻辑阵列模块文件： 
 
--  **Labfiles\\Module_02\\Deploy_and_Manage_Virtual_Machines\\az-100-03_azuredeploy.json**
+-  **Labfiles\\AZ100\\Mod03\\az-100-03_deploy_Azure _vm.ps1**
 
--  **Labfiles\\Module_02\\Deploy_and_Manage_Virtual_Machines\\az-100-03_azuredeploy.parameters.json**
+-  **Labfiles\\AZ100\\Mod03\\az-100-03_Azure deploy.json**
 
--  **Labfiles\\Module_02\\Deploy_and_Manage_Virtual_Machines\\az-100-03_install_iis_vmss.zip**
+-  **Labfiles\\AZ100\\Mod03\\az-100-03_Azure deploy.parameters.json**
 
-### Scenario
+-  **Labfiles\\AZ100\\Mod03\\az-100-03_install_iis_vmss.zip**
+
+### 方案
   
-Adatum Corporation wants to implement its workloads by using Azure virtual machines (VMs) and Azure VM scale sets
+Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模集来实现其工作负荷
 
 
-### Objectives
+### 目标
   
-After completing this lab, you will be able to:
+完成本逻辑阵列模块后，您将能够：
 
--  Deploy Azure VMs by using the Azure portal, Azure PowerShell, and Azure Resource Manager templates
+-  使用 Azure 门户、Azure PowerShell 和 Azure 资源管理器模板部署 Azure VM。
 
--  Configure networking settings of Azure VMs running Windows and Linux operating systems
+-  为运行 Windows 和 Linux 操作系统，配置 Azure VM 的网络设置
 
--  Deploy and configure Azure VM scale sets
+-  部署和配置 Azure VM 规模集
 
 
-### Exercise 1: Deploy Azure VMs by using the Azure portal, Azure PowerShell, and Azure Resource Manager templates
+### 练习 1：使用 Azure 门户、Azure PowerShell 和 Azure 资源管理器模板部署 Azure VM。
   
-The main tasks for this exercise are as follows:
+本次练习的主要任务如下：
 
-1. Deploy an Azure VM running Windows Server 2016 Datacenter into an availability set by using the Azure portal
+1. 使用 Azure 门户将运行 Windows Server 2016 Datacenter 的 Azure VM 部署至可用性集
 
-1. Deploy an Azure VM running Windows Server 2016 Datacenter into the existing availability set by using Azure PowerShell
+1. 使用 Azure PowerShell 将运行 Windows Server 2016 Datacenter 的 Azure VM 部署至现有可用性集
 
-1. Deploy two Azure VMs running Linux into an availability set by using an Azure Resource Manager template
-
-
-#### Task 1: Deploy an Azure VM running Windows Server 2016 Datacenter into an availability set by using the Azure portal
-
-1. From the lab virtual machine, start Microsoft Edge, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using a Microsoft account that has the Owner role in the Azure subscription you intend to use in this lab.
-
-1. In the Azure portal, navigate to the **Create a resource** blade.
-
-1. From the **Create a resource** blade, search Azure Marketplace for **Windows Server**. Select **Windows Server** from the search results list.
-
-1. On the Windows Server page, use the drop-down menu to select **[smalldisk] Windows Server 2016 Datacenter**, and then click **Create**.
-
-1. Use the **Create a virtual machine** blade to deploy a virtual machine with the following settings:
-
-    - Subscription: the name of the subscription you are using in this lab
-
-    - Resource group: the name of a new resource group **az1000301-RG**
-
-    - Virtual machine name: **az1000301-vm0**
-
-    - Region: **(US) East US** (or a region closer to you)
-
-      > **Note**: To identify Azure regions where you can provision Azure VMs, refer to [**https://azure.microsoft.com/en-us/regions/offers/**](https://azure.microsoft.com/en-us/regions/offers/)
-
-    - Availability options: **Availability set**
-
-    - Availability set: Click **Create New**, and name the new availability set **az1000301-avset0** with **2** fault domains and **5** update domains. Click **OK**.
-
-    - Image: **[smalldisk] Windows Server 2016 Datacenter**
-
-    - Size: **Standard DS2_v2**
-
-    - Username: **Student**
-
-    - Password: **Pa55w.rd1234**
-
-    - Public inbound ports: **None**
-
-    - Already have a Windows license?: **No**
-
-1. Click **Next: Disks >**.    
-
-    - OS disk type: **Standard HDD**
-
-1. Click **Next: Networking >**.
-
-1. On the Networking tab, click **Create new** under Virtual Network. Use the virtual network name already assigned by default and specify the following:
-
-    - Virtual network address range: **10.103.0.0/16**
-
-    - Subnet name: **subnet0**
-
-    - Subnet address range: **10.103.0.0/24**
-
-1. Click **OK**.
-
-1. Leave all other default values, and click **Review + create**.
-
-1. Click **Create**.
-
-   > **Note**: You will configure the network security group you create in this task in the second exercise of this lab
-
-   > **Note**: Wait for the deployment to complete before you proceed to the next task. This should take about 5 minutes.
+1. 使用 Azure 资源管理器模板将运行 Linux 的两个 Azure VM 部署至可用性集
 
 
-#### Task 2: Deploy an Azure VM running Windows Server 2016 Datacenter into the existing availability set by using Azure PowerShell
+#### 任务 1：使用 Azure 门户将运行 Windows Server 2016 Datacenter 的 Azure VM 部署至可用性集
 
-1. From the Azure Portal, start a PowerShell session in the Cloud Shell pane. 
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，在 **http://portal.Azure.com** 上浏览至 Azure 门户，并使用在您计划用于本次逻辑阵列模块的 Azure 订阅中具有“所有者”角色的 Microsoft 帐户进行登录。
 
-   > **Note**: If this is the first time you are launching the Cloud Shell in the current Azure subscription, you will be asked to create an Azure file share to persist Cloud Shell files. If so, accept the defaults, which will result in creation of a storage account in an automatically generated resource group.
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. In the Cloud Shell pane, run the following command:
+1. 从 **创建资源** 边栏搜索 Azure 市场 **Windows Server 2016 Datacenter**。
 
-   ```pwsh
-   $vmName = 'az1000301-vm1'
-   $vmSize = 'Standard_DS2_v2'
+1. 使用搜索结果列表导航到 **创建虚拟机** 边栏用于部署 Windows Server 2016 Datacenter Azure 市场图像。
+
+1. 使用 **创建虚拟机** 边栏部署具有以下设置的虚拟机
+
+    - 订阅：在本次逻辑阵列模块中您所使用的订阅名称
+
+    - 资源组：新资源组 **az1000301-RG** 的名称
+
+    - 虚拟机名称： **az1000301-vm0**
+
+    - 区域：最靠近逻辑阵列模块位置的 Azure 区域的名称以及可以在其中配置 Azure VM 的位置
+
+    - 可用性选项：**可用性集**
+
+    - 可用性集：新可用性集的名称 **az1000301-avset0** 与故障域 **2** 和更新域 5。
+
+    - 图像： **Windows Server 2016 Datacenter**
+
+    - 大小： **标准 DS1 v2**
+
+    - 用户名称： **学生**
+
+    - 密码： **Pa55w.rd1234**
+
+    - 公共入站端口： **无**
+
+    - 是否已拥有 Windows 许可证？： **否**
+
+    - VM 磁盘类型： **标准 HDD**
+
+    - 虚拟网络：新虚拟网络的名称 **az1000301-vnet0**，设置如下：
+
+        - 地址空间：**10.103.0.0/16**
+
+        - 子域名称：**subnet0**
+
+        - 子网地址范围： **10.103.0.0/24**
+
+    - 公共 IP：新公共 IP 地址的名称 **az1000301-vm0-ip**
+
+    - 网络安全组： **基本**
+
+    - 公共入站端口： **无**
+
+    - 加速网络： **关**
+
+    - 启动诊断: **关**
+
+    - OS 来宾诊断： **关**
+
+    - 系统分配的托管标识： **关**
+
+    - 启用自动关闭： **关**
+
+    - 启用备份： **关**
+
+   > **注**：如需识别您可以提供 Azure VM 的 Azure 区域，请查阅 **https:// Azure.Microsoft.com/zh-cn/regions/offers/**。
+
+   > **注**：您将在本逻辑阵列模块的第二个练习中配置您在此任务中所创建的网络安全组
+
+   > **注**：在继续执行下一个任务前，请等待部署完成。该操作需约 5 分钟。
+
+
+#### 任务 2：使用 Azure PowerShell 将运行 Windows Server 2016 Datacenter 的 Azure VM 部署至现有可用性集
+
+1. 从 Azure 门户，在 Cloud Shell 窗格中启动 PowerShell 会话。 
+
+   > **注**：如果这是您第一次在当前 Azure 订阅中启动 Cloud Shell，则会要求您创建 Azure 文件共享以保留 Cloud Shell 文件。如果是，接受默认设置，这样会在自动生成的资源组中创建存储帐户。
+
+1. 在 Cloud Shell 窗格中，运行以下命令：
+
+   ```
+   $vmName='az1000301-vm1'
+   $vmSize='Standard_DS1_v2'
    ```
 
-   > **Note**: This sets the values of variables designating the Azure VM name and its size
+   > **注**：此命令集指定 Azure VM 名称及其大小的变量值
 
-1. In the Cloud Shell pane, run the following commands:
+1. 在 Cloud Shell 窗格中，运行以下命令：
 
-   ```pwsh
-   $resourceGroup = Get-AzResourceGroup -Name 'az1000301-RG'
-   $location = $resourceGroup.Location
+   ```
+   $resourceGroup=Get-AzResourceGroup-Name 'az1000301-RG'
+   $location=$resourceGroup.Location
    ```
 
-   > **Note**: These commands set the values of variables designating the target resource group and its location
+   > **注**：这些命令集指定目标资源组及其位置的变量值
 
-1. In the Cloud Shell pane, run the following commands:
+1. 在 Cloud Shell 窗格中，运行以下命令：
 
-   ```pswh
-   $availabilitySet = Get-AzAvailabilitySet -ResourceGroupName $resourceGroup.ResourceGroupName -Name 'az1000301-avset0'
-   $vnet = Get-AzVirtualNetwork -Name 'az1000301-RG-vnet' -ResourceGroupName $resourceGroup.ResourceGroupName
-   $subnetid = (Get-AzVirtualNetworkSubnetConfig -Name 'subnet0' -VirtualNetwork $vnet).Id
+   ```
+   $availabilitySet=Get-AzAvailabilitySet -ResourceGroupName $resourceGroup.ResourceGroupName -Name 'az1000301-avset0'
+   $vnet=Get-AzVirtualNetwork -Name 'az1000301-vnet0' -ResourceGroupName $resourceGroup.ResourceGroupName
+   $subnetid=（Get-AzVirtualNetworkSubnetConfig -Name 'subnet0' -VirtualNetwork $vnet）.Id
    ```
 
-   > **Note**: These commands set the values of variables designating the availability set, virtual network, and subnet into which you will deploy the new Azure VM
+   > **注**：这些命令集指定可用性集，虚拟网络和子域网的变量值，您将在其中部署新的 Azure VM
 
-1. In the Cloud Shell pane, run the following commands:
+1. 在 Cloud Shell 窗格中，运行以下命令：
 
-   ```pwsh
-   $nsg = New-AzNetworkSecurityGroup -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -Name "$vmName-nsg"
-   $pip = New-AzPublicIpAddress -Name "$vmName-ip" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -AllocationMethod Dynamic 
-   $nic = New-AzNetworkInterface -Name "$($vmName)$(Get-Random)" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -SubnetId $subnetid -PublicIpAddressId $pip.Id -NetworkSecurityGroupId $nsg.Id
+   ```
+   $nsg=New-AzNetworkSecurityGroup -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -Name "$vmName-nsg"
+   $pip=New-AzPublicIpAddress -Name "$vmName-ip" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -AllocationMethod Dynamic 
+   $nic=New-AzNetworkInterface-Name "$（$vmName）$（Get-Random）" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -SubnetId $subnetid -PublicIpAddressId $pip.Id -NetworkSecurityGroupId $nsg.Id
    ```
 
-   > **Note**: These commands create a new network security group, public IP address, and network interface that will be used by the new Azure VM
+   > **注**：这些命令创建新的网络安全组、公共 IP 地址和网络接口，且这些将被新的 Azure VM 所使用
 
-   > **Note**: You will configure the network security group you create in this task in the second exercise of this lab
+   > **注**：您将在本逻辑阵列模块的第二个练习中配置您在此任务中所创建的网络安全组
 
-1. In the Cloud Shell pane, run the following commands:
+1. 在 Cloud Shell 窗格中，运行以下命令：
 
-   ```pwsh
-   $adminUsername = 'Student'
-   $adminPassword = 'Pa55w.rd1234'
-   $adminCreds = New-Object PSCredential $adminUsername, ($adminPassword | ConvertTo-SecureString -AsPlainText -Force)
+   ```
+   $adminUsername='Student'
+   $adminPassword='Pa55w.rd1234
+   $adminCreds=New-Object PSCredential $adminUsername，（$adminPassword | ConvertTo-SecureString-AsPlainText-Force）
    ```
 
-   > **Note**: These commands set the values of variables designating credentials of the local Administrator account of the new Azure VM
+   > **注**：这些命令集指定新 Azure VM 的本地管理员帐户凭据的变量值
 
-1. In the Cloud Shell pane, run the following commands:
+1. 在 Cloud Shell 窗格中，运行以下命令：
 
-   ```pwsh
-   $publisherName = 'MicrosoftWindowsServer'
-   $offerName = 'WindowsServer'
-   $skuName = '2016-Datacenter'
+   ```
+   $publisherName='MicrosoftWindowsServer'
+   $offerName='WindowsServer'
+   $skuName='2016-Datacenter'
    ```
 
-   > **Note**: These commands set the values of variables designating the properties of the Azure Marketplace image that will be used to provision the new Azure VM
+   > **注**：这些命令集指定将用于配置新 Azure VM 的 Azure 市场 图像属性的变量值
 
-1. In the Cloud Shell pane, run the following command:
+1. 在 Cloud Shell 窗格中，运行以下命令：
 
-   ```pwsh
-   $osDiskType = (Get-AzDisk -ResourceGroupName $resourceGroup.ResourceGroupName)[0].Sku.Name
+   ```
+   $osDiskType=（Get-AzResource -ResourceGroupName $resourceGroup.ResourceGroupName -ResourceType Microsoft.Compute/disks）[0].Sku.name
    ```
 
-   > **Note**: This command sets the values of a variable designating the operating system disk type of the new Azure VM
+   > **注**：此命令集变指定新 Azure VM 的操作系统磁盘类型的变量值
 
-1. In the Cloud Shell pane, run the following commands:
+1. 在 Cloud Shell 窗格中，运行以下命令：
 
-   ```pwsh
-   $vmConfig = New-AzVMConfig -VMName $vmName -VMSize $vmSize -AvailabilitySetId $availabilitySet.Id
+   ```
+   $vmConfig=New-AzVMConfig -VMName $vmName -VMSize $vmSize -AvailabilitySetId $availabilitySet.Id
    Add-AzVMNetworkInterface -VM $vmConfig -Id $nic.Id
    Set-AzVMOperatingSystem -VM $vmConfig -Windows -ComputerName $vmName -Credential $adminCreds 
    Set-AzVMSourceImage -VM $vmConfig -PublisherName $publisherName -Offer $offerName -Skus $skuName -Version 'latest'
-   Set-AzVMOSDisk -VM $vmConfig -Name "$($vmName)_OsDisk_1_$(Get-Random)" -StorageAccountType $osDiskType -CreateOption fromImage
+   Set-AzVMOSDisk -VM $vmConfig -Name "$（$vmName）_OsDisk_1_$（Get-Random）-StorageAccountType $osDiskType -CreateOption fromImage
    Set-AzVMBootDiagnostic -VM $vmConfig -Disable
    ```
 
-   > **Note**: These commands set up the properties of the Azure VM configuration object that will be used to provision the new Azure VM, including the VM size, its availability set, network interface, computer name, local Administrator credentials, the source image, the operating system disk, and boot diagnostics settings.
+   > **注**：这些命令设置将用于配置新 Azure VM 的 Azure VM 配置对象的属性，其中包括 VM 大小、其可用性集、网络接口、计算机名称、本地管理员凭据、源图像、操作系统磁盘和启动诊断设置等。
 
-1. In the Cloud Shell pane, run the following command:
+1. 在 Cloud Shell 窗格中，运行以下命令：
 
-   ```pwsh
+   ```
    New-AzVM -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -VM $vmConfig
    ```
 
-   > **Note**: This command initiates deployment of the new Azure VM
+   > **注**：此命令启动新 Azure VM 的部署
 
-   > **Note**: Do not wait for the deployment to complete but instead proceed to the next task.
-
-
-#### Task 3: Deploy two Azure VMs running Linux into an availability set by using an Azure Resource Manager template
-
-1. In the Azure portal, navigate to the **Create a resource** blade.
-
-1. From the **Create a resource** blade, search Azure Marketplace for **Template deployment**, and select **Template deployment (deploy using custom templates)**.
-
-1. Click **Create**.
-
-1. On the **Custom deployment** blade, click the **Build your own template in the editor** link. If you do not see this link, click **Edit template** instead.
-
-1. From the **Edit template** blade, load the template file **Labfiles\\Module_02\\Deploy_and_Manage_Virtual_Machines\\az-100-03_azuredeploy.json**. 
-
-   > **Note**: Review the content of the template and note that it defines deployment of two Azure VMs hosting Linux Ubuntu into an availability set and into the existing virtual network **az1000301-vnet0**. This virtual network does not exist in your deployment. You will be changing the virtual network name in the parameters below.
-
-1. Save the template and return to the **Custom deployment** blade. 
-
-1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
-
-1. From the **Edit parameters** blade, load the parameters file **Labfiles\\Module_02\\Deploy_and_Manage_Virtual_Machines\\az-100-03_azuredeploy.parameters.json**. 
-
-1. Save the parameters and return to the **Custom deployment** blade. 
-
-1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
-
-    - Subscription: the name of the subscription you are using in this lab
-
-    - Resource group: the name of a new resource group **az1000302-RG**
-
-    - Location: the same Azure region you chose earlier in this exercise
-
-    - Vm Name Prefix: **az1000302-vm**
-
-    - Nic Name Prefix: **az1000302-nic**
-
-    - Pip Name Prefix: **az1000302-ip**
-
-    - Admin Username: **Student**
-
-    - Admin Password: **Pa55w.rd1234**
-
-    - Virtual Network Name: **az1000301-RG-vnet** _(change this value from the template default)_
-
-    - Image Publisher: **Canonical**
-
-    - Image Offer: **UbuntuServer**
-
-    - Image SKU: **16.04.0-LTS**
-
-    - Vm Size: **Standard_DS2_v2**
-
-   > **Note**: Wait for the deployment to complete before you proceed to the next task. This should take about 5 minutes.
-
-> **Result**: After you completed this exercise, you have deployed an Azure VM running Windows Server 2016 Datacenter into an availability set by using the Azure portal, deployed another Azure VM running Windows Server 2016 Datacenter into the same availability set by using Azure PowerShell, and deployed two Azure VMs running Linux Ubuntu into an availability set by using an Azure Resource Manager template.
-
-   > **Note**: You could certainly use a template to deploy two Azure VMs hosting Windows Server 2016 datacenter in a single task (just as this was done with two Azure VMs hosting Linux Ubuntu server). The reason for deploying these Azure VMs in two separate tasks was to give you the opportunity to become familiar with both the Azure portal and Azure PowerShell-based deployments.
+   > **注**：请勿等待第一台虚拟机预配完成，而是继续进行下一项任务。
 
 
-### Exercise 2: Configure networking settings of Azure VMs running Windows and Linux operating systems
+#### 任务 3：使用 Azure 资源管理器模板将运行 Linux 的两个 Azure VM 部署至可用性集
+
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
+
+1. 从 **创建资源** 边栏选项卡中搜索 Azure Marketplace 中的 **模板部署**。
+
+1. 使用搜索结果列表导航到 **部署自定义模板** 边栏选项卡。
+
+1. 在“**自定义部署**”边栏选项卡上，请选择“**在编辑器中构建自己的模板**”。
+
+1. 从 **编辑模板** 边栏选项卡，加载模板文件 **Labfiles\\AZ100\\Mod03\\az-100-03_Azure deploy.json**。 
+
+   > **注**：查看模板内容，并注意其定义的将两个托管 Linux Ubuntu 的 Azure VM 部署至可用性集和现有虚拟网络 az1000301-vnet0 中。
+
+1. 请保存模板并返回“**自定义部署**”边栏选项卡。 
+
+1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数** 边栏选项卡
+
+1. 从 **编辑参数** 边栏中加载参数文件 **Labfiles\\AZ100\\Mod03\\az-100-03_Azure deploy.parameters.json**。 
+
+1. 请保存参数并返回“**自定义部署**”边栏选项卡。 
+
+1. 从 **自定义部署** 边栏选项卡，使用以下设置启动模板部署：
+
+    - 订阅：在本次逻辑阵列模块中您所使用的订阅名称
+
+    - 资源组：新资源组 **az1000302-RG** 的名称
+
+    - 位置：您先前在本次练习中选择的 Azure 区域
+
+    - Vm 名称前缀： **az1000302-vm**
+
+    - Nic 名称前缀： **az1000302-nic**
+
+    - Pip 名称前缀： **az1000302-ip**
+
+    - 管理员用户名： **学生**
+
+    - 管理员密码： **Pa55w.rd1234**
+
+    - 虚拟网络名称： **az1000301-vnet0**
+
+    - 图像发布者： **Canonical**
+
+    - 图像提供： **UbuntuServer**
+
+    - 图像 SKU： **16.04.0-LTS**
+
+    - VM 大小： **Standard_DS1_v2**
+
+   > **注**：在继续执行下一个任务前，请等待部署完成。该操作需约 5 分钟。
+
+> 结果：完成本次练习后，您已使用 Azure 门户运行 Windows Server 2016 Datacenter 的 Azure VM 部署至可用性集，使用 Azure PowerShell 将另一台运行 Windows Server 2016 Datacenter 的 Azure VM 部署至同一可用性集，并通过使用 Azure 资源管理器模板部署两个 Azure 的运行 Linux Ubuntu 的 VM 转换为可用性集。
+
+   > **注**：您当然可以在一个任务中使用模板来部署两个托管 Windows Server 2016 datacenter 的 Azure VM （如同使用托管 Linux Ubuntu 服务器的两个 Azure VM ）。在两个单独的任务中部署此类 Azure VM 的原因是：让您有机会熟悉 Azure 门户和基于 Azure PowerShell 的部署。
+
+
+### 练习 2：为运行 Windows 和 Linux 操作系统，配置 Azure VM 的网络设置
   
-The main tasks for this exercise are as follows:
+本次练习的主要任务如下：
 
-1. Configure static private and public IP addresses of Azure VMs
+1. 配置 Azure VM 的静态专用和公共 IP 地址
 
-1. Connect to an Azure VM running Windows Server 2016 Datacenter via a public IP address
+1. 通过公共 IP 地址连接至运行 Windows Server 2016 Datacenter 的 Azure VM
 
-1. Connect to an Azure VM running Linux Ubuntu Server via a private IP address
-
-
-#### Task 1: Configure static private and public IP addresses of Azure VMs
-
-1. In the Azure portal, navigate to the **az1000301-vm0** blade.
-
-1. From the **az1000301-vm0** blade, navigate to the **Networking** blade, displaying the configuration of the public IP address **az1000301-vm0-ip**, assigned to its network interface.
-
-1. From the **Networking** blade, click the link representing the public IP address.
-
-1. On the az1000301-vm0-ip blade, click **Configuration**.
-
-1. Change the assignment of the public IP address to **Static**, and then click **Save**.
-
-   > **Note**: Take a note of the public IP address assigned to the network interface of **az1000301-vm0**. You will need it later in this exercise.
-
-1. In the Azure portal, navigate to the **az1000302-vm0** blade.
-
-1. From the **az1000302-vm0** blade, display the **Networking** blade.
-
-1. From the **az1000302-vm0 - Networking** blade, click the link representing the network interface.
-
-1. From the blade displaying the properties of the network interface of **az1000302-vm0**, navigate to its **IP configurations** blade.
-
-1. On the **IP configurations** blade, configure the **ipconfig1** private IP address to be static and set it to **10.103.0.100**, and then click **Save**.
-
-   > **Note**: Changing the private IP address assignment requires restarting the Azure VM.
-
-   > **Note**: It is possible to connect to Azure VMs via either statically or dynamically assigned public and private IP addresses. Choosing static IP assignment is commonly done in scenarios where these IP addresses are used in combination with IP filtering, routing, or if they are assigned to network interfaces of Azure VMs that function as DNS servers.
+1. 通过专用 IP 地址连接至运行 Linux Ubuntu Server 的 Azure VM
 
 
-#### Task 2: Connect to an Azure VM running Windows Server 2016 Datacenter via a public IP address
+#### 任务 1：配置 Azure VM 的静态专用和公共 IP 地址
 
-1. In the Azure portal, navigate to the **az1000301-vm0** blade.
+1. 在 Azure 门户中，请导航到 **az1000301-vm0** 边栏选项卡。
 
-1. From the **az1000301-vm0** blade, navigate to the **Networking** blade.
+1. 从 **az1000301-vm0** 边栏选项卡，导航到 **az1000301-vm0-ip-Configuration** 边栏选项卡，显示公共 IP 地址的配置 **az1000301-vm0-ip**，分配给其网络接口。
 
-1. On the **az1000301-vm0 - Networking** blade, review the inbound port rules of the network security group assigned to the network interface of **az1000301-vm0**.
+1. 从 **az1000301-vm0-ip-Configuration** 边栏选项卡，将分配的公共 IP 地址更改 **为静态**。
 
-   > **Note**: The default configuration consisting of built-in rules block inbound connections from the internet (including connections via the RDP port TCP 3389)
+   > **注**：记录分配给网络接口的公共 IP 地址 **az1000301-vm0**。在本次练习中，您后续将需要该域名。
 
-1. Add an inbound security rule to the existing network security group with the following settings:
+1. 在 Azure 门户中，请导航到 **az1000302-vm0** 边栏选项卡。
 
-    - Source: **Any**
+1. 从 **az1000302-VM0** 边栏选项卡，显示 **az1000302-vm0 -Networking** 边栏选项卡。
 
-    - Source port ranges: **\***
+1. 从 **az1000302-vm0- Networking** 边栏选项卡，导航到显示其网络接口属性的边栏选项卡。
 
-    - Destination: **Any**
+1. 边栏显示网络接口属性 **az1000302-vm0**，导航到其 **ipconfig1** 边栏选项卡。
 
-    - Destination port ranges: **3389**
+1. 在 **ipconfig1** 边栏选项卡，将专用 IP 地址配置为静态并将其设置为 **10.103.0.100**。
 
-    - Protocol: **TCP**
+   > **注**：更改专用 IP 地址分配需重新启动 Azure VM 。
 
-    - Action: **Allow**
-
-    - Priority: **100**
-
-    - Name: **AllowInternetRDPInBound**
-
-1. In the Azure portal, display the **Overview** pane of the **az1000301-vm0** blade. 
-
-1. From the **Overview** pane of the **az1000301-vm0** blade, click **Connect** and generate an RDP file and use it to connect to **az1000301-vm0**.
-
-1. When prompted, authenticate by specifying the following credentials:
-
-    - User name: **Student**
-
-    - Password: **Pa55w.rd1234**
+   > **注**：可以通过静态或动态分配的公共和私有 IP 地址，连接到 Azure VM。选择静态 IP 分配通常在这些 IP 地址与 IP 筛选、路由选择结合使用的情况下进行，或者，如果将它们分配给充当 DNS 服务器的 Azure VM 的网络接口。
 
 
-#### Task 3: Connect to an Azure VM running Linux Ubuntu Server via a private IP address
+#### 任务 2：通过公共 IP 地址连接至运行 Windows Server 2016 Datacenter 的 Azure VM
+
+1. 在 Azure 门户中，请导航到 **az1000301-vm0** 边栏选项卡。
+
+1. 从 **az1000301-VM0** 边栏选项卡，导航到 **az1000301-vm0-联网** 边栏选项卡。
+
+1. 在 **az1000301-vm0-联网** 边栏选项卡，查看分配给 **az1000301-vm0** 网络接口的网络安全组的入站端口规则。
+
+   > **注**：由内置规则组成的默认配置阻止来自因特网的入站连接（包括经由 RDP 端口 TCP 3389 的连接）
+
+1. 使用以下设置将入站安全规则添加到现有网络安全组：
+
+    - 来源： **任何**
+
+    - 源端口范围： **\***
+
+    - 目的地： **任何**
+
+    - 目标端口范围： **3389**
+
+    - 协议： **TCP**
+
+    - 动作： **允许**
+
+    - 优先级： **100**
+
+    - 名称： **AllowInternetRDPInBound**
+
+1. 在 Azure 门户中，显示 **az1000301-vm0** 边栏的“**概述**”窗格。 
+
+1. 来自“**概述**”窗格的 **az1000301-vm0** 边栏选项卡，生成 RDP 文件并使用它连接至 **az1000301-vm0**。
+
+1. 出现提示时，通过指定以下凭据进行身份验证：
+
+    - 用户名称： **学生**
+
+    - 密码： **Pa55w.rd1234**
+
+
+#### 任务 3：通过专用 IP 地址连接至运行 Linux Ubuntu Server 的 Azure VM
  
-1. Within the RDP session to **az1000301-vm0**, start **Command Prompt**.
+1. 在 **az1000301-vm0** 的 RDP 会话中，启动 **命令提示符**。
 
-1. From the Command Prompt, run the following:
+1. 从命令提示符处，运行以下命令：
 
    ```
    nslookup az1000302-vm0
    ```
 
-1. Examine the output and note that the name resolves to the IP address you assigned in the first task of this exercise (**10.103.0.100**).
+1. 检查输出，并记录该名称解析为您在本次练习的第一个任务中指定的 IP 地址（** 10.103.0.100 **）。
 
-   > **Note**: This is expected. Azure provides built-in DNS name resolution within a virtual network. 
+   > **注**：这是正常的。Azure 在虚拟网络中提供内置 DNS 名称解析。 
 
-1. Within the RDP session to **az1000301-vm0**, from Server Manager, click **Local Server**, then disable **IE Enhanced Security Configuration**.
+1. 在 **az1000301-vm0** 的 RDP 会话中，从服务器管理器暂时禁用 **IE 增强安全配置**。
 
-1. Within the RDP session to **az1000301-vm0**, start Internet Explorer and download **putty.exe** from [**https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html**](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 
+1. 在 **az1000301-vm0** 的 RDP 会话中，启动 IE 浏览器，访问以下网址下载 **putty.exe**：** https：//www.chiark.greenend.org.uk/~sgtatham/putty/latest.html 
 
-1. Use **putty.exe** to verify that you can successfully connect to **az1000302-vm0** on its private IP address via the **SSH** protocol (TCP 22).
+1. 使用 **putty.exe** 验证您是否可以通过 **SSH** 协议（TCP 22）成功连接到其专用 IP 地址上的 **az1000302-vm0**。
 
-1. When prompted, authenticate by specifying the following values:
+1. 出现提示时，通过指定以下值进行身份验证：
 
-    - User name: **Student**
+    - 用户名称： **学生**
 
-    - Password: **Pa55w.rd1234**
+    - 密码： **Pa55w.rd1234**
 
-    > **Note**: Both the username and password are case sensitive.
- 
-1. Once you successfully authenticated, terminate the RDP session to **az1000301-vm0**.
+1. 成功通过身份验证后，终止到 **az1000301-vm0** 的 RDP 会话.
 
-1. On the lab virtual machine, in the Azure portal, navigate to the **az1000302-vm0** blade.
+1. 在逻辑阵列模块虚拟机的 Azure 门户中，导航到 **az1000302-vm0** 边栏选项卡。
 
-1. From the **az1000302-vm0** blade, navigate to the **Networking** blade.
+1. 从 **az1000302-vm0** 边栏选项卡，导航到 **az1000302-vm0-联网** 边栏选项卡。
 
-1. On the **az1000302-vm0 - Networking** blade, review the inbound port rules of the network security group assigned to the network interface of **az1000301-vm0** to determine why your SSH connection via the private IP address was successsful.
+1. 在 **az1000302-vm0-联网** 边栏选项卡上，查看分配给 **az1000301-vm0** 网络接口的网络安全组的入站端口规则，以确定通过专用 IP 地址进行 SSH 连接的成功原因。
 
-   > **Note**: The default configuration consisting of built-in rules allows inbound connections within the Azure virtual network environment (including connections via the SSH port TCP 22).
+   > **注**：由内置规则组成的默认配置允许 Azure 虚拟网络环境中的入站连接（包括经由 SSH 端口 TCP 22 的连接）。
 
-> **Result**: After you completed this exercise, you have configured static private and public IP addresses of Azure VMs, connected to an Azure VM running Windows Server 2016 Datacenter via a public IP address, and connect to an Azure VM running Linux Ubuntu Server via a private IP address
+> 结果：完成本次练习后，您已配置 Azure VM 的静态专用和公有 IP 地址，通过公共 IP 地址连接到运行 Windows Server 2016 Datacenter 的 Azure VM，并通过专用 IP 地址连接到运行 Linux Ubuntu Server 的 Azure VM
 
 
-### Exercise 3: Deploy and configure Azure VM scale sets
+### 练习 3：部署和配置 Azure VM 规模集
 
-The main tasks for this exercise are as follows:
+本次练习的主要任务如下：
 
-1. Identify an available DNS name for an Azure VM scale set deployment
+1. 确定 Azure VM 规模集部署的可用 DNS 名称
 
-1. Deploy an Azure VM scale set
+1. 部署 Azure VM 规模集
 
-1. Install IIS on a scale set VM by using DSC extensions
+1. 使用 DSC 扩展，在规模集 VM 上安装 IIS
 
 
-#### Task 1: Identify an available DNS name for an Azure VM scale set deployment
+#### 任务 1：确定 Azure VM 规模集部署的可用 DNS 名称
 
-1. From the Azure Portal, start a PowerShell session in the Cloud Shell pane. 
+1. 从 Azure 门户，在 Cloud Shell 窗格中启动 PowerShell 会话。 
 
-1. In the Cloud Shell pane, run the following command, substituting the placeholder &lt;custom-label&gt; with any string which is likely to be unique.
+1. 在 Cloud Shell 窗格中，运行以下命令，将占位符&lt;custom-label&gt;替换为任何可能唯一的字符串，并将占位符&lt;location-of-az1000301-RG&gt;替换为您在其中创建 az1000301-RG 资源组的 Azure 区域的名称。
 
-   ```pwsh
-   $rg = Get-AzResourceGroup -Name az1000301-RG
-   Test-AzDnsAvailability -DomainNameLabel <custom-label> -Location $rg.Location
+   ```
+   Test-AzDnsAvailability -DomainNameLabel <custom-label> -Location'<location-of-az1000301-RG>'
    ```
 
-1. Verify that the command returned **True**. If not, rerun the same command with a different value of the &lt;custom-label&gt; until the command returns **True**. 
+1. 验证返回的命令是否为 **真**。如果没有，请使用&lt;custom-label&gt;不同的值重新运行相同的命令，直至命令返回“**真**”。 
 
-1. Note the value of the &lt;custom-label&gt; that resulted in the successful outcome. You will need it in the next task
-
-
-#### Task 2: Deploy an Azure VM scale set
-
-1. In the Azure portal, navigate to the **Create a resource** blade.
-
-1. From the **Create a resource** blade, search Azure Marketplace for **Virtual machine scale set**.
-
-1. Use the list of search results to navigate to the **Create virtual machine scale set** blade.
-
-1. Use the **Create virtual machine scale set** blade to deploy a virtual machine scale set with the following settings:
-
-    - Virtual machine scale set name: **az1000303vmss0**
-
-    - Operating system disk image: **Windows Server 2016 Datacenter**
-
-    - Subscription: the name of the subscription you are using in this lab
-
-    - Resource group: the name of a new resource group **az1000303-RG**
-
-    - Location: the same Azure region you chose in the previous exercises of this lab
-
-    - Availability zone: **None**
-
-    - Username: **Student**
-
-    - Password: **Pa55w.rd1234**
-
-    - Instance count: **1**
-
-    - Instance size: **DS2 v2**
-
-    - Deploy as low priority: **No**
-
-    - Use managed disks: **Yes**
-
-    - Autoscale: **Disabled**
-
-    - Choose Load balancing options: **Load balancer**
-
-    - Public IP address name: **az1000303vmss0-ip**
-
-    - Domain name label: type in the value of the &lt;custom-label&gt; you identified in the previous task
-
-    - Virtual network: the name of a new virtual network **az1000303-vnet0** with the following settings:
-
-        - Address range: **10.203.0.0/16**
-
-        - Subnet name: **subnet0**
-
-        - Subnet address range: **10.203.0.0/24**
-
-    - Public IP address per instance: **Off**
-
-   > **Note**: Wait for the deployment to complete before you proceed to the next task. This should take about 5 minutes.
+1. 请记录获得成功结果的&lt;custom-label&gt;的值。您将在下一个任务中使用它
 
 
-#### Task 3: Install IIS on a scale set VM by using DSC extensions
+#### 任务 2：部署 Azure VM 规模集
 
-1. In the Azure portal, navigate to the **az1000303vmss0** blade.
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. From the **az1000303vmss0** blade, display its Extension blade.
+1. 从“**创建资源**”边栏选项卡，搜索 Azure 市场，以获取 **虚拟机规模集**。
 
-1. From the **az1000303vmss0 - Extension** blade, add the **PowerShell Desired State Configuration** extension with the following settings:
+1. 使用搜索结果列表导航到“**创建虚拟机规模集**”边栏选项卡。
 
-   > **Note**: The DSC configuration module is available for upload from **Labfiles\\Module_02\\Deploy_and_Manage_Virtual_Machines\\az-100-03_install_iis_vmss.zip**. The module contains the DSC configuration script that installs the Web Server (IIS) role.
+1. 使用“**创建虚拟机规模集**”边栏选项卡，通过以下设置部署虚拟机规模集：
 
-    - Configuration Modules or Script: **"az-100-03_install_iis_vmss.zip"**
+    - 虚拟机规模集名称： **az1000303vmss0**
 
-    - Module-qualified Name of Configuration: **az-100-03_install_iis_vmss.ps1\IISInstall**
+    - 操作系统磁盘映像： **Windows Server 2016 Datacenter**
 
-    - Configuration Arguments: leave blank
+    - 订阅：在本次逻辑阵列模块中您所使用的订阅名称
 
-    - Configuration Data PSD1 File: leave blank
+    - 资源组：新资源组 **az1000303-RG** 的名称
 
-    - WMF Version: **latest**
+    - 位置：您在本逻辑阵列模块的前几项练习中选择的 Azure 区域
 
-    - Data Collection: **Disable**
+    - 可用性区域： **无**
 
-    - Version: **2.76**
+    - 用户名称： **学生**
 
-    - Auto Upgrade Minor Version: **Yes**
+    - 密码： **Pa55w.rd1234**
 
-1. Navigate to the **az1000303vmss0 - Instances** blade and initiate the upgrade of the **az1000303vmss0_0** instance.
+    - 实例数： **1**
 
-   > **Note**: The update will trigger application of the DSC configuration script. Wait for upgrade to complete. This should take about 5 minutes. You can monitor the progress from the **az1000303vmss0 - Instances** blade.
+    - 实例大小： **DS1 v2**
 
-1. Once the upgrade completes, navigate to the **Overview** blade. 
+    - 部署为低优先级： **否**
 
-1. On the **az1000303vmss0-ip** blade, note the public IP address assigned to **az1000303vmss0**.
+    - 使用托管磁盘： **是**
 
-1. Start Microsoft Edge and navigate to the public IP address you identified in the previous step.
+    - 自动扩展： **禁用**
 
-1. Verify that the browser displays the default IIS home page. 
+    - 选择负载均衡选项： **负载均衡器**
 
-> **Result**: After you completed this exercise, you have identified an available DNS name for an Azure VM scale set deployment, deployed an Azure VM scale set, and installed IIS on a scale set VM by using the DSC extension.
+    - 公共 IP 地址名称： **az1000303vmss0-ip**
 
-## Exercise 4: Remove lab resources
+    - 域名标记：输入您在上一个任务中确定的 &lt;custom-label&gt;的值
 
-#### Task 1: Open Cloud Shell
+    - 虚拟网络：新虚拟网络的名称 **az1000303-vnet0**，设置如下：
 
-1. At the top of the portal, click the **Cloud Shell** icon to open the Cloud Shell pane.
+        - 地址空间： **10.203.0.0/16**
 
-1. At the Cloud Shell interface, select **Bash**.
+        - 子域名称： **subnet0**
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to list all resource groups you created in this lab:
+        - 子网地址范围： **10.203.0.0/24**
 
-   ```sh
-   az group list --query "[?starts_with(name,'az1000')].name" --output tsv
-   ```
+    - 每个实例的公共 IP 地址： **关**
 
-1. Verify that the output contains only the resource groups you created in this lab. These groups will be deleted in the next task.
+   > **注**：在继续执行下一个任务前，请等待部署完成。该操作需约 5 分钟。
 
-#### Task 2: Delete resource groups
 
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
+#### 任务 3：使用 DSC 扩展，在规模集 VM 上安装 IIS
 
-   ```sh
-   az group list --query "[?starts_with(name,'az1000')].name" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-   ```
+1. 在 Azure 门户中，请导航到 **az1000303vmss0** 边栏选项卡。
 
-1. Close the **Cloud Shell** prompt at the bottom of the portal.
+1. 从 **az1000303vmss0** 边栏选项卡，显示其扩展边栏选项卡。
 
-> **Result**: In this exercise, you removed the resources used in this lab.
+1. 从 **az1000303vmss0-扩展** 边栏选项卡，使用以下设置添加 **PowerShell Desired State Configuration** 扩展：
+
+   > **注**：DSC 配置模块可从 **Labfiles\\AZ100\\Mod03\\az-100-03_install_iis_vmss.zip** 上传。该模块包含安装 Web 服务器（IIS）角色的 DSC 配置脚本。
+
+    - 配置模块或脚本： **"az-100-03_install_iis_vmss.zip"**
+
+    - 模块限定的配置名称： **az-100-03_install_iis_vmss.ps1\IISInstall**
+
+    - 配置参数：留空
+
+    - 配置数据 PSD1 文件：留空
+
+    - WMF 版本： **最新**
+
+    - 数据收集: **禁用**
+
+    - 版本： **2.76**
+
+    - 自动升级次要版本： **是**
+
+1. 导航到 **az1000303vmss0-实例** 边栏选项卡，启动 **az1000303vmss0_0** 实例的升级。
+
+   > **注**：更新将触发 DSC 配置脚本的应用。等待升级完成。该操作需约 5 分钟。您可以从 az1000303vmss0-实例边栏监控进度。 
+
+1. 升级完成后，导航到 **az1000303vmss0-ip** 边栏选项卡。 
+
+1. 在 **az1000303vmss0-ip** 边栏选项卡上，记下分配给 **az1000303vmss0** 的公共 IP 地址。
+
+1. 启动 Microsoft Edge 并导航到您在上一步中确定的公共 IP 地址。
+
+1. 验证浏览器是否显示默认的 IIS 主页。 
+
+> **结果**：完成本次练习后，您已使用 DSC 扩展为 Azure VM 规模集部署确定了可用的 DNS 名称，部署了 Azure VM 规模集，并在规模集 VM 上安装了 IIS。

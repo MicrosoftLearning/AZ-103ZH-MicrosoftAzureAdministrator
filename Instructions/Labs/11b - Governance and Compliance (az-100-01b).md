@@ -1,133 +1,133 @@
+﻿---
+逻辑阵列模块：
+    标题：‘实施 Azure 计划和资源锁的治理和合规’
+    模块：“管理 Azure 订阅和资源”
 ---
-lab:
-    title: 'Governance and Compliance'
-    module: 'Module 11 - Governance and Compliance'
----
 
-# Lab: Implementing governance and compliance with Azure initiatives and resource locks
+# 逻辑阵列模块：实施 Azure 计划和资源锁的治理和合规
 
-All tasks in this lab are performed from the Azure portal (including a PowerShell Cloud Shell session)  
+本逻辑阵列模块中的所有任务都是从 Azure 门户执行的（包括 PowerShell Cloud Shell 会话）  
 
-   > **Note**: When not using Cloud Shell, the lab virtual machine must have the Azure PowerShell 1.2.0 module (or newer) installed [https://docs.microsoft.com/en-us/powershell/azure/install-az-ps](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps)
+   > **注**：不使用 Cloud Shell 时，逻辑阵列模块虚拟机必须安装 Azure PowerShell 1.2.0 模块（或更新版本） https://docs.Microsoft.com/zh-cn/powershell/ Azure /install-az-ps?view=azps-1.2.0
 
-Lab files: 
+逻辑阵列模块文件： 
 
--  **Labfiles\\Module_11\\Governance_and_Compliance\\AZ-100.1/az-100-01b_azuredeploy.json**
+-  **Allfiles/Labfiles/AZ-100.1/az-100-01b_ Azure deploy.json**
 
--  **Labfiles\\Module_11\\Governance_and_Compliance\\az-100-01b_azuredeploy.parameters.json**
+-  **Allfiles/Labfiles/AZ-100.1/az-100-01b_ Azure deploy.parameters.json**
 
-### Scenario
+### 方案
   
-Adatum Corporation wants to use Azure policies and initiatives in order to enforce resource tagging in its Azure subscription. Once the environment is compliant, Adatum wants to prevent unintended changes by implementing resource locks.
+Adatum Corporation 希望使用 Azure Policy 和计划，以便在其 Azure 订阅中强制执行资源标记。如果环境兼容，Adatum 希望通过执行资源锁来防止意外更改。
 
-### Objectives
+### 目标
   
-After completing this lab, you will be able to:
+完成本逻辑阵列模块后，您将能够：
 
--  Implement Azure tags by using Azure policies and initiatives
+-  使用 Azure Policy 与计划来执行 Azure 标记
 
--  Implement Azure resource locks
-
-
-### Exercise 1: Implement Azure tags by using Azure policies and initiatives
-
-The main tasks for this exercise are as follows:
-
-1. Provision Azure resources by using an Azure Resource Manager template.
-
-1. Implement an initiative and policy that evaluate resource tagging compliance.
-
-1. Implement a policy that enforces resource tagging compliance.
-
-1. Evaluate tagging enforcement and tagging compliance.
-
-1. Implement remediation of resource tagging non-compliance.
-
-1. Evaluate effects of the remediation task on compliance.
+-  执行 Azure 资源锁
 
 
-#### Task 1: Provision Azure resources by using an Azure Resource Manager template.
+### 练习 1：使用 Azure Policy 与计划来执行 Azure 标记
 
-1. From the lab virtual machine, start Microsoft Edge, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using a Microsoft account that has the Owner role in the Azure subscription you intend to use in this lab.
+本次练习的主要任务如下：
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+1. 使用 Azure 资源管理器模板配置 Azure 资源。
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Template deployment**.
+1. 实施评估资源标记合规的计划和策略。
 
-1. Use the list of search results to navigate to the **Custom deployment** blade.
+1. 实施强制执行资源标记合规的策略。
 
-1. On the **Custom deployment** blade, select the **Build your own template in the editor**.
+1. 评估标记强制执行和标记合规。
 
-1. From the **Edit template** blade, load the template file **az-100-01b_azuredeploy.json**. 
+1. 实施资源标记不合规的补救措施。
 
-   > **Note**: Review the content of the template and note that it defines deployment of an Azure VM hosting Windows Server 2016 Datacenter, including tags on some of its resources.
+1. 评估补救任务对合规的影响。
 
-1. Save the template and return to the **Custom deployment** blade. 
 
-1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
+#### 任务 1：使用 Azure 资源管理器模板配置 Azure 资源。
 
-1. From the **Edit parameters** blade, load the parameters file **az-100-01b_azuredeploy.parameters.json**. 
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，在 **http://portal.Azure.com** 上浏览至 Azure 门户，并使用在您计划用于本次逻辑阵列模块的 Azure 订阅中具有“所有者”角色的 Microsoft 帐户进行登录。
 
-1. Save the parameters and return to the **Custom deployment** blade. 
+1. 在 Azure 门户中，请导航到“**新建**”边栏选项卡。
 
-1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
+1. 在“**新建**”边栏选项卡上，在Azure Marketplace 搜索 **模板部署**。
 
-    - Subscription: the name of the subscription you are using in this lab
+1. 请使用搜索结果列表，导航到“**自定义部署**”边栏选项卡。
 
-    - Resource group: the name of a new resource group **az1000101b-RG**
+1. 在“**自定义部署**”边栏选项卡上，请选择“**在编辑器中构建自己的模板**”。
 
-    - Location: the name of the Azure region which is closest to the lab location and where you can provision Azure VMs
+1. 在“**编辑模板**”边栏选项卡上，请加载模板文件 **az-100-01b_azuredeploy.json**。 
 
-    - Vm Size: **Standard_DS1_v2**
+   > **注**：查看模板的内容，并注意其定义了托管 Windows Server 2016 Datacenter 的 Azure VM 的部署，包括其某些资源上的标记。
 
-    - Vm Name: **az1000101b-vm1**
+1. 请保存模板并返回“**自定义部署**”边栏选项卡。 
 
-    - Admin Username: **Student**
+1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数** 边栏选项卡
 
-    - Admin Password: **Pa55w.rd1234**
+1. 在“**编辑参数**”边栏选项卡上，请加载参数文件 **az-100-01b_azuredeploy.parameters.json**。 
 
-    - Virtual Network Name: **az1000101b-vnet1**
+1. 请保存参数并返回“**自定义部署**”边栏选项卡。 
 
-    - Environment Name: **lab**
+1. 从 **自定义部署** 边栏选项卡，使用以下设置启动模板部署：
 
-   > **Note**: To identify Azure regions where you can provision Azure VMs, refer to [**https://azure.microsoft.com/en-us/regions/offers/**](https://azure.microsoft.com/en-us/regions/offers/)
+    - 订阅：在本次逻辑阵列模块中您所使用的订阅名称
 
-   > **Note**: Do not wait for the deployment to complete before you proceed to the next step.
+    - 资源组：新资源组 **az1000101b-RG** 的名称
+
+    - 位置：最靠近逻辑阵列模块位置的 Azure 区域的名称以及可以在其中配置 Azure VM 的位置
+
+    - VM 大小： **Standard_DS1_v2**
+
+    - Vm 名称： **az1000101b-VM1**
+
+    - 管理员用户名：**学生**
+
+    - 管理员密码：**Pa55w.rd1234**
+
+    - 虚拟网络名称： **az1000101b-vnet1**
+
+    - 环境名称： **lab**
+
+   > **注**：如需识别您可以提供 Azure VM 的 Azure 区域，请查阅 **https:// Azure.Microsoft.com/zh-cn/regions/offers/**。
+
+   > **注**：在继续执行下一个步骤前，请勿等待第一台虚拟机预配完成。
    
-1. In the Azure portal, navigate to the **Tags** blade.
+1. 在 Azure 门户中，请导航到“**标记**”边栏选项卡。
 
-1. From the **Tags** blade, display all resources with the **environment** tag set to the value **lab**. Note that only some of the resources deployed in the previous task have this tag assigned.
+1. 在“**标记**”边栏中，显示 **环境** 标记设置为 value **lab** 的所有资源。请注意，仅前一项任务中部署的某些资源才会分配此标记。
 
-   > **Note**: At this point, only some of the resources have been provisioned, however, you should see at least a few without tags assigned to them.
+   > **注**：此时，仅提供了一些资源，但是，您应看到至少有一些资源没有分配标记。
 
 
-#### Task 2: Implement a policy and an initiative that evaluate resource tagging compliance.
+#### 任务 2：实施评估资源标记合规的策略和计划。
 
-1. In the Azure portal, navigate to the **Policy** blade.
+1. 在 Azure 门户中，请导航到“**策略**”边栏选项卡。
 
-1. From the **Policy** blade, navigate to the **Policy - Definitions** blade.
+1. 从“**策略**”边栏选项卡，导航到“**策略-定义**”边栏选项卡。
 
-1. From the **Policy Definitions** blade, display the **Require tag and its value** policy definition.
+1. 从“**策略定义**”边栏选项卡，显示“**强制执行标记及其值策略定义**”。
 
-1. From the **Require tag and its default value** policy definition blade, use the duplicate the definition feature to create a new policy with the following settings:
+1. 从“**强制标记及其值策略定义**”边栏选项卡，使用复制定义功能创建具有以下设置的新策略：
 
-    - Definition location: the name of the subscription you are using in this lab
+    - 定义位置：您在本逻辑阵列模块中使用的订阅的名称
 
-    - Name: **az10001b - Audit tag and its value**
+    - 名称： **az10001b-审核标记及其值**
 
-    - Description: **Audits a required tag and its value. Does not apply to resource groups.**
+    - 描述： **审核所需的标记及其值。不适用于资源组。**
 
-    - Category: the name of a new category **Lab**
+    - 类别：新类别逻辑阵列模块的名称
 
-    - Policy rule: in the existing policy rule, change the **effect** from **deny** to **audit**, such that the policy definition has the following content:
+    - 策略规则：现有策略规则，其 **效果** 设置为 **audit**，因此策略定义包含以下内容：
 
-   ```json
+   ```
    {
-     "mode": "indexed",
-     "policyRule": {
+     "mode": “indexed”,
+     “policyRule”：{
        "if": {
          "not": {
-           "field": "[concat('tags[', parameters('tagName'), ']')]",
+           "field": [concat('tags[', parameters('tagName'), ']')],
            "equals": "[parameters('tagValue')]"
          }
        },
@@ -136,17 +136,17 @@ The main tasks for this exercise are as follows:
        }
      },
      "parameters": {
-       "tagName": {
+       “tagName”: {
          "type": "String",
          "metadata": {
-           "displayName": "Tag Name",
+           displayName: "Tag Name",
            "description": "Name of the tag, such as 'environment'"
          }
        },
-       "tagValue": {
+       tagValue: {
          "type": "String",
          "metadata": {
-           "displayName": "Tag Value",
+           displayName: Tag Value,
            "description": "Value of the tag, such as 'production'"
          }
        }
@@ -154,264 +154,264 @@ The main tasks for this exercise are as follows:
    }
    ```
 
-1. From the **Policy - Definitions** blade, navigate to the **New Initiative definition** blade.
+1. 从“**策略-定义**”边栏选项卡，导航到“**新计划定义**”边栏选项卡。
 
-1. From the **New Initiative definition** blade, create a new initiative definition with the following settings:
+1. 从“**新计划定义**”边栏选项卡，使用以下设置创建新的计划定义：
 
-    - Definition location: the name of the subscription you are using in this lab
+    - 定义位置：您在本逻辑阵列模块中使用的订阅的名称
 
-    - Name: **az10001b - Tagging initiative**
+    - 名称： **az10001b-Tagging initiative**
 
-    - Description: **Collection of tag policies.**
+    - 描述： **标记策略的集合。**
 
-    - Category: **Lab**
+    - 类别： **逻辑阵列模块**
 
-    - AVAILABLE DEFINITIONS: search for and select **az10001b - Audit tag and its value**
+    - 策略和参数： **az10001b-审核标记及其值**
 
-        - Tag Name: **environment**
+        - 标记名称： **environment**
 
-        - Tag Value: **lab**
+        - 标记值： **lab**
 
-1. Navigate to the **Policy - Assignments** blade.
+1. 导航到“**策略-分配**”边栏选项卡。
 
-1. From the **Policy - Assignments** blade, navigate to the **Assign initiative** blade and create a new initative assignment with the following settings:
+1. 从“**策略-分配**”边栏选项卡，导航到“**分配计划**”边栏选项卡，并使用以下设置创建新计划分配：
 
-    - Scope: the name of the subscription you are using in this lab
+    - 范围：在本次逻辑阵列模块中您所使用的订阅名称
 
-    - Exclusions: none 
+    - 排除项：无 
 
-    - Initiative definition: **az10001b - Tagging initiative**
+    - 计划定义： **az10001b-标记计划**
 
-    - Assignment name: **az10001b - Tagging initiative assignment**
+    - 分配名称： **az10001b-标记计划分配**
 
-    - Description: **Assignment of az10001b - Tagging initiative**
+    - 描述： **az10001b-标记计划的分配**
 
-    - Assigned by: the default value
+    - 分配源：默认值
 
-    - Create a Managed Identity: **unchecked**
+    - 创建托管身份： **未选中**
 
-1. Navigate to the **Policy - Compliance** blade. Note that **COMPLIANCE STATE** is set to either **Not registered** or **Not started**.
+1. 导航到“**策略-合规**”边栏选项卡。请注意，“**合规状态**”设置为“**未注册**”或“**未开始**”。
 
-   > **Note**: On average, it takes about 10 minutes for a compliance scan to start. Rather than waiting for the compliance scan, proceed to the next task. You will review the compliance status later in this exercise.
+   > **注**：总体而言，合规扫描开始大约需要 10 分钟。请勿等待合规扫描，而是继续执行下一个任务。您将在本次练习的后面部分查看合规状态。
 
 
-#### Task 3: Implement a policy that enforces resource tagging compliance.
+#### 任务 3：实施强制执行资源标记合规的策略。
 
-1. Navigate to the **Policy - Definitions** blade.
+1. 导航到“**策略-定义**”边栏选项卡。
 
-1. From the **Policy - Definitions** blade, navigate to the **az10001b - Tagging initiative** blade.
+1. 从“**策略-定义**”边栏选项卡，导航到 **az10001b- 标记计划** 边栏选项卡。
 
-1. From the **az10001b - Tagging initiative** blade, navigate to its **Edit initiative definition** blade.
+1. 从 **az10001b-标记计划** 边栏选项卡，导航到它的 **编辑计划定义** 边栏选项卡。
 
-1. Add the built-in policy definition named **Require tag and its value** to the initiative and set its parameters to the following values:
+1. 将名为强制执行标记的内置策略定义及其值添加到计划中，并将其参数设置为以下值：
 
-    - Tag Name: **environment**
+    - 标记名称： **environment**
 
-    - Tag Value: **lab**
+    - 标记值： **lab**
 
-   > **Note**: At this point, your initiative contains two policies. The first of them evaluates the compliance status and the second one enforces tagging during deployment. 
+   > **注**：此时，您的计划包含两项策略。第一个评估合规状态，第二个在部署期间强制执行标记。 
 
 
-#### Task 4: Evaluate tagging enforcement and tagging compliance.
+#### 任务 4：评估标记强制执行和标记合规。
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+1. 在 Azure 门户中，请导航到“**新建**”边栏选项卡。
 
-1. From the **New** blade, search Azure Marketplace for **Template deployment**.
+1. 在“**新建**”边栏选项卡上，在Azure Marketplace 搜索 **模板部署**。
 
-1. Use the list of search results to navigate to the **Custom deployment** blade.
+1. 请使用搜索结果列表，导航到“**自定义部署**”边栏选项卡。
 
-1. On the **Custom deployment** blade, select the **Build your own template in the editor**.
+1. 在“**自定义部署**”边栏选项卡上，请选择“**在编辑器中构建自己的模板**”。
 
-1. From the **Edit template** blade, load the template file **az-100-01b_azuredeploy.json**. 
+1. 在“**编辑模板**”边栏选项卡上，请加载模板文件 **az-100-01b_azuredeploy.json**。 
 
-   > **Note**: This is the same template that you used for deployment in the first task of this exercise. 
+   > **注**：这与您在本次练习的第一个任务中用于部署的模板相同。 
 
-1. Save the template and return to the **Custom deployment** blade. 
+1. 请保存模板并返回“**自定义部署**”边栏选项卡。 
 
-1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
+1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数**边栏选项卡
 
-1. From the **Edit parameters** blade, load the parameters file **az-100-01b_azuredeploy.parameters.json**. 
+1. 在“**编辑参数**”边栏选项卡上，请加载参数文件 **az-100-01b_azuredeploy.parameters.json**。 
 
-1. Save the parameters and return to the **Custom deployment** blade. 
+1. 请保存参数并返回“**自定义部署**”边栏选项卡。 
 
-1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
+1. 从 **自定义部署**边栏选项卡，使用以下设置启动模板部署：
 
-    - Subscription: the name of the subscription you are using in this lab
+    - 订阅：在本次逻辑阵列模块中您所使用的订阅名称
 
-    - Resource group: the name of a new resource group **az1000102b-RG**
+    - 资源组：新资源组 **az1000102b-RG** 的名称
 
-    - Location: the name of the Azure region which you chose in the first task of this exercise
+    - 位置：您在本次练习的第一个任务中选择的 Azure 区域的名称
 
-    - Vm Size: **Standard_DS1_v2**
+    - VM 大小： **Standard_DS1_v2**
 
-    - Vm Name: **az1000102b-vm1**
+    - Vm 名称： **az1000102b-vm1**
 
-    - Admin Username: **Student**
+    - 管理员用户名： **学生**
 
-    - Admin Password: **Pa55w.rd1234**
+    - 管理员密码： **Pa55w.rd1234**
 
-    - Virtual Network Name: **az1000102b-vnet1**
+    - 虚拟网络名称： **az1000102b-vnet1**
 
-    - Environment Name: **lab**
+    - 环境名称： **lab**
 
-   > **Note**: The deployment will fail. This is expected.
+   > **注**：部署将失败。这是正常的。
 
-1. You will be presented with the message indicating validation erors. Review the error details, indicating that deployment of resource **az1000102b-vnet1** was disallowed by the policy **Require tag and its value** which is included in the **az10001b - Tagging initiative assignment**.
+1. 您将看到指示验证错误的消息。查看错误详细信息，指示策略强制执行标记不允许部署资源 **az1000102b-vnet1** 及其值被包括在内 **az10001b-标记计划分配中**。
 
-1. Navigate to the **Policy - Compliance** blade. Identify the entry in the **COMPLIANCE STATE** column.
+1. 导航到“**策略-合规**”边栏选项卡。标识 **合规状态** 列中的条目。
 
-1. Navigate to the **az10001b - Tagging initiative assignment** blade and review the summary of the compliance status.
+1. 导航到 **az10001b-标记计划分配** 边栏选项卡，并查看合规状态摘要。
 
-1. Display the listing of resource compliance and note which resources have been identified as non-compliant. 
+1. 显示资源合规列表，并记录哪些资源已被标识为不合规。 
 
-   > **Note**: You might need to click **Refresh** button on the **Policy - Compliance** blade in order to see the update to the compliance status. 
+   > **注**：您可能需要单击“**策略-合规**”边栏上的“**刷新**”按钮，以查看合规状态的更新。 
 
 
-#### Task 5: Implement remediation of resource tagging non-compliance.
+#### 任务 5：实施资源标记不合规的补救措施。
 
-1. In the Azure portal, navigate to the **az10001b - Tagging initiative** blade.
+1. 在 Azure 门户中，导航到 **az10001b-标记计划** 边栏选项卡。
 
-1. From the **az10001b - Tagging initiative** blade, navigate to its **Edit initiative definition** blade.
+1. 从 **az10001b-标记计划** 边栏选项卡，导航到它的 **编辑计划定义** 边栏选项卡。
 
-1. Add the built-in policy definition named **Append tag and its default value** to the initiative and set its parameters to the following values:
+1. 将名为应用执行标记的内置策略定义及其默认值添加到计划中，并将其参数设置为以下值：
 
-    - Tag Name: **environment**
+    - 标记名称： **environment**
 
-    - Tag Value: **lab**
+    - 标记值： **lab**
 
-1. Delete the custom policy definition named **az10001b - Audit tag and its value** from the initiative.
+1. 删除名为 **az10001b-审核标记的自定义策略定义及其从计划中获取的值**。
 
-1. Delete the built-in policy definition named **Require tag and its value** from the initiative and save the changes.
+1. 从计划中删除名为强制执行标记的内置策略定义及其从计划中获取的值并保存更改。
 
-   > **Note**: At this point, your initiative contains a single policy that automatically remediates tagging non-compliance during deployment of new resources and provides evaluation of compliance status.
+   > **注**：此时，您的计划包含一个策略，可在部署新资源时自动修复标记不合规情况，并提供合规状态评估。
 
-1. From the Azure Portal, start a PowerShell session in the Cloud Shell. 
+1. 在 Azure 门户中，在 Cloud Shell 中启动 PowerShell 会话。 
 
-   > **Note**: If this is the first time you are launching the Cloud Shell in the current Azure subscription, you will be asked to create an Azure file share to persist Cloud Shell files. If so, accept the defaults, which will result in creation of a storage account in an automatically generated resource group.
+   > **注**：如果这是您第一次在当前 Azure 订阅中启动 Cloud Shell，则会要求您创建 Azure 文件共享以保留 Cloud Shell 文件。如果是，接受默认设置，这样会在自动生成的资源组中创建存储帐户。
 
-1. In the Cloud Shell pane, run the following commands.
+1. 在 Cloud Shell 窗格中，运行以下命令。
 
-   ```pwsh
-   Get-AzResource -ResourceGroupName 'az1000101b-RG' | ForEach-Object {Set-AzResource -ResourceId $_.ResourceId -Tag @{environment="lab"} -Force }
+   ```
+   Get-AzResource-ResourceGroupName 'az1000101b-RG' | ForEach-Object {Set-AzResource -ResourceId $_.ResourceId -Tag @{environment="lab"} -Force }
    ```
 
-   > **Note**: These commands assign the **environment** tag with the value **lab** to each resource in the resource group **az1000101b-RG**, overwriting any already assigned tags.
+   > **注**：这些命令将带有 value **lab** 的 **环境** 标记分配给资源组 **az1000101b-RG** 中的每个资源，覆盖任何已分配的标记。
    
-   > **Note**: Wait until the commands successfully complete.   
+   > **注**：等到命令成功完成。   
 
-1. In the Azure portal, navigate to the **Tags** blade.
+1. 在 Azure 门户中，请导航到“**标记**”边栏选项卡。
 
-1. From the **Tags** blade, display all resources with the **environment** tag set to the value **lab**. Verify that all resources in the resource group **az1000101b-RG** are listed.
-
-
-#### Task 6: Evaluate effects of the remediation task on compliance.
-
-1. In the Azure portal, navigate to the **Create a resource** blade.
-
-1. From the **New** blade, search Azure Marketplace for **Template deployment**.
-
-1. Use the list of search results to navigate to the **Custom deployment** blade.
-
-1. On the **Custom deployment** blade, select the **Build your own template in the editor**.
-
-1. From the **Edit template** blade, load the template file **az-100-01b_azuredeploy.json**. 
-
-   > **Note**: This is the same template that you used for deployment in the first task of this exercise. 
-
-1. Save the template and return to the **Custom deployment** blade. 
-
-1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
-
-1. From the **Edit parameters** blade, load the parameters file **az-100-01b_azuredeploy.parameters.json**. 
-
-1. Save the parameters and return to the **Custom deployment** blade. 
-
-1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
-
-    - Subscription: the name of the subscription you are using in this lab
-
-    - Resource group: **az1000102b-RG**
-
-    - Location: the name of the Azure region which you chose in the first task of this exercise
-
-    - Vm Size: **Standard_DS1_v2**
-
-    - Vm Name: **az1000102b-vm1**
-
-    - Admin Username: **Student**
-
-    - Admin Password: **Pa55w.rd1234**
-
-    - Virtual Network Name: **az1000102b-vnet1**
-
-    - Environment Name: **lab**
-
-   > **Note**: The deployment will succeed this time. This is expected.
-
-   > **Note**: Do not wait for the deployment to complete before you proceed to the next step. 
-
-1. In the Azure portal, navigate to the **Tags** blade.
-
-1. From the **Tags** blade, display all resources with the **environment** tag set to the value **lab**. Note that all the resources deployed to the resource group **az1000102b-RG** have this tag with the same value automatically assigned.
-
-   > **Note**: At this point, only some of the resources have been provisioned, however, you should see that all of them have tags assigned to them.
-
-1. Navigate to the **Policy - Compliance** blade. Identify the entry in the **COMPLIANCE STATE** column.
-
-1. Navigate to the **az10001b - Tagging initiative assignment** blade. Identify the entry in the **COMPLIANCE STATE** column. If the column contains the **Not started** entry, wait until it the compliance scan runs. 
-
-   > **Note**: You might need to wait for up to 10 minutes and click **Refresh** button on the **Policy - Compliance** blade in order to see the update to the compliance status. 
-
-   > **Note**: Do not wait until the status is listed as compliant but instead proceed to the next exercise. 
-
-> **Result**: After you completed this exercise, you have implemented an initiative and policies that evaluate, enforce, and remediate resource tagging compliance. You also evaluated the effects of policy assignment. 
+1. 在“**标记**”边栏中，显示 **环境** 标记设置为 value **lab** 的所有资源。验证是否列出了资源组 **az1000101b-RG** 中的所有资源。
 
 
-### Exercise 2: Implement Azure resource locks
+#### 任务 6：评估补救任务对合规的影响。
+
+1. 在 Azure 门户中，请导航到“**新建**”边栏选项卡。
+
+1. 在“**新建**”边栏选项卡上，在Azure Marketplace 搜索 **模板部署**。
+
+1. 请使用搜索结果列表，导航到“**自定义部署**”边栏选项卡。
+
+1. 在“**自定义部署**”边栏选项卡上，请选择“**在编辑器中构建自己的模板**”。
+
+1. 在“**编辑模板**”边栏选项卡上，请加载模板文件 **az-100-01b_azuredeploy.json**。 
+
+   > **注**：这与您在本次练习的第一个任务中用于部署的模板相同。 
+
+1. 请保存模板并返回“**自定义部署**”边栏选项卡。 
+
+1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数** 边栏选项卡
+
+1. 在“**编辑参数**”边栏选项卡上，请加载参数文件 **az-100-01b_azuredeploy.parameters.json**。 
+
+1. 请保存参数并返回“**自定义部署**”边栏选项卡。 
+
+1. 从 **自定义部署** 边栏选项卡，使用以下设置启动模板部署：
+
+    - 订阅：在本次逻辑阵列模块中您所使用的订阅名称
+
+    - 资源组： **az1000102b-RG**
+
+    - 位置：您在本次练习的第一个任务中选择的 Azure 区域的名称
+
+    - VM 大小： **Standard_DS1_v2**
+
+    - Vm 名称： **az1000102b-vm1**
+
+    - 管理员用户名： **学生**
+
+    - 管理员密码： **Pa55w.rd1234**
+
+    - 虚拟网络名称： **az1000102b-vnet1**
+
+    - 环境名称： **lab**
+
+   > **注**：此次部署将成功。这是正常的。
+
+   > **注**：在继续执行下一个步骤前，请勿等待第一台虚拟机预配完成。 
+
+1. 在 Azure 门户中，请导航到“标记”边栏选项卡。
+
+1. 在“**标记**”边栏中，显示 **环境** 标记设置为 value **lab** 的所有资源。请注意，部署到资源组 **az1000102b-RG** 的所有资源均具有自动分配的相同值的该标记。
+
+   > **注**：此时，仅提供了一些资源，但是，您应看到所有资源均分配有标记。
+
+1. 导航到“**策略-合规**”边栏选项卡。标识合规状态列中的条目。
+
+1. 导航到 **az10001b-标记计划分配** 边栏选项卡。标识合规状态列中的条目。如果该列包含“**未启动**”条目，请等待合规扫描运行。 
+
+   > **注**：您可能需要等待最多 10 分钟，然后单击“**策略-合规**”边栏上的“**刷新**”按钮，查看合规状态的更新。 
+
+   > **注**：不要等到状态列为合规，而是继续进行下一项练习。 
+
+> 结果：完成本次练习后，您已实施评估、强制执行和修复资源标记合规的一项计划和策略。另外，您还评估了策略分配的效果。 
+
+
+### 练习 2：执行 Azure 资源锁
   
-The main tasks for this exercise are as follows:
+本次练习的主要任务如下：
 
-1. Create resource group-level locks to prevent accidental changes
+1. 创建资源组级锁，以防止意外更改
 
-1. Validate functionality of the resource group-level locks
-
-
-#### Task 1: Create resource group-level locks to prevent accidental changes
-
-1. In the Azure portal, navigate to the **az1000101b-RG** resource group blade.
-
-1. From the **az1000101b-RG** resource group blade, display the **az1000101b-RG - Locks** blade.
-
-1. From the **az1000101b-RG - Locks** blade, add a lock with the following settings:
-
-    - Lock name: **az1000101b-roLock**
-
-    - Lock type: **Read-only**
+1. 验证资源组级锁的功能
 
 
-#### Task 2: Validate functionality of the resource group-level locks
+#### 任务 1：创建资源组级锁，以防止意外更改
 
-1. In the Azure portal, navigate to the **az1000102b-vm1** virtual machine blade.
+1. 在 Azure 门户中，导航到 **az1000101b-RG** 资源组边栏选项卡。
 
-1. From the **az1000102b-vm1** virtual machine blade, navigate to the **az1000102b-vm1 - Tags** blade.
+1. 从 **az1000101b-RG** 资源组边栏选项卡，显示 **az1000101b-RG-锁边** 栏选项卡。
 
-1. Try setting the value of the **environment** tag to **dev**. Note that the operation is successful. 
+1. 从 **az1000101b-RG-锁边** 栏选项卡，使用以下设置添加锁：
 
-1. In the Azure portal, navigate to the **az1000101b-vm1** virtual machine blade.
+    - 锁名称： **az1000101b-roLock**
 
-1. From the **az1000101b-vm1** virtual machine blade, navigate to the **az1000101b-vm1 - Tags** blade.
-
-1. Try setting the value of the **environment** tag to **dev**. Note that this time the operation fails. The resulting error message indicates that the resource refused tag assignment, with resource lock being the likely reason.
-
-1. Navigate to the blade of the storage account created in the **az1000101b-RG - Locks** resource group. 
-
-1. From the storage account blade, navigate to its **Access keys** blade. Note the resulting error message stating that you cannot access the data plane because a read lock on the resource or its parent.
-
-1. In the Azure portal, navigate to the **az1000101b-RG** resource group blade.
-
-1. From the **az1000101b-RG** resource group blade, navigate to its **Tags** blade.
-
-1. From the **Tags** blade, attempt assigning the **environment** tag with the value **lab** to the resource group and note the error message.
+    - 锁类型： **Read-only**
 
 
-> **Result**: After you completed this exercise, you have created a resource group-level lock to prevent accidental changes and validated its functionality. 
+#### 任务 2：验证资源组级锁的功能
+
+1. 在 Azure 门户中，导航到 **az1000102b-VM1** 虚拟机边栏选项卡。
+
+1. 从 **az1000102b-VM1** 虚拟机边栏选项卡，导航到 **az1000102b-vm1-标记** 边栏选项卡。
+
+1. 尝试将 **环境** 标记的值设置为 **dev**。请注意，操作成功。 
+
+1. 在 Azure 门户中，导航到 az1000101b-vm1 虚拟机边栏选项卡。
+
+1. 从 **az1000101b-vm1** 虚拟机边栏选项卡，导航到 **az1000101b-vm1-标记** 边栏选项卡。
+
+1. 尝试将 **环境** 标记的值设置为 **dev**。请注意，此时操作失败。生成的错误消息指示资源拒绝标记分配，而可能原因是资源锁。
+
+1. 导航到 **az1000101b-RG-锁资** 源组中创建的存储帐户的边栏选项卡。 
+
+1. 从存储帐户边栏选项卡，导航到其 **访问密钥** 边栏选项卡。请注意由此产生的错误消息，指出您无法访问数据层，因为资源或其父级资源上的读锁。
+
+1. 在 Azure 门户中，导航到 **az1000101b-RG** 资源组边栏选项卡。
+
+1. 从 **az1000101b-RG** 资源组边栏选项卡，导航到其 **标记** 边栏选项卡。
+
+1. 从 **标记** 边栏选项卡，尝试将带 value **lab** 的**环境** 标记分配给资源组，并记录错误消息。
+
+
+> **结果**：完成此练习后，您已创建资源组级锁以防止意外更改并验证其功能。 

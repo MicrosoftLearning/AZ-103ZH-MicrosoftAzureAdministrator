@@ -1,347 +1,343 @@
+﻿---
+逻辑阵列模块：
+    标题：'VNet 对等和服务链'
+    模块：创建和管理虚拟机网络
 ---
-lab:
-    title: 'VNet Peering and Service Chaining'
-    module: 'Module 05 - Intersite Connectivity'
----
 
-# Lab: VNet Peering and Service Chaining
+# 逻辑阵列模块：VNet 对等和服务链
   
-All tasks in this lab are performed from the Azure portal except for Exercise 2 Task 3, Exercise 3 Task 1, and Exercise 3 Task 2, which include steps performed from a Remote Desktop session to an Azure VM
+本次练习中的所有任务都是从 Azure 门户执行的，但练习 2 任务 3，练习 3 任务 1 和练习 3 任务 2 除外，其中包括从远程桌面会话到 Azure VM 执行的步骤
 
-Lab files: 
+逻辑阵列模块文件： 
 
--  **Labfiles\\Module_05\VNet_Peering_and_Service_Chaining\\az-100-04_01_azuredeploy.json**
+-  **Labfiles\\AZ100\\Mod04\\az-100-04_01_azuredeploy.json**
 
--  **Labfiles\\Module_05\VNet_Peering_and_Service_Chaining\\az-100-04_02_azuredeploy.json**
+-  **Labfiles\\AZ100\\Mod04\\az-100-04_02_azuredeploy.json**
 
--  **Labfiles\\Module_05\VNet_Peering_and_Service_Chaining\\az-100-04_azuredeploy.parameters.json**
+-  **Labfiles\\AZ100\\Mod04\\az-100-04_azuredeploy.parameters.json**
 
-### Scenario
+### 方案
   
-Adatum Corporation wants to implement service chaining between Azure virtual networks in its Azure subscription. 
+Adatum Corporation 希望在 Azure 订阅中实现 Azure 虚拟网络之间的服务链接。 
 
 
-### Objectives
+### 目标
   
-After completing this lab, you will be able to:
+完成本逻辑阵列模块后，您将能够：
 
-- Create Azure virtual networks and deploy Azure VM by using Azure Resource Manager templates.
+- 使用 Azure 资源管理器模板创建 Azure 虚拟网络并部署 Azure VM。
 
-- Configure VNet peering.
+- 配置 VNet 对等
 
-- Implement custom routing
+- 实现自定义路由
 
-- Validate service chaining
+- 验证服务链
 
 
-### Exercise 0: Prepare the Azure environment
+### 练习 0：准备 Azure 环境
   
-The main tasks for this exercise are as follows:
+本次练习的主要任务如下：
 
-1. Create the first virtual network hosting two Azure VMs by using an Azure Resource Manager template
+1. 使用 Azure 资源管理器模板创建托管两个 Azure VM 的第一个虚拟网络
 
-1. Create the second virtual network in the same region hosting a single Azure VM by using an Azure Resource Manager template
+1. 使用 Azure 资源管理器模板在托管单个 Azure VM 的同一区域中创建第二个虚拟网络
 
-#### Task 1: Create the first virtual network hosting two Azure VMs by using an Azure Resource Manager template
+#### 任务 1：使用 Azure 资源管理器模板创建托管两个 Azure VM 的第一个虚拟网络
 
-1. From the lab virtual machine, start Microsoft Edge, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using a Microsoft account that has the Owner role in the Azure subscription you intend to use in this lab.
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，浏览到 Azure 门户 [**HTTP：//portal.azure.com**](http://portal.azure.com) 并使用在您打算在本逻辑阵列模块中使用的 Azure 订阅中的具有所有者角色的 Microsoft 帐户登录。
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Template deployment**.
+1. 从创建资源边栏选项卡中搜索 Azure Marketplace 中的 **模板部署**。
 
-1. Use the list of search results to navigate to the **Template deployment (deploy using custom templates)** blade, and then click **Create**.
+1. 使用搜索结果列表导航到 **部署自定义模板** 边栏选项卡。
 
-1. On the **Custom deployment** blade, click the **Build your own template in the editor** link. If you do not see this link, click **Edit template** instead.
+1. 在 **自定义部署** 边栏选项卡，请选择在编辑器中构 **建自己的模板**。
 
-1. From the **Edit template** blade, load the template file **Labfiles\\Module_05\VNet_Peering_and_Service_Chaining\\az-100-04_01_azuredeploy.json**. 
+1. 从 **编辑模板** 边栏选项卡，加载模板文件 **Labfiles\\ AZ100 \\ Mod04\\az-100-04_01_azuredeploy.json**。 
 
-   > **Note**: Review the content of the template and note that it defines deployment of an Azure VM hosting Windows Server 2016 Datacenter.
+   > **注**：查看模板的内容，并注意其定义了托管 Windows Server 2016 Datacenter 的 Azure VM 的部署。
 
-1. Save the template and return to the **Custom deployment** blade. 
+1. 保存模板并返回 **自定义部署** 边栏选项卡。 
 
-1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
+1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数** 边栏选项卡。
 
-1. From the **Edit parameters** blade, load the parameters file **Labfiles\\Module_05\VNet_Peering_and_Service_Chaining\\az-100-04_azuredeploy.parameters.json**. 
+1. 从 **编辑参数** 边栏选项卡，加载参数文件 **Labfiles\\AZ100\\Mod04\\az-100-04_azuredeploy.parameters.json**。 
 
-1. Save the parameters and return to the **Custom deployment** blade. 
+1. 保存参数并返回 **自定义部署** 边栏选项卡。 
 
-1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
+1. 从 **自定义部署** 边栏选项卡，使用以下设置启动模板部署：
 
-    - Subscription: the name of the subscription you are using in this lab
+    - 订阅：您希望用于本逻辑阵列模块的订阅名称
 
-    - Resource group: the name of a new resource group **az1000401-RG**
+    - 资源组：新资源组 **az1000401-RG** 的名称
 
-    - Location: the name of the Azure region which is closest to the lab location and where you can provision Azure VMs
+    - 位置：最靠近逻辑阵列模块位置的 Azure 区域的名称以及可以在其中配置 Azure VM 的位置
 
-    - Vm Size: **Standard_DS2_v2**
+    - VM 大小： **Standard_DS1_v2**
 
-    - Vm1Name: **az1000401-vm1**
+    - Vm1 名称： **az1000401-VM1**
 
-    - Vm2Name: **az1000401-vm2**
+    - Vm2 名称： **az1000401-VM2**
 
-    - Admin Username: **Student**
+    - 管理员用户名： **学生**
 
-    - Admin Password: **Pa55w.rd1234**
+    - 管理员密码： **Pa55w.rd1234**
 
-    - Virtual Network Name: **az1000401-vnet1**
+    - 虚拟网络名称： **az1000401-vnet1**
 
-   > **Note**: To identify Azure regions where you can provision Azure VMs, refer to [**https://azure.microsoft.com/en-us/regions/offers/**](https://azure.microsoft.com/en-us/regions/offers/)
+   > **注**：要标识可以配置 Azure VM 的 Azure 区域，请参阅 [**https://azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)
 
-   > **Note**: Do not wait for the deployment to complete but proceed to the next task. You will use the network and the virtual machines included in this deployment in the second exercise of this lab.
-
-
-#### Task 2: Create the second virtual network in the same region hosting a single Azure VM by using an Azure Resource Manager template
-
-1. In the Azure portal, navigate to the **Create a resource** blade.
-
-1. From the **Create a resource** blade, search Azure Marketplace for **Template deployment**.
-
-1. Use the list of search results and select the **Template deployment (deploy using custom templates)** result, and then click **Create**.
-
-1. On the **Custom deployment** blade, click the **Build your own template in the editor** link. If you do not see this link, click **Edit template** instead.
-
-1. From the **Edit template** blade, load the template file **Labfiles\\Module_05\VNet_Peering_and_Service_Chaining\\az-100-04_02_azuredeploy.json**. 
-
-   > **Note**: Review the content of the template and note that it defines deployment of an Azure VM hosting Windows Server 2016 Datacenter.
-
-1. Save the template and return to the **Custom deployment** blade. 
-
-1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
-
-1. From the **Edit parameters** blade, load the parameters file **Labfiles\\Module_05\VNet_Peering_and_Service_Chaining\\az-100-04_azuredeploy.parameters.json**. 
-
-1. Save the parameters and return to the **Custom deployment** blade. 
-
-1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
-
-    - Subscription: the name of the subscription you are using in this lab
-
-    - Resource group: the name of a new resource group **az1000402-RG**
-
-    - Location: the name of the Azure region which you selected in the previous task
-
-    - Vm Size: **Standard_DS2_v2**
-
-    - VmName: **az1000402-vm3**
-
-    - Admin Username: **Student**
-
-    - Admin Password: **Pa55w.rd1234**
-
-    - Virtual Network Name: **az1000402-vnet2**
-
-   > **Note**: Do not wait for the deployment to complete but proceed to the next task. You will use the network and the virtual machines included in this deployment in the second exercise of this lab.
-
-> **Result**: After you completed this exercise, you have created two Azure virtual networks and initiated deployments of three Azure VM by using Azure Resource Manager templates.
+   > **注**：请勿等待第一台虚拟机预配完成，请继续进行下一个任务在本次练习的第二个练习中，您将使用此部署中包含的网络和虚拟机。
 
 
-### Exercise 1: Configure VNet peering 
+#### 任务 2：使用 Azure 资源管理器模板在托管单个 Azure VM 的同一区域中创建第二个虚拟网络
 
-The main tasks for this exercise are as follows:
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. Configure VNet peering for the first virtual network
+1. 从 **创建资源** 边栏选项卡中搜索 Azure Marketplace 中的 **模板部署**。
 
-1. Configure VNet peering for the second virtual network
+1. 使用搜索结果列表导航到 **部署自定义模板** 边栏选项卡。
+
+1. 在 **自定义部署** 边栏选项卡，请选择在编辑器中构 **建自己的模板**。
+
+1. 从 **编辑模板** 边栏选项卡，加载模板文件 **Labfiles\\AZ100\\Mod04\\az-100-04_02_azuredeploy.json** 
+
+   > **注**：查看模板的内容，并注意其定义了托管 Windows Server 2016 Datacenter 的 Azure VM 的部署。
+
+1. 保存模板并返回 **自定义部署** 边栏选项卡。 
+
+1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数** 边栏选项卡。
+
+1. 从 **编辑参数** 边栏选项卡，加载参数文件 **Labfiles\\AZ100\\Mod04\\az-100-04_azuredeploy.parameters.json**。 
+
+1. 保存参数并返回 **自定义部署** 边栏选项卡。 
+
+1. 从 **自定义部署** 边栏选项卡，使用以下设置启动模板部署：
+
+    - 订阅：您希望用于本逻辑阵列模块的订阅名称
+
+    - 资源组：新资源组的名称 **az1000402-RG**
+
+    - 位置：您在上一个任务中选择的 Azure 区域的名称
+
+    - VM 大小： **Standard_DS1_v2**
+
+    - 虚拟机名称： **az1000402-VM3**
+
+    - 管理员用户名： **学生**
+
+    - 管理员密码： **Pa55w.rd1234**
+
+    - 虚拟网络名称： **az1000402-vnet2**
+
+   > **注**： 请勿等待第一台虚拟机预配完成，请继续进行下一个任务在本次练习的第二个练习中，您将使用此部署中包含的网络和虚拟机。
+
+> **结果**： 完成此练习后，您已使用 Azure 资源管理器模板创建了两个 Azure 虚拟网络并启动了三个 Azure VM 的部署。
 
 
-#### Task 1: Configure VNet peering for the first virtual network
+### 练习 1：配置 VNet 对等 
+
+本次练习的主要任务如下：
+
+1. 为第一个虚拟网络配置 VNet 对等
+
+1. 为第二个虚拟网络配置 VNet 对等
+
+
+#### 任务 1：为第一个虚拟网络配置 VNet 对等
   
-1. In the Azure portal, navigate to the **az1000401-vnet1** virtual network blade.
+1. 在 Azure 门户，导航到 **az1000401-vnet1** 虚拟网络边栏选项卡。
 
-1. From the **az1000401-vnet1** virtual network blade, display its **Peerings** blade.
+1. 从 **az1000401，vnet1** 虚拟网络边栏选项卡，显示它 **Peerings** 边栏选项卡。
 
-1. From the **az1000401-vnet1 - Peerings** blade, click **+ Add** to create a VNet peering with the following settings:
+1. 从 **az1000401-vnet1  -  Peerings** 边栏选项卡，使用以下设置创建 VNet 对等：
 
-    - Name: **az1000401-vnet1-to-az1000402-vnet2**
+    - 名称： **az1000401-vnet1 到 az1000402-vnet2**
 
-    - Virtual network deployment model: **Resource manager**
+    - 虚拟网络部署模型：**资源管理器**
 
-    - Subscription: the name of the Azure subscription you are using in this lab
+    - 订阅：您希望用于本逻辑阵列模块的 Azure 订阅名称。
 
-    - Virtual network: **az1000402-vnet2**
+    - 虚拟网络： **az1000402-vnet2**
 
-    - Name of peering from az1000402-vnet2 to az1000401-vnet1: **az1000402-vnet2-to-az1000401-vnet1**
+    - 允许虚拟网络访问：**启用**
 
-    - Allow virtual network access: **Enabled**
+    - 允许转发流量：禁用
 
-    - Allow forwarded traffic: **disabled**
+    - 允许网关中转：禁用
 
-    - Allow gateway transit: **disabled**
-
-> **Note**: Because you have administrative access to both virtual networks, the portal is configuring both directions (from vnet1 to vnet2, AND vnet2 to vnet1) in a single action. From the CLI, PowerShell, or REST API, these tasks must be performed independently. 
+    - 使用远程网关：禁用
 
 
-### Exercise 2: Implement custom routing
+#### 任务 2：为第二个虚拟网络配置 VNet 对等
   
-The main tasks for this exercise are as follows:
+1. 在 Azure 门户，导航到 **az1000402-vnet2** 虚拟网络边栏选项卡。
 
-1. Enable IP forwarding for a network interface of an Azure VM
+1. 从 **az1000402，vnet2** 虚拟网络边栏选项卡，显示它 **Peerings** 边栏选项卡。
 
-1. Configure user defined routing 
+1. 从 **az1000402-vnet2  -  Peerings** 边栏选项卡，使用以下设置创建 VNet 对等：
 
-1. Configure routing in an Azure VM running Windows Server 2016
+    - 名称： **az1000402-vnet2-to-az1000401-vnet1**
+
+    - 虚拟网络部署模型：**资源管理器**
+
+    - 订阅：您希望用于本逻辑阵列模块的 Azure 订阅名称。
+
+    - 虚拟网络： **az1000401-vnet1**
+
+    - 允许虚拟网络访问： **启用**
+
+    - 允许转发流量：禁用
+
+    - 允许网关中转：禁用
+
+    - 使用远程网关：禁用
+
+> **结果**：完成本次练习后，您已在两个虚拟网络之间配置了虚拟网络对等。
 
 
-#### Task 1: Enable IP forwarding for a network interface of an Azure VM
+### 练习 2：实现自定义路由
   
-   > **Note**: Before you start this task, ensure that the template deployments you started in Exercise 0 have completed. 
+本次练习的主要任务如下：
 
-1. In the Azure portal, navigate to the blade of the second Azure VM **az1000401-vm2**.
+1. 为 Azure VM 的网络接口启用 IP 转发
 
-1. From the **az1000401-vm2** blade, display its **Networking** blade. 
+1. 配置用户定义的路由 
 
-1. From the **az1000401-vm2 - Networking** blade, display the blade of the network adapter (**az1000401-nic2**) of the Azure VM.
-
-1. From the **az1000401-nic2** blade, display its **IP configurations** blade.
-
-1. From the **az1000401-nic2 - IP configurations** set IP forwarding to **Enabled**, and then click **Save**.
-
-   > **Note**: The Azure VM **az1000401-vm2**, which network interface you configured in this task, will function as a router, facilitating service chaining between the two virtual networks.
+1. 在运行 Windows Server 2016 的 Azure VM 中配置路由
 
 
-#### Task 2: Configure user defined routing 
-
-1. In the Azure portal, navigate to the **Create a resource** blade.
-
-1. From the **Create a resource** blade, search Azure Marketplace for **Route table**.
-
-1. Select **Route table**, and then click **Create**.
-
-1. From the **Create route table** blade, create a new route table with the following settings:
-
-    - Name: **az1000402-rt1**
-
-    - Subscription: the name of the Azure subscription you use for this lab
-
-    - Resource group: **az1000402-RG**
-
-    - Location: the same Azure region in which you created the virtual networks
+#### 任务 1：为 Azure VM 的网络接口启用 IP 转发
   
-    - Virtual network gateway route propagation: **Disabled**
+   > **注**： 在开始此任务之前，请确保您在练习 0 中开始的模板部署已完成。 
 
-1. In the Azure portal, navigate to the **az1000402-rt1** blade.
+1. 在 Azure 门户中，导航到第二个 Azure VM 的边栏选项卡 **az1000401-VM2**。
 
-1. From the **az1000402-rt1** blade, display its **Routes** blade. 
+1. 从 **az1000401-VM2** 边栏选项卡，展示它 **联网** 边栏选项卡。 
 
-1. From the **az1000402-rt1 - Routes** blade, add to the route table a route with the following settings: 
+1. 从 **az1000401-vm2  - 网络** 边栏选项卡，显示 Azure VM 的网络适配器（**az1000401-nic2**）的边栏选项卡。
 
-    - Route name: **custom-route-to-az1000401-vnet1**
+1. 从 **az1000401-NIC2** 边栏选项卡，展示它 **IP 配置** 边栏选项卡。
 
-    - Address prefix: **10.104.0.0/16**
+1. 从 **az1000401-nic2  -  IP 配置** 边栏选项卡，启用 **IP 转发**。
 
-    - Next hop type: **Virtual appliance**
-
-    - Next hop address: **10.104.1.4**
-
-   > **Note**: **10.104.1.4** is the IP address of the network interface of **az1000401-vm2**, which will provide service chaining between the two virtual networks.
-
-1. From the **az1000402-rt1** blade, display its **Subnets** blade. 
-
-1. From the **az1000402-rt1 - Subnets** blade, associate the route table **az1000402-rt1** with **subnet0** of **az1000402-vnet2**.
+   > **注**：Azure VM **az1000401-vm2** （您在此任务中配置的网络接口）将充当路由器，从而促进两个虚拟网络之间的服务链接。
 
 
-#### Task 3: Configure routing in an Azure VM running Windows Server 2016
+#### 任务 2：配置用户定义的路由 
 
-1. In the Azure portal, navigate to the blade of the **az1000401-vm2** Azure VM. 
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. From the **Overview** pane of the **az1000401-vm2** blade, generate an RDP file and use it to connect to **az1000401-vm2**.
+1. 从 **创建资源** 边栏选项看，在 Azure Marketplace 搜索 **路线表**。
 
-1. When prompted, authenticate by specifying the following credentials:
+1. 使用搜索结果列表导航到 **创建路由表** 边栏选项卡。
 
-    - User name: **Student**
+1. 在 **创建路由表** 边栏选项卡中，使用以下设置创建新的路由表：
 
-    - Password: **Pa55w.rd1234**
+    - 名称： **az1000402-rt1**
 
-1. Within the Remote Desktop session to **az1000401-vm2**, from **Server Manager**, select **Manage**  use the **Add Roles and Features Wizard** 
-1. Click **Next** twice, ensure **az1000401-vm2** is selected and click **Next**,  select the **Remote Access** server role then click **Next** three times, Select the **Routing** role service, select **Add Features**  and all required features. Select **Next** three times, click **Install**. Click **Close** when the installation is complete.
+    - 订阅：您希望用于本逻辑阵列模块的订阅名称
 
-   > **Note**: If you receive an error message **There may be a version mismatch between this computer and the destination server or VHD** once you select the **Remote Access**  checkbox on the **Server Roles** page of the **Add Roles and Features Wizard**, clear the checkbox, click **Next**, click **Previous** and select the **Remote Access**  checkbox again.
+    - 资源组： **az1000402-RG**
 
-1. Within the Remote Desktop session to **az1000401-vm2**, from Server Manager, select **Tools** start the **Routing and Remote Access** console. 
-
-1. In the **Routing and Remote Access** console, right click on the server name and select **Configure and Enable Routing and Remote Access**, Select **Next** use the **Custom configuration** then **Next**, enable **LAN routing** then **Next**, click **Finish** and the click **Start Service**.
-
-1. Within the Remote Desktop session to **az1000401-vm2**, start the **Windows Firewall with Advanced Security** console and enable **File and Printer Sharing (Echo Request - ICMPv4-In)** inbound rule for all profiles.
-
-> **Result**: After completing this exercise, you have implemented custom routing between peered Azure virtual networks. 
-
-
-### Exercise 3: Validating service chaining
-
-The main tasks for this exercise are as follows:
-
-1. Configure Windows Firewall with Advanced Security on the target Azure VM
-
-1. Test service chaining between peered virtual networks
-
-
-#### Task 1: Configure Windows Firewall with Advanced Security on the target Azure VM
-
-1. In the Azure portal, navigate to the blade of the **az1000401-vm1** Azure VM. 
-
-1. From the **Overview** pane of the **az1000401-vm1** blade, generate an RDP file and use it to connect to **az1000401-vm1**.
-
-1. When prompted, authenticate by specifying the following credentials:
-
-    - User name: **Student**
-
-    - Password: **Pa55w.rd1234**
-
-1. Within the Remote Desktop session to **az1000401-vm1**, open the **Windows Firewall with Advanced Security** console and enable **File and Printer Sharing (Echo Request - ICMPv4-In)** inbound rule for all profiles.
-
-
-#### Task 2: Test service chaining between peered virtual networks
+    - 位置：您在其中创建虚拟网络的 Azure 区域
   
-1. In the Azure portal, navigate to the blade of the **az1000402-vm3** Azure VM. 
+    - BGP 路由传播： **禁用**
 
-1. From the **Overview** pane of the **az1000402-vm3** blade, generate an RDP file and use it to connect to **az1000402-vm3**.
+1. 在 Azure 门户中，导航到 **az1000402-RT1** 边栏选项卡。
 
-1. When prompted, authenticate by specifying the following credentials:
+1. 从 **az1000402-RT1**，展示它 **路线** 边栏选项卡。 
 
-    - User name: **Student**
+1. 在 **az1000402-rt1  - 路线** 边栏选项卡，使用以下设置添加到路由表中的路由： 
 
-    - Password: **Pa55w.rd1234**
+    - 路线名称： **自定义路径 - az1000401，vnet1**
 
-1. Once you are connected to **az1-1000402-vm3** via the Remote Desktop session, start **Windows PowerShell**.
+    - 地址前缀： **10.104.0.0/16**
 
-1. In the **Windows PowerShell** window, run the following:
+    - 下一跳地址类型： **虚拟设备**
 
-   ```pwsh
+    - 下一跳地址： **10.104.1.4**
+
+   > **注**： **10.104.1.4** 是网络接口的 IP 地址 **az1000401-VM2**，它将提供两个虚拟网络之间的服务链。
+
+1. 在 **az1000402-RT1** 边栏选项卡中，展示它 **子网** 边栏选项卡。 
+
+1. 在 **az1000402-rt1 - 子网** 边栏选项卡中，关联路由表 **az1000402-RT1** 同 **subnet0** 的 **az1000402-vnet2**。
+
+
+#### 任务 3：在运行 Windows Server 2016 的 Azure VM 中配置路由
+
+1. 在 Azure 门户中，导航到 **az1000401-VM2** Azure VM 边栏选项卡。 
+
+1. 在 **概观** 窗格 **az1000401-VM2** 边栏选项卡自己拍美国，生成 RDP 文件并使用它连接 **az1000401-VM2**。
+
+1. 出现提示时，通过指定以下凭据进行身份验证：
+
+    - 用户名称： **学生**
+
+    - 密码： **Pa55w.rd1234**
+
+1. 在与 **服务器管理器** 的 **az1000401-vm2** 的远程桌面会话中，使用 **添加角色和功能向导** 添加具有 **路由** 角色服务和所有必需功能的 **远程访问** 服务器角色。。 
+
+   > **注**：如果收到错误消息在 **添加角色和功能向导** 的 **服务器角色** 页面上选中 **远程访问** 复选框后，**此计算机与目标服务器或 VHD 之间可能存在版本不匹配**，请清除该复选框，单击 **下一步**，然后单击 **上一步**。 然后再次选择 **远程访问** 复选框。
+
+1. 在与服务器管理器的 **az1000401-vm2** 的远程桌面会话中，启动 **路由和远程访问** 控制台。 
+
+1. 在 **路由和远程访问** 控制台中，运行 **路由和远程访问服务器安装向导**，使用 **自定义配置** 选项，启用 ** LAN 路由**，然后启动 **路由和远程访问** 服务。
+
+1. 在与 **az1000401-vm2** 的远程桌面会话中，启动具有高级安全性的 **Windows 防火墙控制台**，并为所有个人资料启用 **文件和打印机共享（回显请求 -  ICMPv4-In）** 入站规则。
+
+> **结果**：完成此练习后，您已在对等 Azure 虚拟网络之间实现自定义路由。 
+
+
+### 练习 3：验证服务链
+
+本次练习的主要任务如下：
+
+1. 在目标 Azure VM 上配置具有高级安全性的 Windows 防火墙
+
+1. 在对等虚拟网络之间进行测试服务链接
+
+
+#### 任务 1：在目标 Azure VM 上配置具有高级安全性的 Windows 防火墙
+
+1. 在 Azure 门户中，导航到 **az1000401-VM1** Azure VM 的边栏选项卡。 
+
+1. 来自  **az1000401-VM1** 边栏选项卡的 **概观** 窗格，生成 RDP 文件并使用它连接到 **az1000401-VM1**。
+
+1. 出现提示时，通过指定以下凭据进行身份验证：
+
+    - 用户名称： **学生**
+
+    - 密码： **Pa55w.rd1234**
+
+1. 在远程桌面会话中 **az1000401-VM1**， 打开 **高级安全 Windows 防火墙** 控制台并且启用 **文件和打印机共享（回应请求 -  ICMPv4-In）** 所有个人资料的入站规则。
+
+
+#### 任务 2：在对等虚拟网络之间进行测试服务链接
+  
+1. 在 Azure 门户中，导航到 **az1000402-VM3** Azure VM 边栏选项卡。 
+
+1. 在 **概观** 窗格 **az1000402-VM3** 边栏选项卡中，生成 RDP 文件并使用它连接 **az1000402-VM3**。
+
+1. 出现提示时，通过指定以下凭据进行身份验证：
+
+    - 用户名称： **学生**
+
+    - 密码： **Pa55w.rd1234**
+
+1. 一旦您连接到 **az1-1000402-VM3** 通过远程桌面会话，启动 **Windows PowerShell**。
+
+1. 在 **Windows PowerShell** 窗口中，运行以下命令：
+
+   ```
    Test-NetConnection -ComputerName 10.104.0.4 -TraceRoute
    ```
 
-   > **Note**: **10.104.0.4** is the IP address of the network interface of the first Azure VM **az1000401-vm1**
+   > **注**： **10.104.0.4** 是第一个 Azure VM **az1000401-VM1 的** 网络接口的 IP 地址 
 
-1. Verify that test is successful and note that the connection was routed over **10.104.1.4**
+1. 验证测试是否成功，并注意连接已被路由 **10.104.1.4**
 
-   > **Note**: Without custom routing in place, the traffic would flow directly between the two Azure VMs. 
-> **Result**: After you completed this exercise, you have validated service chaining between peered Azure virtual networks.
-
-## Exercise 4: Remove lab resources
-
-#### Task 1: Open Cloud Shell
-
-1. At the top of the portal, click the **Cloud Shell** icon to open the Cloud Shell pane.
-
-1. At the Cloud Shell interface, select **Bash**.
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to list all resource groups you created in this lab:
-
-   ```sh
-   az group list --query "[?starts_with(name,'az1000')].name" --output tsv
-   ```
-
-1. Verify that the output contains only the resource groups you created in this lab. These groups will be deleted in the next task.
-
-#### Task 2: Delete resource groups
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
-
-   ```sh
-   az group list --query "[?starts_with(name,'az1000')].name" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-   ```
-
-1. Close the **Cloud Shell** prompt at the bottom of the portal.
-
-> **Result**: In this exercise, you removed the resources used in this lab.
+   > **注**：如果没有自定义路由，流量将直接在两个 Azure VM 之间流动。 
+> **结果**：完成此练习后，您已在对等 Azure 虚拟网络之间验证了服务链。

@@ -1,287 +1,259 @@
+﻿---
+逻辑阵列模块:
+    标题：'基于角色的访问控制'
+    模块：'管理 Azure 订阅和资源'
 ---
-lab:
-    title: 'Role-Based Access Control'
-    module: 'Module 11 - Governance and Compliance'
----
 
-# Lab: Role-Based Access Control 
+# 逻辑阵列模块：基于角色的访问控制 
 
-All tasks in this lab are performed from the Azure portal (including a PowerShell Cloud Shell session)  
+本逻辑阵列模块中的所有任务都是从 Azure 门户执行的（包括 PowerShell Cloud Shell 会话）  
 
-   > **Note**: When not using Cloud Shell, the lab virtual machine must have the Azure PowerShell 1.2.0 module (or newer) installed [https://docs.microsoft.com/en-us/powershell/azure/install-az-ps](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps)
+   > **注**：不使用 Cloud Shell 时，逻辑阵列模块虚拟机必须安装 Azure PowerShell 1.2.0 模块（或更新版本） [https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps?view=azps-1.2.0](https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps?view=azps-1.2.0)
 
-Lab files: none
+逻辑阵列模块文件：无
 
-### Scenario
+### 方案
   
-Adatum Corporation wants to use Azure Role Based Access Control and Azure Policy to control provisioning and management of their Azure resources. It also wants to be able to automate and track provisioning and management tasks.
+Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure 策略来控制其 Azure 资源的配置和管理。它还希望能够自动化和跟踪配置和管理任务。
 
-### Objectives
+### 目标
   
-After completing this lab, you will be able to:
+完成本逻辑阵列模块后，您将能够：
 
--  Configure delegation of provisioning and management of Azure resources by using built-in Role-Based Access Control (RBAC) roles and built-in Azure policies
+-  通过使用内置的基于角色的访问控制（RBAC）角色和内置 Azure 策略，配置 Azure 资源的配置和管理委派
 
--  Verify delegation by provisioning Azure resources as a delegated admin and auditing provisioning events
-
-
-### Exercise 1: Configure delegation of provisioning and management of Azure resources by using built-in Role-Based Access Control (RBAC) roles and built-in Azure policies
-
-The main tasks for this exercise are as follows:
-
-1. Create Azure Active Directory (AD) users and groups
-
-1. Create Azure resource groups
-
-1. Delegate management of an Azure resource group via a built-in RBAC role
-
-1. Assign a built-in Azure policy to an Azure resource group
+-  通过将 Azure 资源配置为委派管理和审核配置事件来验证委派
 
 
-#### Task 1: Create Azure AD users and groups
+### 练习 1：通过使用内置的基于角色的访问控制（RBAC）角色和内置 Azure 策略，配置 Azure 资源的配置和管理委派
 
-1. From the lab virtual machine, start Microsoft Edge, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using a Microsoft account that has the Owner role in the Azure subscription you intend to use in this lab and is a Global Administrator of the Azure AD tenant associated with that subscription.
+本次练习的主要任务如下：
 
-1. In the Azure portal, navigate to the **Azure Active Directory** blade 
+1. 请创建 Azure AD 用户和群组。
 
-1. From the **Azure Active Directory** blade, navigate to the **Custom domain names** blade and identify the primary DNS domain name associated the Azure AD tenant. Note its value - you will need it later in this task.
+1. 创建资源组
 
-1. From the Azure AD **Custom domain names** blade, navigate to the **Users - All users** blade. 
+1. 通过内置 RBAC 角色委派 Azure 资源组的管理
 
-1. From the **Users - All users** blade, create a new user with the following settings:
-
-    - Name: **aaduser100011**
-
-    - User name: **aaduser100011@&lt;DNS-domain-name&gt;** where &lt;DNS-domain-name&gt; represents the primary DNS domain name you identified earlier in this task.
-
-    - Profile: **Not configured**
-
-    - Properties: **Default**
-
-    - Groups: **0 groups selected**
-
-    - Directory role: **User**
-
-    - Password: select the checkbox **Show Password** and note the string appearing in the **Password** text box. You will need it later in this lab.
-
-1. From the **Users - All users** blade, navigate to the **Groups - All groups** blade. 
-
-1. From the **Groups - All groups** blade, create a new group with the following settings:
-
-    - Group type: **Security**
-
-    - Group name: **az1001 Contributors**
-
-    - Group description: **az1001 Contributors**
-
-    - Membership type: **Assigned**
-
-    - Members: **aaduser100011**
+1. 将内置 Azure 策略分配给 Azure 资源组
 
 
-#### Task 2: Create Azure resource groups
+#### 任务 1：请创建 Azure AD 用户和群组。
 
-1. In the Azure portal, navigate to the **Resource groups** blade.
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，浏览到 Azure 门户 [**http://portal.azure.com**](http://portal.azure.com) 并使用 Microsoft 帐户登录，该帐户在您打算在本逻辑阵列模块中使用的 Azure 订阅中具有所有者角色，并且是与该订阅关联的 Azure AD 租户的全局管理员。
 
-1. From the **Resource groups** blade, create the first resource group with the following settings:
+1. 在 Azure 门户中，导航到 **Azure Active Directory** 边栏选项卡 
 
-    - Resource group name: **az1000101-RG**
+1. 从 **Azure Active Directory** 边栏选项卡，导航到 **自定义域名** 边栏选项卡并标识与 Azure AD 租户关联的主 DNS 域名。注意它的价值 - 您将在此任务中稍后使用它。
 
-    - Subscription: the name of the subscription you are using in this lab
+1. 从 Azure AD **自定义域名** 边栏选项卡，导航到 **用户 - 所有用户** 边栏选项卡。 
 
-    - Resource group location: the name of the Azure region which is closest to the lab location and where you can provision Azure VMs.
+1. 从 **用户 - 所有用户** 目录边栏选项卡，创建一个新的“Azure AD 租户”，设置如下：：
 
-   > **Note**: To identify Azure regions available in your subscription, refer to [**https://azure.microsoft.com/en-us/regions/offers/**](https://azure.microsoft.com/en-us/regions/offers/)
+    - 名称： **aaduser100011**
 
-1. From the **Resource groups** blade, create the second resource group with the following settings:
+    - 用户名： **aaduser100011 @＆LT; DNS 域-名称＆gt;** 其中＆lt; DNS-domain-name＆gt;表示您在此任务中先前确定的主 DNS 域名。
 
-    - Resource group name: **az1000102-RG**
+    - 个人资料： **未配置**
 
-    - Subscription: the name of the subscription you selected in the previous step
+    - 属性： **默认**
 
-    - Resource group location: the name of the Azure region you selected in the previous step
+    - 群组： **选定了 0 个组**
+
+    - 目录角色： **用户**
+
+    - 密码：选中 **显示密码** 复选框并注意 **密码** 文本框中出现的字符串。在本逻辑阵列模块中，您后续将需要该域名。
+
+1. 从 **用户 - 所有用户** 边栏选项卡，导航到 **群组 - 所有群组** 边栏选项卡。 
+
+1. 从 **组 - 所有组** 边栏选项卡中，使用以下设置创建新组：
+
+    - 组类型: **安全**
+
+    - 组名称： **az1001 贡献者**
+
+    - 小组介绍： **az1001 贡献者**
+
+    - 成员身份类型： **已分配**
+
+    - 成员： **aaduser100011**
 
 
-#### Task 3: Delegate management of an Azure resource group via a built-in RBAC role
+#### 任务 2：创建资源组
 
-1. In the Azure portal, from the **Resource groups** blade, navigate to the **az1000101-RG** blade.
+1. 在 Azure 门户中，导航到 **资源组** 边栏选项卡。
 
-1. From the **az1000101-RG** blade, display its **Access control (IAM)** blade.
+1. 来自 **资源组** 边栏选项卡，使用以下设置创建第一个资源组：
 
-1. From the **az1000101-RG - Access control (IAM)** blade, display the **Role assignments**  blade.
+    - 资源组名称：**az1000101-RG**
 
-1. From the **Role assignments** blade, create the following **role assignment**:
+    - 订阅：您希望用于本逻辑阵列模块的订阅名称
 
-    - Role: **Contributor**
+    - 资源组位置：最靠近逻辑阵列模块位置的 Azure 区域的名称以及可以在其中设置 Azure VM 的位置。
 
-    - Assign access to: **Azure AD user, group, or service principal**
+   > **注**：要识别订阅中可用的 Azure 区域，请参阅 [**https://azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)
 
-    - Select: **az1001 Contributors**
+1. 从 **资源组** 边栏选项卡，使用以下设置创建第二个资源组：
+
+    - 资源组名称：**az1000102-RG**
+
+    - 订阅：您希望用于本逻辑阵列模块的订阅名称
+
+    - 资源组位置：您在上一步中选择的 Azure 区域的名称
 
 
-#### Task 4: Assign a built-in Azure policy to an Azure resource group
+#### 任务 3：通过内置 RBAC 角色委派 Azure 资源组的管理
 
-1. From the **az1000101-RG** blade, display its **Policies** blade.
+1. 在 Azure 门户中，从 **资源组** 边栏选项卡，导航到 **az1000101-RG** 边栏选项卡。
 
-1. From the **Policy - Compliance** blade, display the **Assign policy** blade.
+1. 从 **az1000101-RG** 边栏选项卡，展示它 **访问控制（IAM）** 边栏选项卡。
 
-1. Assign the policy with the following settings:
+1. 从 **az1000101-RG  - 访问控制（IAM）** 边栏选项卡，显示 **角色分配**  边栏选项卡。
 
-    - Scope: **az1000101-RG**
+1. 从 **角色分配** 边栏选项卡，创建以下 **角色分配**：
 
-    - Exclusions: leave the entry blank
+    - 角色 **参与者**
 
-    - Policy definition: **Allowed virtual machine SKUs**
+    - 分配访问权限： **Azure AD 用户，组或服务主体**
 
-    - Assignment name: **Allowed virtual machine SKUs**
+    - 选择: **az1001-1b**。
 
-    - Description: **Allowed selected virtual machine SKUs (Standard_DS1_v2)**
 
-    - Assigned by: leave the entry set to its default value
+#### 任务 4：将内置 Azure 策略分配给 Azure 资源组
+
+1. 从 **az1000101-RG** 边栏选项卡，展示它 **政策** 边栏选项卡。
+
+1. 从 **政策 - 合规** 边栏选项卡，显示 **分配政策** 边栏选项卡。
+
+1. 根据以下设置分配政策：
+
+    - 范围： **az1000101-RG**
+
+    - 排除：将条目留空
+
+    - 政策定义： **允许的虚拟机 SKU**
+
+    - 作业名称： **允许的虚拟机 SKU**
+
+    - 描述： **允许选择的虚拟机 SKU（Standard_DS1_v2）**
+
+    - 分配方：将条目设置保留为其默认值
 	
-    - Allowed SKUs: **Standard_DS1_v2**
+    - 允许的 SKU： **Standard_DS1_v2**
 
-    - Create a Managed Identity: leave the entry blank
+    - 创建托管标识：将条目留空
 
-> **Result**: After you completed this exercise, you have created an Azure AD user and an Azure AD group, created two Azure resource groups, delegated management of the first Azure resource group via the built-in Azure VM Contributor RBAC role, and assigned to the same resource group the built-in Azure policy restricting SKUs that can be used for Azure VMs.
+> **结果**：完成本次练习后，您已创建 Azure AD 用户和 Azure AD 组，创建了两个 Azure 资源组，通过内置 Azure VM Contributor RBAC 角色委派了第一个 Azure 资源组的管理，并分配给相同的资源对内置 Azure 策略进行分组，限制可用于 Azure VM 的 SKU。
 
 
-### Exercise 2: Verify delegation by provisioning Azure resources as a delegated admin and auditing provisioning events
+### 练习 2：通过将 Azure 资源配置为委派管理和审核配置事件来验证委派
   
-The main tasks for this exercise are as follows:
+本次练习的主要任务如下：
 
-1. Identify an available DNS name for an Azure VM deployment
+1. 确定 Azure VM 部署的可用 DNS 名称
 
-1. Attempt an automated deployment of a policy non-compliant Azure VM as a delegated admin
+1. 尝试将策略不兼容的 Azure VM 自动部署为委派管理员
 
-1. Perform an automated deployment of a policy compliant Azure VM as a delegated admin
+1. 作为委派管理员执行符合策略的 Azure VM 的自动部署
 
-1. Review Azure Activity Log events corresponding to Azure VM deployments
+1. 查看与 Azure VM 部署相对应的 Azure 活动日志事件
 
 
-#### Task 1: Identify an available DNS name for an Azure VM deployment
+#### 任务 1：确定 Azure VM 部署的可用 DNS 名称
 
-1. From the Azure Portal, start a PowerShell session in the Cloud Shell. 
+1. 在 Azure 门户中，在 Cloud Shell 中启动 PowerShell 会话。 
 
-   > **Note**: If this is the first time you are launching the Cloud Shell in the current Azure subscription, you will be asked to create an Azure file share to persist Cloud Shell files. If so, accept the defaults, which will result in creation of a storage account in an automatically generated resource group.
+   > **注**：如果这是您第一次在当前 Azure 订阅中启动 Cloud Shell，则会要求您创建 Azure 文件共享以保留 Cloud Shell 文件。如果是，接受默认设置，这样会在自动生成的资源组中创建存储帐户。
 
-1. In the Cloud Shell pane, run the following command, substituting the placeholder &lt;custom-label&gt; with any string which is likely to be unique and the placeholder &lt;location-of-az1000101-RG&gt; with the name of the Azure region in which you created the **az1000101-RG** resource group.
+1. 在 Cloud Shell 窗格中，运行以下命令，替换占位符＆lt; custom-label＆gt;任何可能是唯一的字符串和占位符＆lt; location-of-az1000101-RG＆gt;使用您在其中创建的 Azure 区域的名称 **az1000101-RG** 资源组。
 
-   ```pwsh
+   ```
    Test-AzDnsAvailability -DomainNameLabel <custom-label> -Location '<location-of-az1000101-RG>'
    ```
 
-1. Verify that the command returned **True**. If not, rerun the same command with a different value of the &lt;custom-label&gt; until the command returns **True**. 
+1. 验证返回的命令是否为 **真**。如果没有，请使用＆lt; custom-label＆gt;的不同值重新运行相同的命令。直到命令返回 **真**。 
 
-1. Note the value of the &lt;custom-label&gt; that resulted in the successful outcome. You will need it in the next task
+1. 请注意导致成功结果的<custom-label>的值。您将在下一个任务中使用它
 
-1. Run these commands:
+1. 运行以下命令：
 
-   ```pwsh
+   ```
    Register-AzResourceProvider –ProviderNamespace Microsoft.Network
    ```
 
-   ```pwsh
+   ```
    Register-AzResourceProvider –ProviderNamespace Microsoft.Compute
    ```
-Note: These cmdlets register the Azure Resource Manager Microsoft.Network and Microsoft.Compute resource providers. This is a one-time operation (per subscription) required when using Azure Resource Manager templates to deploy resources managed by these resource providers (if these resource providers have not been yet registered).
+注：这些 cmdlet 注册 Azure 资源管理器 Microsoft.Network 和 Microsoft.Compute 资源提供程序。这是使用 Azure 资源管理器模板部署由这些资源提供程序管理的资源时所需的一次性操作（每个订阅）（如果这些资源提供程序尚未注册）。
 
-Also Note: If you encounter an error after running these commands that mentions a token expiry set to a time that is before the current time, click the power button icon on our Cloud Shell UI and reboot your Cloud Shell instance.  Once restarted, retry these commands.
 
-#### Task 2: Attempt an automated deployment of a policy non-compliant Azure VM as a delegated admin
 
-1. Launch another browser window in the Private mode.
+#### 任务 2：尝试将策略不兼容的 Azure VM 自动部署为委派管理员
 
-1. In the new browser window, navigate to the Azure portal and sign in using the user account you created in the previous exercise. When prompted, change the password to a new value.
+1. 在专用模式下启动另一个浏览器窗口。
 
-1. In the Azure portal, navigate to the **Resource groups** blade and note that you can view only the resource group **az1000101-RG**.
+1. 在新的浏览器窗口中，导航到 Azure 门户并使用您在上一个练习中创建的用户帐户登录。出现提示时，将密码更改为新值。
 
-1. In the Azure portal, navigate to the **Create a resource** blade. 
+1. 在 Azure 门户中，导航到 **资源组** 边栏选项卡并注意您只能查看资源组 **az1000101-RG**。
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Template deployment**.
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。 
 
-1. Use the list of search results to navigate to the **Deploy a custom template** blade.
+1. 从 **创建资源** 边栏选项卡中搜索 Azure Marketplace 中的 **模板部署**。
 
-1. On the **Custom deployment** blade, in the **Load a GitHub quickstart template** drop-down list, select the **101-vm-simple-linux** entry and navigate to the **Edit template** blade.
+1. 使用搜索结果列表导航到 **部署自定义模板** 边栏选项卡。
 
-1. On the **Edit template** blade, navigate to the **Variables** section and locate the **vmSize** entry.
+1. 在 **自定义部署** 边栏选项卡，在 **加载 GitHub 快速入门模板** 下拉列表，选择 **101-VM-简单 Linux 的** 进入并导航到 **编辑模板** 边栏选项卡。
 
-1. Note that the template is using hard-coded **Standard_A1** VM size.
+1. 在 **编辑模板** 边栏选项卡，导航到 **变量** 部分并找到 **vmSize** 条目。
 
-1. Discard any changes you might have made to the template and navigate to the **Deploy a simple Ubuntu Linux VM** blade.
+1. 请注意，模板使用硬编码 **Standard_A1** VM 大小。
 
-1. From the **Deploy a simple Ubuntu Linux VM** blade, initiate a template deployment with the following settings:
+1. 放弃您可能对模板所做的任何更改并导航到 **部署一个简单的 Ubuntu Linux VM** 边栏选项卡。
 
-    - Subscription: the same subscription you selected in the previous exercise
+1. 从 **部署一个简单的 Ubuntu Linux VM** 边栏选项卡，使用以下设置启动模板部署：
 
-    - Resource group: **az1000101-RG**
+    - 订阅：您在上一个练习中选择的订阅
 
-    - Location: the name of the Azure region which you selected in the previous exercise
+    - 资源组： **az1000101-RG**
 
-    - Admin Username: **Student**
+    - 位置：您在上一个练习中选择的 Azure 区域的名称
 
-    - Admin Password: **Pa55w.rd1234**
+    - 管理员用户名：**学生**
 
-    - Dns Label Prefix: the &lt;custom-label&gt; you identified in the previous task
+    - 管理员密码：**Pa55w.rd1234**
 
-    - Ubuntu OS Version: accept the default value
+    - Dns 标签前缀：您在上一个任务中标识的<custom-label>
 
-    - Location: accept the default value
+    - Ubuntu OS 版：接受默认值
+
+    - 位置：接受默认值
     
-1. Note that the initiation of the deployment fails. Navigate to the **Errors** blade and note that the deployment of the resource is not allowed by the policy **Allowed virtual machine SKUs**.   
+1. 请注意，部署的启动失败。导航到 **错误** 边栏选项卡并注意策略不允许部署资源 **允许的虚拟机 SKU**。   
 
 
-#### Task 3: Perform an automated deployment of a policy compliant Azure VM as a delegated admin
+#### 任务 3：作为委派管理员执行符合策略的 Azure VM 的自动部署
  
-1. From the **Deploy a simple Ubuntu Linux VM** blade, navigate to the **Edit template** blade.
+1. 从 **部署一个简单的 Ubuntu Linux VM** 边栏选项卡，导航到 **编辑模板** 边栏选项卡。
 
-1. On the **Edit template** blade, navigate back to the **Variables** section and locate the **vmSize** entry.
+1. 在 **编辑模板** 边栏选项卡，导航回到 **变量** 部分并找到 **vmSize** 条目。
 
-1. Replace the value **Standard_A1** with **Standard_DS1_v2** and save the change.
+1. 替换值 **Standard_A1** 同 **Standard_DS1_v2** 并保存更改。
 
-1. Initiate a deployment again. Note that this time validation is successful. 
+1. 再次启动部署。请注意，此次验证成功。 
 
-1. Do not wait for the deployment to complete but proceed to the next task.
+1. 请勿等待第一台虚拟机预配完成，请继续进行下一个任务
 
 
-#### Task 4: Review Azure Activity Log events corresponding to Azure VM deployments
+#### 任务 4：查看与 Azure VM 部署相对应的 Azure 活动日志事件
 
-1. Switch to the browser window that you used in the previous exercise.
+1. 切换到上一练习中使用的浏览器窗口。
 
-1. In the Azure portal, navigate to the **az1000101-RG** resource group blade.
+1. 在 Azure 门户中，导航到 **az1000101-RG** 资源组边栏选项卡。
 
-1. From the **az1000101-RG** resource group blade, display its **Activity log** blade. 
+1. 从 **az1000101-RG** 资源组边栏选项卡，显示它 **活动日志** 边栏选项卡。 
 
-1. In the list of operations, note the ones corresponding to the failed and successful validation events. 
+1. 在操作列表中，请注意与失败和成功验证事件对应的操作。 
 
-1. Refresh the view of the blade and observe events corresponding to the Azure VM provisioning, including the final one representing the successful deployment.
+1. 刷新刀片视图并观察与 Azure VM 配置相对应的事件，包括表示成功部署的最后一个事件。
 
-> **Result**: After you completed this exercise, you have identified an available DNS name for an Azure VM deployment, attempted an automated deployment of a policy non-compliant Azure VM as a delegated admin, performed an automated deployment of a policy compliant Azure VM as the same delegated admin, and reviewed Azure Activity Log entries corresponding to both Azure VM deployments.
-
-## Exercise 3: Remove lab resources
-
-#### Task 1: Open Cloud Shell
-
-1. At the top of the portal, click the **Cloud Shell** icon to open the Cloud Shell pane.
-
-1. At the Cloud Shell interface, select **Bash**.
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to list all resource groups you created in this lab:
-
-   ```sh
-   az group list --query "[?starts_with(name,'az1000')].name" --output tsv
-   ```
-
-1. Verify that the output contains only the resource groups you created in this lab. These groups will be deleted in the next task.
-
-#### Task 2: Delete resource groups
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
-
-   ```sh
-   az group list --query "[?starts_with(name,'az1000')].name" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-   ```
-
-1. Close the **Cloud Shell** prompt at the bottom of the portal.
-
-> **Result**: In this exercise, you removed the resources used in this lab.
+> **结果**：完成此练习后，您已为 Azure VM 部署确定了可用的 DNS 名称，尝试将策略不兼容的 Azure VM 自动部署为委派管理员，执行自动部署符合策略的 Azure VM 作为相同的委派管理员，并查看了与 Azure VM 部署相对应的 Azure 活动日志条目。

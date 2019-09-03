@@ -1,343 +1,339 @@
+﻿---
+逻辑阵列块：
+    title'实施Azure文件同步'
+    单元'实施和管理存储'
 ---
-lab:
-    title: 'Azure File Sync'
-    module: 'Module 12 - Data Services'
----
 
-# Lab: Implement Azure File Sync
+# 逻辑阵列块：实现Azure文件同步
 
-All tasks in this lab are performed from the Azure portal, except for steps in Exercise 1 and Exercise 2 performed within a Remote Desktop session to an Azure VM.
+除了在与Azure VM的远程桌面会话中执行的练习1和练习2中的步骤之外，本实验中的所有任务都是从Azure门户执行的。
 
-Lab files: 
+逻辑阵列块文件： 
 
--  **Labfiles\\Module_12\\Implementing_File_Sync\\az-100-02b_azuredeploy.json**
+-  **Allfiles / Labfiles / AZ-100.2 / AZ-100-02b_azuredeploy.json**
 
--  **Labfiles\\Module_12\\Implementing_File_Sync\\az-100-02b_azuredeploy.parameters.json**
+-  **Allfiles / Labfiles / AZ-100.2 / AZ-100-02b_azuredeploy.parameters.json**
 
-### Scenario
+### 方案
   
-Adatum Corporation hosts its file shares in on-premises file servers. Considering its plans to migrate majority of its workloads to Azure, Adatum is looking for the most efficient method to replicate its data to file shares that will be available in Azure. To implement it, Adatum will use Azure File Sync.
+Adatum Corporation在本地文件服务器中托管其文件共享。考虑到其将大部分工作负载迁移到Azure的计划，Adatum正在寻找最有效的方法将其数据复制到Azure中可用的文件共享。要实现它，Adatum将使用Azure文件同步。
 
-### Objectives
+### 目标
   
-After completing this lab, you will be able to:
+完成本实验后，您将能够：
 
--  Deploy an Azure VM by using an Azure Resource Manager template
+-  使用 Azure Resource Manager 模板部署Azure VM
 
--  Prepare Azure File Sync infrastructure
+-  准备Azure文件同步基础结构
 
--  Implement and validate Azure File Sync
+-  实施和验证Azure文件同步
 
 
-### Exercise 0: Prepare the lab environment
+### 练习 0：准备逻辑阵列块环境
   
-The main tasks for this exercise are as follows:
+本练习的主要任务如下：
 
-1. Deploy an Azure VM by using an Azure Resource Manager template
+1. 使用 Azure Resource Manager 模板部署Azure VM
 
 
-#### Task 1: Deploy an Azure VM by using an Azure Resource Manager template
+#### 任务 1：使用 Azure Resource Manager 模板部署Azure VM
 
-1. From the lab virtual machine, start Microsoft Edge, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using a Microsoft account that has the Owner role in the Azure subscription you intend to use in this lab.
+1. 从逻辑阵列块虚拟机启动Microsoft Edge，浏览到Azure门户 [**http:////portal.azure.com**](http://portal.azure.com) 并使用在您打算在本实验中使用的Azure订阅中具有所有者角色的Microsoft帐户登录。
 
-1. In the Azure portal, navigate to the **New** blade.
+1. 在Azure门户中，导航到 **New** 卡.
 
-1. From the **New** blade, search Azure Marketplace for **Template deployment**.
+1. 来自 **新** 卡片，搜索Azure Marketplace **模板部署**。
 
-1. Use the list of search results to navigate to the **Custom deployment** blade.
+1. 使用搜索结果列表导航到 **自定义部署** 卡。
 
-1. On the **Custom deployment** blade, select the **Build your own template in the editor**.
+1. 在 **自定义部署** 卡片，选择 **在编辑器中构建自己的模板**。
 
-1. From the **Edit template** blade, load the template file **az-100-02b_azuredeploy.json**. 
+1. 来自 **编辑模板** 卡片，加载模板文件 **AZ-100-02b_azuredeploy.json**。 
 
-   > **Note**: Review the content of the template and note that it defines deployment of an Azure VM hosting Windows Server 2016 Datacenter with a single data disk.
+   > **注意**: 查看模板的内容，并注意它定义了使用单个数据磁盘托管Windows Server 2016 Datacenter的Azure VM的部署。
 
-1. Save the template and return to the **Custom deployment** blade. 
+1. 保存模板并返回到 **自定义部署** 卡。 
 
-1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
+1. 来自 **自定义部署** 卡片，导航到 **编辑参数** 卡。
 
-1. From the **Edit parameters** blade, load the parameters file **az-100-02b_azuredeploy.parameters.json**. 
+1. 来自 **编辑参数** 卡片，加载参数文件 **AZ-100-02b_azuredeploy.parameters.json**。 
 
-1. Save the parameters and return to the **Custom deployment** blade. 
+1. 保存参数并返回 **自定义部署** 卡。 
 
-1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
+1. 来自 **自定义部署** 卡片，使用以下设置启动模板部署：
 
-    - Subscription: the name of the subscription you are using in this lab
+    - 订阅：你用于本逻辑阵列块的订阅名称
 
-    - Resource group: the name of a new resource group **az1000201b-RG**
+    - 资源组：新资源组的名称 **az1000201b-RG**
 
-    - Location: the name of the Azure region which is closest to the lab location and where you can provision Azure VMs
+    - 位置：最靠近逻辑阵列块位置的Azure区域的名称以及可以在其中配置Azure VM的位置
 
-    - Vm Size: **Standard_DS1_v2**
+    - VM 大小： **Standard_DS1_v2**
 
-    - Vm Name: **az1000201b-vm1**
+    - Vm名称： **az1000201b-VM1**
 
-    - Admin Username: **Student**
+    - 管理员用户名： **学员**
 
-    - Admin Password: **Pa55w.rd1234**
+    - 管理员密码： **Pa55w.rd1234**
 
-    - Virtual Network Name: **az1000201b-vnet1**
+    - “虚拟网络名称”(Virtual Network Name) 为: **az1000201b-vnet1**
 
-   > **Note**: To identify Azure regions where you can provision Azure VMs, refer to [**https://azure.microsoft.com/en-us/regions/offers/**](https://azure.microsoft.com/en-us/regions/offers/)
+   > **注意**: 要标识可以配置Azure VM的Azure区域，请参阅 [**https://azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)
 
-   > **Note**: Do not wait for the deployment to complete but proceed to the next exercise. You will use the virtual machine included in this deployment in the next exercise of this lab.
+   > **注意**: 不要等待第二台虚拟机预配完成，请继续进行下一个练习您将在本实验的下一个练习中使用此部署中包含的虚拟机。
 
-   > **Note**: Keep in mind that the purpose of Azure VM **az1000201b-vm1** is to emulate an on-premises file server in our scenario.
+   > **注意**: 请记住Azure VM的用途 **az1000201b-VM1** 是在我们的方案中模拟本地文件服务器。
 
-> **Result**: After you completed this exercise, you have initiated a template deployment of an Azure VM **az1000201b-vm1** that you will use in the next exercise of this lab.
+> **结果**: 完成本练习后，您已启动Azure VM的模板部署 **az1000201b-VM1** 您将在本实验的下一个练习中使用。
 
 
-### Exercise 1: Prepare Azure File Sync infrastructure
+### 练习 1：准备Azure文件同步基础结构
 
-The main tasks for this exercise are as follows:
+本练习的主要任务如下：
 
-1. Create an Azure Storage account and a file share
+1. 创建Azure存储帐户和文件共享
 
-1. Prepare Windows Server 2016 for use with Azure File Sync
+1. 准备Windows Server 2016以与Azure文件同步一起使用
 
-1. Run Azure File Sync evaluation tool
+1. 运行Azure文件同步评估工具
 
 
-#### Task 1: Create an Azure Storage account and a file share
+#### 任务 1：创建Azure存储帐户和文件共享
 
-1. In the Azure portal, navigate to the **New** blade.
+1. 在Azure门户中，导航到 **New** 卡.
 
-1. From the **New** blade, search Azure Marketplace for **Storage account**.
+1. 来自 **新** 卡片，搜索Azure Marketplace **存储帐户 - blob，文件，表，队列**。
 
-1. Use the list of search results to navigate to the **Create storage account** blade.
+1. 使用搜索结果列表导航到 **创建存储帐户** 卡。
 
-1. From the **Create storage account** blade, create a new storage account with the following settings: 
+1. 来自 **Create storage account** 卡, 使用以下设置创建新的存储帐户： 
 
-    - Subscription: the same subscription you selected in the previous task
+    - 订阅：您在上一个任务中选择的订阅
 
-    - Resource group: the name of a new resource group **az1000202b-RG**
+    - 资源组：新资源组的名称 **az1000202b-RG**
 
-    - Storage account name: any valid, unique name between 3 and 24 characters consisting of lowercase letters and digits
+    - 存储帐户名称：3到24个字符之间的任何有效，唯一名称，由小写字母和数字组成
 
-    - Location: the name of the Azure region which you selected in the previous task
+    - 位置：您在上一个任务中选择的Azure区域的名称
 
-    - Performance: **Standard**
+    - 性能： **标准**
 
-    - Account kind: **Storage (general purpose v1)**
+    - 帐户类型： **存储（通用v1）**
 
-    - Replication: **Locally-redundant storage (LRS)**
+    - 复制： **本地冗余存储（LRS）**
 
-    - Secure transfer required: **Disabled**
+    - 需要安全转移： **已禁用**
 
-    - Allow access from: **All networks**
+    - 允许访问： **所有网络**
 
-    - Hierarchical namespace: **Disabled**
+    - 分层命名空间： **已禁用**
 
-   > **Note**: Wait for the storage account to be provisioned then proceed to the next step.
+   > **注意**: 等待配置存储帐户，但继续执行下一步。
 
-1. In the Azure portal, navigate to the blade representing the newly provisioned storage account.
+1. 在Azure门户中，导航到代表新配置的存储帐户的卡片。
 
-1. From the storage account blade, display the properties of its File Service.
+1. 从存储帐户卡片中，显示其文件服务的属性。
 
-1. From the storage account **Files** blade, create a new file share with the following settings:
+1. 从存储帐户 **Create storage account** 边栏选项卡中，使用以下设置创建新文件共享：
 
-    - Name: **az10002bshare1**
+    - 名称： **az10002bshare1**
 
-    - Quota: none
+    - 配额：无
 
 
-#### Task 2: Prepare Windows Server 2016 for use with Azure File Sync
+#### 任务 2：准备Windows Server 2016以与Azure文件同步一起使用
 
-   > **Note**: Before you start this task, ensure that the template deployment you started in Exercise 0 has completed. 
+   > **注意**: 在开始此任务之前，请确保您在练习0中启动的模板部署已完成。 
 
-1. In the Azure portal, navigate to the **az1000201b-vm1** blade.
+1. 在Azure门户中，导航到 **az1000201b-VM1** 卡。
 
-1. From the **az1000201b-vm1** blade, connect to the Azure VM via the RDP protocol and, when prompted to sign in, provide the following credentials:
+1. 来自 **az1000201b-VM1** 卡片，通过RDP协议连接到Azure VM，并在提示登录时提供以下凭据：
 
-    - Admin Username: **Student**
+    - 管理员用户名： **学员**
 
-    - Admin Password: **Pa55w.rd1234**
+    - 管理员密码： **Pa55w.rd1234**
 
-1. Within the RDP session to the Azure VM, in Server Manager, navigate to **File and Storage Services**, locate the data disk attached to the Azure VM, initialize it as a **GPT** disk, and use **New Volume Wizard** to create a single volume occupying entire disk with the following settings:
+1. 在Azure VM的RDP会话中，在服务器管理器中，导航到 **文件和存储服务**，找到连接到Azure VM的数据磁盘，将其初始化为 **GPT** 磁盘，并使用 **新卷向导** 使用以下设置创建占用整个磁盘的单个卷：
 
-    - Drive letter: **S**
+    - 驱动器号？ **S**
 
-    - File system: **NTFS**
+    - 文件系统？ **NTFS**
 
-    - Allocation unit size: **Default**
+    - 分配单位大小： **默认**
 
-    - Volume label: **Data**
+    - 体积标识： **Data**
 
-1. Within the RDP session, start a Windows PowerShell session as administrator. 
+1. 在RDP会话中，以管理员身份启动Windows PowerShell会话。 
 
-1. From the Windows PowerShell console, set up a file share by running the following:
+1. 在Windows PowerShell控制台中，通过运行以下命令设置文件共享：
 
-   ```powershell
-   $directory = New-Item -Type Directory -Path 'S:\az10002bShare'
+   ```
+   $ directory = New-Item -Type Directory -Path'S：\ az10002bShare'
 
-   New-SmbShare -Name $directory.Name -Path $directory.FullName -FullAccess 'Administrators' -ReadAccess Everyone   
+   New-SmbShare -Name $ directory.Name -Path $ directory.FullName -FullAccess'Administrators'-ReadAdccess Everyone   
 
-   Copy-Item -Path 'C:\WindowsAzure\*' -Destination $directory.FullName –Recurse
+   Copy-Item -Path'C：\ WindowsAzure \ *'-Destination $ directory.FullName -Recurse
    ```
 
-   > **Note**: To populate the file share with sample data, we use content of the *C:\\WindowsAzure* folder, which should contain about 100 MB worth of files
+   > **注意**: 要使用示例数据填充文件共享，我们使用C：\\ WindowsAzure文件夹的内容，该文件夹应包含大约100 MB的文件
 
-1. From the Windows PowerShell console, install the latest Az PowerShell module by running the following:
+1. 在Windows PowerShell控制台中，通过运行以下命令安装最新的AzureRM模块：
 
-   ```powershell
-   Install-Module -Name Az -AllowClobber
+   ```
+   Install-Module AzureRM
    ```
 
-   > **Note**: When prompted, confirm that you want to proceed with the installation from PSGallery repository.
+   > **注意**: 出现提示时，确认您要继续从PSGallery存储库进行安装。
 
 
-#### Task 3: Run Azure File Sync evaluation tool
+#### 任务 3：运行Azure文件同步评估工具
 
-1. Within the RDP session to the Azure VM, from the Windows PowerShell console, install the latest version of Package Management and PowerShellGet by running the following:
+1. 在Azure VM的RDP会话中，通过运行以下命令，从Windows PowerShell控制台安装最新版本的Package Management和PowerShellGet：
 
-   ```powershell
+   ```
    Install-Module -Name PackageManagement -Repository PSGallery -Force
 
    Install-Module -Name PowerShellGet -Repository PSGallery -Force
    ```
 
-   > **Note**: When prompted, confirm that you want to proceed with the installation of the NuGet provider.
+   > **注意**: 出现提示时，确认您要继续安装NuGet提供程序。
 
-1. Restart the PowerShell session.
+1. 重新启动PowerShell会话。
 
-1. From the Windows PowerShell console, install the Azure File Sync PowerShell module by running the following:
+1. 在Windows PowerShell控制台中，通过运行以下命令安装Azure File Sync PowerShell模块：
 
-   ```powershell
-   Install-Module -Name Az.StorageSync -AllowClobber -Force
+   ```
+   Install-Module -Name Az.StorageSync -AllowPrerelease -AllowClobber -Force
    ```
 
-1. From the Windows PowerShell console, install the Azure File Sync PowerShell module by running the following:
+1. 在Windows PowerShell控制台中，通过运行以下命令安装Azure File Sync PowerShell模块：
 
-   ```powershell
-   Invoke-AzStorageSyncCompatibilityCheck -Path 'S:\az10002bShare'
+   ```
+   Invoke-AzStorageSyncCompatibilityCheck -Path'S：\ az10002bShare'
    ```
 
-1. Review the results and verify that no compatibility issues have been found.
+1. 查看结果并验证是否未找到兼容性问题。
 
-> **Result**: After you completed this exercise, you have created an Azure Storage account and a file share, prepare Windows Server 2016 for use with Azure File Sync, and run Azure File Sync evaluation tool
+> **结果**: 完成本练习后，您已创建Azure存储帐户和文件共享，准备Windows Server 2016以与Azure文件同步一起使用，并运行Azure文件同步评估工具
 
 
-### Exercise 2: Prepare Azure File Sync infrastructure
+### 练习 2：准备Azure文件同步基础结构
 
-The main tasks for this exercise are as follows:
+本练习的主要任务如下：
 
-1. Deploy the Storage Sync Service
+1. 部署Storage Sync服务
 
-1. Install the Azure File Sync Agent
+1. 安装Azure文件同步代理
 
-1. Register the Windows Server with Storage Sync Service
+1. 使用Storage Sync Service注册Windows Server
 
-1. Create sync groups and a cloud endpoint
+1. 创建同步组和云端点
 
-1. Create a server endpoint
+1. 创建服务器端点
 
-1. Validate Azure File Sync operations
+1. 验证Azure文件同步操作
 
 
-#### Task 1: Deploy the Storage Sync Service
+#### 任务 1：部署Storage Sync服务
 
-1. Within the RDP session to the Azure VM, in Server Manager, navigate to the Local Server view and turn off temporarily **IE Enhanced Security Configuration**.
+1. 在Azure VM的RDP会话中，在服务器管理器中，导航到“本地服务器”视图并暂时关闭 **IE增强安全配置**。
 
-1. Within the RDP session to the Azure VM, start Internet Explorer, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using the same Microsoft account you used previously in this lab.
+1. 在Azure VM的RDP会话中，启动Internet Explorer，浏览到Azure门户 [**http://portal.azure.com**](http://portal.azure.com) 并使用您之前在本实验中使用的相同Microsoft帐户登录。
 
-1. In the Azure portal, navigate to the **New** blade.
+1. 在Azure门户中，导航到 **New** 卡.
 
-1. From the **New** blade, search Azure Marketplace for **Azure File Sync**.
+1. 来自 **新** 卡片，搜索Azure Marketplace **Azure文件同步**。
 
-1. Use the list of search results to navigate to the **Deploy Storage Sync** blade.
+1. 使用搜索结果列表导航到 **部署存储同步** 卡。
 
-1. From the **Deploy Storage Sync** blade, create a Storage Sync Service with the following settings:
+1. 来自 **部署存储同步** 卡片，使用以下设置创建存储同步服务：
 
-    - Name: **az1000202b-ss**
+    - 名称： **az1000202b-SS**
 
-    - Subscription: the same subscription you selected in the previous task
+    - 订阅：您在上一个任务中选择的订阅
 
-    - Resource group: the name of a new resource group **az1000203b-RG**
+    - 资源组：新资源组的名称 **az1000203b-RG**
 
-    - Location: the name of the Azure region in which you created the storage account earlier in this exercise
+    - 位置：本练习前面创建存储帐户的Azure区域的名称
 
 
-#### Task 2: Install the Azure File Sync Agent.
+#### 任务 2：安装Azure文件同步代理。
 
-1. Within the RDP session, start another instance of Internet Explorer, browse to Microsoft Download Center at [**https://go.microsoft.com/fwlink/?linkid=858257**](https://go.microsoft.com/fwlink/?linkid=858257) and download the Azure File Sync Agent Windows Installer file **StorageSyncAgent_V6_WS2016.msi**.
+1. 在RDP会话中，启动另一个Internet Explorer实例，浏览到Microsoft下载中心 [**https://go.microsoft.com/fwlink/?linkid=858257**](https://go.microsoft.com/fwlink/?linkid=858257) 并下载Azure文件同步代理Windows Installer文件 **StorageSyncAgent_V5_WS2016.msi**。
 
-1. Once the download completes, run the Storage Sync Agent Setup wizard with the default settings to install Azure File Sync Agent.
+1. 下载完成后，使用默认设置运行Storage Sync Agent安装向导以安装Azure文件同步代理。
 
-1. After the Azure File Sync agent installation completes, the **Azure File Sync - Server Registration** wizard will automatically start.
+1. Azure文件同步代理安装完成后， **Azure文件同步 - 服务器注册** 向导会自动启动。
 
 
-#### Task 3: Register the Windows Server with Storage Sync Service
+#### 任务 3：使用Storage Sync Service注册Windows Server
 
-1. From the initial page of the **Azure File Sync - Server Registration** wizard, sign in by using the same Microsoft account you used previously in this lab.
+1. 从最初的页面 **Azure文件同步 - 服务器注册** 向导，使用您之前在本实验中使用的相同Microsoft帐户登录。
 
-1. On the **Choose a Storage Sync Service** page of the **Azure File Sync - Server Registration** wizard, specify the following settings to register:
+1. 在 **选择存储同步服务** 的页面 **Azure文件同步 - 服务器注册** 向导，指定以下设置进行注册：
 
-    - Azure Subscription: the name of the subscription you are using in this lab
+    - 订阅：你用于本逻辑阵列块的订阅名称。
 
-    - Resource group: **az1000203b-RG**
+    - 资源组： **az1000203b-RG**
 
-    - Storage Sync Service: **az1000202b-ss**
+    - 存储同步服务： **az1000202b-SS**
 
-1. When prompted, sign in again by using the same Microsoft account you used previously in this lab.
+1. 出现提示时，使用您之前在本实验中使用的相同Microsoft帐户再次登录。
 
 
-#### Task 4: Create a sync group and a cloud endpoint
+#### 任务 4：创建同步组和云端点
 
-1. Within the RDP session to the Azure VM, in the Azure portal, navigate to the **az1000202b-ss** Storage Sync Service blade.
+1. 在Azure VM的RDP会话中，在Azure门户中，导航到 **az1000202b-SS** 存储同步服务卡片。
 
-1. From the **az1000202b-ss** Storage Sync Service blade, navigate to the **Sync group** blade and create a new sync group with the following settings:
+1. 来自 **az1000202b-SS** 存储同步服务卡片，导航到 **同步组** 卡片并使用以下设置创建新的同步组：
 
-    - Sync group name: **az1000202b-syncgroup1**
+    - 同步组名称： **az1000202b-syncgroup1**
 
-    - Azure Subscription: the name of the subscription you are using in this lab
+    - 订阅：你用于本逻辑阵列块的订阅名称。
 
-    - Storage account: the resource id of the storage account you created in the previous exercise
+    - 存储帐户：您在上一个练习中创建的存储帐户的资源ID
 
-    - Azure File Share: **az10002bshare1**
+    - Azure文件共享： **az10002bshare1**
 
 
-#### Task 5: Create a server endpoint
+#### 任务 5：创建服务器端点
 
-1. Within the RDP session to the Azure VM, in the Azure portal, from the **az1000202b-ss** Storage Sync Service blade, navigate to the **az1000202b-syncgroup1** blade.
+1. 在Azure VM的RDP会话中，在Azure门户中，来自 **az1000202b-SS** 存储同步服务卡片，导航到 **az1000202b-syncgroup1** 卡。
 
-1. From the **az1000202b-syncgroup1** blade, navigate to the **Add server endpoint** blade and create a new server endpoint with the following settings:
+1. 来自 **az1000202b-syncgroup1** 卡片，导航到 **添加服务器端点** 卡片并使用以下设置创建新的服务器端点：
 
-    - Registered server: **az1000201b-vm1**
+    - 注册服务器： **az1000201b-VM1**
 
-    - Path: **S:\\az10002bShare**
+    - 路径： **S：\\ az10002bShare**
 
-    - Cloud Tiering: **Enabled**
+    - 云分层： **已启用**
 
-        - Always preserve the specified percentage of free space on the volume: **15**
+        - 始终保留卷上指定的可用空间百分比： **15**
 
-        - Only cache files that were accessed or modified within the specified number of days: **30**
+        - 仅缓存在指定天数内访问或修改的文件： **30**
 
-    - Offline Data Transfer: **Disabled**
+    - 串行数据传输 **已禁用**
 
 
-#### Task 6: Validate Azure File Sync operations
+#### 任务 6：验证Azure文件同步操作
 
-1. Within the RDP session to the Azure VM, in the Azure portal, monitor the health status of the server endpoint **az100021b-vm1** on the **az1000202b-syncgroup1** blade, as it changes from **Provisioning** to **Pending** and, eventually, to a green checkmark.
+1. 在Azure VM的RDP会话中，在Azure门户中，监视服务器端点的运行状况 **az100021b-VM1** 在...上 **az1000202b-syncgroup1** 卡片，因为它改变了 **供应** 至 **有待** 并最终成为一个绿色的复选标记。
 
-   > **Note**: You should be able to proceed to the next step after a few minutes. 
+   > **注意**: 几分钟后你应该能够继续下一步了。 
 
-1. In the Azure portal, navigate to the blade for the storage account you created earlier in the lab, switch to the **Files** tab and then click **az10002bshare1**.
+1. 在Azure门户中，导航到 **az10002bshare1** 卡片和显示器 **连** 卡。
 
-1. On the **az10002bshare1** blade, click **Connect**.
+1. 来自 **连** 卡片，将从Windows计算机连接到文件共享的PowerShell命令复制到剪贴板中。
 
-1. From the **Connect** blade, copy into Clipboard the PowerShell commands that connect to the file share from a Windows computer.
+1. 在RDP会话中，启动Windows PowerShell ISE会话。 
 
-1. Within the RDP session, start a Windows PowerShell ISE session. 
+1. 在Windows PowerShell ISE会话中，打开脚本窗格并将其粘贴到本地剪贴板的内容中。
 
-1. From the Windows PowerShell ISE session, open the script pane and paste into it the content of your local Clipboard.
+1. 执行该脚本并验证其输出是否确认Z：驱动器成功映射到Azure存储文件服务共享。
 
-1. Add the ` -Persist` switch to the end of the line containing the `New-PSDrive` cmdlet.
+1. 在RDP会话中，启动文件资源管理器，导航到Z：驱动器，并验证它包含与S：\\ az10002bShare相同的内容
 
-1. Execute the script and verify that its output confirms successful mapping of the Z: drive to the Azure Storage File Service share.
+1. 显示Z：驱动器上各个文件夹的“属性”窗口，查看“安全”选项卡，并注意这些条目表示分配给S：驱动器上相应文件夹的NTFS权限。
 
-1. Within the RDP session, start File Explorer, navigate to the Z: drive, and verify that it contains the same content as S:\\az10002bShare
 
-1. Display the Properties window of individual folders on the Z: drive, review the Security tab, and note that the entries represent NTFS permissions assigned to the corresponding folders on the S: drive.
-
-
-> **Result**: After you completed this exercise, you have deployed the Storage Sync Service, installed the Azure File Sync Agent, registered the Windows Server with Storage Sync Service, created a sync group and a cloud endpoint, created a server endpoint, and validated Azure File Sync operations.
+> **结果**: 完成本练习后，您已部署Storage Sync Service，安装Azure文件同步代理，使用Storage Sync Service注册Windows Server，创建同步组和云端点，创建服务器端点以及验证Azure文件同步操作。

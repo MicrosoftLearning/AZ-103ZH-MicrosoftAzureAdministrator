@@ -1,674 +1,676 @@
+﻿---
+逻辑阵列模块：
+    标题：“负载均衡器和流量管理器”
+    模块：‘实施高级虚拟网络’
 ---
-lab:
-    title: 'Load Balancer and Traffic Manager'
-    module: 'Module 08 - Network Traffic Management'
----
 
-# Lab: Load Balancer and Traffic Manager
+# 逻辑阵列模块：负载均衡器和流量管理器
 
-All tasks in this lab are performed from the Azure portal (including a PowerShell Cloud Shell session) except for Exercise 1 Task 3, which includes steps performed from a Remote Desktop session to an Azure VM
+本逻辑阵列模块中的所有任务均在 Azure 门户（包括 PowerShell Cloud Shell 会话）中执行，但练习 1 任务 3 除外，其中包括从远程桌面会话至 Azure VM 的执行步骤
 
-Lab files: 
+逻辑阵列模块文件： 
 
--  **Labfiles\\Module_08\\Load_Balancer_and_Traffic_Manager\\az-101-03_01_azuredeploy.json**
+-  **Labfiles\\AZ101\\Mod03\\az-101-03_01_azuredeploy.json**
 
--  **Labfiles\\Module_08\\Load_Balancer_and_Traffic_Manager\\az-101-03_01_1_azuredeploy.parameters.json**
+-  **Labfiles\\AZ101\\Mod03\\az-101-03_01_1_azuredeploy.parameters.json**
 
--  **Labfiles\\Module_08\\Load_Balancer_and_Traffic_Manager\\az-101-03_01_2_azuredeploy.parameters.json**
+-  **Labfiles\\AZ101\\Mod03\\az-101-03_01_2_azuredeploy.parameters.json**
 
-### Scenario
+### 方案
   
-Adatum Corporation wants to implement Azure VM-hosted web workloads and facilitate their management for its subsidiary Contoso Corporation in a highly available manner by leveraging load balancing and Network Address Translation (NAT) features of Azure Load Balancer
+Adatum Corporation 希望通过利用 Azure 负载均衡器的负载均衡和网络地址转换（NAT）功能，以高度可用的方式实施 Azure VM 托管的 Web 工作负荷，并为其子公司 Contoso Corporation 的管理提供便利
 
 
-### Objectives
+### 目标
   
-After completing this lab, you will be able to:
+完成本逻辑阵列模块后，您将能够：
 
--  Deploy Azure VMs by using Azure Resource Manager templates
+-  使用 Azure 资源管理器模板部署 Azure VM
 
--  Implement Azure Load Balancing
+-  Azure 负载均衡器
 
--  Implement Azure Traffic Manager load balancing
+-  实施 Azure 流量管理器负载均衡
 
 
-### Exercise 0: Deploy Azure VMs by using Azure Resource Manager templates
+### 练习 0：使用 Azure 资源管理器模板部署 Azure VM
   
-The main tasks for this exercise are as follows:
+本次练习的主要任务如下：
 
-1. Deploy management Azure VMs running Windows Server 2016 Datacenter with the Web Server (IIS) role installed into an availability set in the first Azure region by using an Azure Resource Manager template
+1. 使用 Azure 资源管理器模板部署管理运行 Windows Server 2016 Datacenter 的 Azure VM，并将 Web 服务器（IIS）角色安装到第一个 Azure 区域中的可用性集中
 
-1. Deploy management Azure VMs running Windows Server 2016 Datacenter with the Web Server (IIS) role installed into an availability set in the second Azure region by using an Azure Resource Manager template
+1. 使用 Azure 资源管理器模板部署管理运行 Windows Server 2016 Datacenter 的 Azure VM，并将 Web 服务器（IIS）角色安装到第二个 Azure 区域中的可用性集中
 
 
-#### Task 1: Deploy management Azure VMs running Windows Server 2016 Datacenter with the Web Server (IIS) role installed into an availability set in the first Azure region by using an Azure Resource Manager template
+#### 任务 1：使用 Azure 资源管理器模板部署管理运行 Windows Server 2016 Datacenter 的 Azure VM，并将 Web 服务器（IIS）角色安装到第一个 Azure 区域中的可用性集中
 
-1. From the lab virtual machine, start Microsoft Edge, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using a Microsoft account that has the Owner role in the target Azure subscription.
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge 并浏览 Azure 门户，网址：[**http://portal.Azure.com**](http://portal.azure.com)并使用在目标 Azure 订阅中具有所有者角色的 Microsoft 帐户登录。
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Template deployment**.
+1. 从 **创建资源** 边栏选项卡中搜索 Azure Marketplace 中的 **模板部署**。
 
-1. Use the list of search results to navigate to the **Deploy a custom template** blade.
+1. 使用搜索结果列表导航到 **部署自定义模板** 边栏选项卡。
 
-1. On the **Custom deployment** blade, click the **Build your own template in the editor** link. If you do not see this link, click **Edit template** instead.
+1. 在 **自定义部署** 边栏选项卡上，请选择在 **编辑器中构建自己的模板**。
 
-1. From the **Edit template** blade, load the template file **Labfiles\\Module_08\\Load_Balancer_and_Traffic_Manager\\az-101-03_01_azuredeploy.json**. 
+1. 从 **编辑模板** 边栏选项卡，加载模板文件 **Labfiles\\AZ101\\Mod03\\az-101-03_01_azuredeploy.json**。 
 
-   > **Note**: Review the content of the template and note that it defines deployment of two Azure VMs hosting Windows Server 2016 Datacenter Core into an availability set.
+   > **注**：查看模板的内容，注意其定义了将托管 Windows Server 2016 Datacenter Core 的两个 Azure VM 部署到可用性集中。
 
-1. Save the template and return to the **Custom deployment** blade. 
+1. 请保存模板并返回 **自定义部署** 边栏选项卡。 
 
-1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
+1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数** 边栏选项卡。
 
-1. From the **Edit parameters** blade, load the parameters file **Labfiles\\Module_08\\Load_Balancer_and_Traffic_Manager\\az-101-03_01_1_azuredeploy.parameters.json**. 
+1. 从 **编辑参数** 边栏选项卡，加载参数文件 **Labfiles\\AZ101\\Mod03\\az-101-03_01_1_azuredeploy.parameters.json**。 
 
-1. Save the parameters and return to the **Custom deployment** blade. 
+1. 请保存参数并返回 **自定义部署** 边栏选项卡。 
 
-1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
+1. 从 **自定义部署** 边栏选项卡，使用以下设置启动模板部署：
 
-    - Subscription: the name of the subscription you intend to use in this lab
+    - 订阅：您希望用于本逻辑阵列模块的订阅名称。
 
-    - Resource group: the name of a new resource group **az1010301-RG**
+    - 资源组：新资源组的名称 **az1010301-RG**
 
-    - Location: the name of the Azure region which is closest to the lab location and where you can provision Azure VMs
+    - 位置：最靠近逻辑阵列模块位置的 Azure 区域的名称以及可以在其中配置 Azure VM 的位置
 
-    - Admin Username: **Student**
+    - 管理员用户名： **学生**
 
-    - Admin Password: **Pa55w.rd1234**
+    - 管理员密码： **Pa55w.rd1234**
 
-    - Vm Name Prefix: **az1010301w-vm**
+    - Vm 名称前缀： **az1010301w-vm**
 
-    - Nic Name Prefix: **az1010301w-nic**
+    - Nic 名称前缀： **az1010301w-nic**
 
-    - Image Publisher: **MicrosoftWindowsServer**
+    - 图像发布者： **MicrosoftWindowsServer**
 
-    - Image Offer: **WindowsServer**
+    - 图像提供： **WindowsServer**
 
-    - Image SKU: **2016-Datacenter**
+    - 图像 SKU： **2016-Datacenter**
 
-    - Vm Size: **Standard_D2s_v3**
+    - Vm 大小： **Standard_DS1_v2**
 
-    - Virtual Network Name: **az1010301-vnet**
+    - 虚拟网络名称： **az1010301-vnet**
 
-    - Address Prefix: **10.101.31.0/24**
+    - 地址前缀： **10.101.31.0/24**
 
-    - Virtual Network Resource Group: **az1010301-RG**
+    - 虚拟网络资源组： **az1010301-RG**
 
-    - Subnet0Name: **subnet0**
+    - Subnet0Name： **subnet0**
 
-    - Subnet0Prefix: **10.101.31.0/26**
+    - Subnet0Prefix： **10.101.31.0/26**
 
-    - Availability Set Name: **az1010301w-avset**
+    - 可用性集名称： **az1010301w-avset**
 
-    - Network Security Group Name: **az1010301w-vm-nsg**
+    - 网络安全组名称： **az1010301w-vm-nsg**
 
-    - Modules Url: **https://github.com/Azure/azure-quickstart-templates/raw/master/dsc-extension-iis-server-windows-vm/ContosoWebsite.ps1.zip**
+    - 模块网址： **https://github.com/Azure/azure-quickstart-templates/raw/master/dsc-extension-iis-server-windows-vm/ContosoWebsite.ps1.zip**
 
-    - Configuration Function: **ContosoWebsite.ps1\\ContosoWebsite**
+    - 配置功能： **ContosoWebsite.ps1\\\\ContosoWebsite**
 
-   > **Note**: To identify Azure regions where you can provision Azure VMs, refer to [**https://azure.microsoft.com/en-us/regions/offers/**](https://azure.microsoft.com/en-us/regions/offers/)
+   > **注**：如需识别您可以提供 Azure VM 的 Azure 区域，请查阅[**https://azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)。
 
-   > **Note**: Do not wait for the deployment to complete but proceed to the next task. 
+   > **注**：请勿等待第一台虚拟机预配完成，继续进行下一项任务。 
 
 
-#### Task 2: Deploy management Azure VMs running Windows Server 2016 Datacenter with the Web Server (IIS) role installed into an availability set in the second Azure region by using an Azure Resource Manager template
+#### 任务 2：使用 Azure 资源管理器模板部署管理运行 Windows Server 2016 Datacenter 的 Azure VM，并将 Web 服务器（IIS）角色安装到第二个 Azure 区域中的可用性集中
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Template deployment**.
+1. 从 **创建资源** 边栏选项卡中搜索 Azure Marketplace 中的模板部署。
 
-1. Use the list of search results to navigate to the **Deploy a custom template** blade.
+1. 使用搜索结果列表导航到 **部署自定义模板** 边栏选项卡。
 
-1. On the **Custom deployment** blade, click the **Build your own template in the editor** link. If you do not see this link, click **Edit template** instead.
+1. 在 **自定义部署** 边栏选项卡上，请选择在 **编辑器中构建自己的模板**。
 
-1. From the **Edit template** blade, load the template file **Labfiles\\Module_08\\Load_Balancer_and_Traffic_Manager\\az-101-03_01_azuredeploy.json**. 
+1. 从 **编辑模板** 边栏选项卡，加载模板文件 **Labfiles\\AZ101\\Mod03\\az-101-03_01_azuredeploy.json**。 
 
-   > **Note**: This is the same template you used in the previous task. You will use it to deploy a pair of Azure VMs to the second region. 
+   > **注**：这与您在上一任务中使用的模板相同。您将使用它将一对 Azure VM 部署到第二个区域。 
 
-1. Save the template and return to the **Custom deployment** blade. 
+1. 请保存模板并返回 **自定义部署** 边栏选项卡。 
 
-1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
+1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数** 边栏选项卡。
 
-1. From the **Edit parameters** blade, load the parameters file **Labfiles\\Module_08\\Load_Balancer_and_Traffic_Manager\\az-101-03_01_2_azuredeploy.parameters.json**. 
+1. 从 **编辑参数** 边栏选项卡，加载参数文件 **Labfiles\\AZ101\\Mod03\\az-101-03_01_2_azuredeploy.parameters.json**。 
 
-1. Save the parameters and return to the **Custom deployment** blade. 
+1. 请保存参数并返回 **自定义部署** 边栏选项卡。 
 
-1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
+1. 从 **自定义部署** 边栏选项卡，使用以下设置启动模板部署：
 
-    - Subscription: the name of the subscription you are using in this lab
+    - 订阅：在本次逻辑阵列模块中您所使用的订阅名称
 
-    - Resource group: the name of a new resource group **az1010302-RG**
+    - 资源组：新资源组的名称 **az1010302-RG**
 
-    - Location: the name of the Azure region different from the one you chose in the previous task and where you can provision Azure VMs
+    - 位置：Azure 区域的名称与您在上一任务中选择的名称不同，您可以在其中配置 Azure VM
 
-    - Admin Username: **Student**
+    - 管理员用户名： **学生**
 
-    - Admin Password: **Pa55w.rd1234**
+    - 管理员密码： **Pa55w.rd1234**
 
-    - Vm Name Prefix: **az1010302w-vm**
+    - Vm 名称前缀： **az1010302w-vm**
 
-    - Nic Name Prefix: **az1010302w-nic**
+    - Nic 名称前缀： **az1010302w-nic**
 
-    - Image Publisher: **MicrosoftWindowsServer**
+    - 图像发布者： **MicrosoftWindowsServer**
 
-    - Image Offer: **WindowsServer**
+    - 图像提供： **WindowsServer**
 
-    - Image SKU: **2016-Datacenter**
+    - 图像 SKU： **2016-Datacenter**
 
-    - Vm Size: **Standard_D2s_v3**
+    - Vm 大小： **Standard_DS1_v2**
 
-    - Virtual Network Name: **az1010302-vnet**
+    - 虚拟网络名称： **az1010302-vnet**
 
-    - Address Prefix: **10.101.32.0/24**
+    - 地址前缀： **10.101.32.0/24**
 
-    - Virtual Network Resource Group: **az1010302-RG**
+    - 虚拟网络资源组： **az1010302-RG**
 
-    - Subnet0Name: **subnet0**
+    - Subnet0Name： **subnet0**
 
-    - Subnet0Prefix: **10.101.32.0/26**
+    - Subnet0Prefix： **10.101.32.0/26**
 
-    - Availability Set Name: **az1010302w-avset**
+    - 可用性集名称： **az1010302w-avset**t
 
-    - Network Security Group Name: **az1010302w-vm-nsg**
+    - 网络安全组名称： **az1010302w-vm-nsg**
 
-    - Modules Url: **https://github.com/Azure/azure-quickstart-templates/raw/master/dsc-extension-iis-server-windows-vm/ContosoWebsite.ps1.zip**
+    - 模块网址： **https://github.com/Azure/azure-quickstart-templates/raw/master/dsc-extension-iis-server-windows-vm/ContosoWebsite.ps1.zip**
 
-    - Configuration Function: **ContosoWebsite.ps1\\ContosoWebsite**
+    - 配置功能： **ContosoWebsite.ps1\\\\ContosoWebsite**
 
-   > **Note**: Do not wait for the deployment to complete but proceed to the next exercise.
+   > **注**：请勿等待第一台虚拟机预配完成，请继续进行下一项练习。
 
-> **Result**: After you completed this exercise, you have used Azure Resource Manager templates to initiate deployment of Azure VMs running Windows Server 2016 Datacenter with the Web Server (IIS) role installed into availability sets in two Azure regions.
+> **结果**：完成本次练习后，您已经使用 Azure 资源管理器模板启动了运行 Windows Server 2016 Datacenter 的 Azure VM 的部署，并将 Web 服务器（IIS）角色安装到两个 Azure 区域的可用性集中。
 
 
-### Exercise 1: Implement Azure Load Balancing
+### 练习 1：[x] Azure 负载均衡器
   
-The main tasks for this exercise are as follows:
+本次练习的主要任务如下：
 
-1. Implement Azure load balancing rules in the first region.
+1. 在第一个区域中实施 Azure 负载均衡规则。
 
-1. Implement Azure load balancing rules in the second region.
+1. 在第二个区域中实施 Azure 负载均衡规则。
 
-1. Implement Azure NAT rules in the first region.
+1. 在第一个区域中实施 Azure NAT 规则。
 
-1. Implement Azure NAT rules in the second region.
+1. 在第二个区域中实施 Azure NAT 规则。
 
-1. Verify Azure load balancing and NAT rules
+1. 验证 Azure 负载均衡和 NAT 规则
 
 
-#### Task 1: Implement Azure load balancing rules in the first region
+#### 任务 1：在第一个区域中实施 Azure 负载均衡规则
 
-   > **Note**: Before you start this task, ensure that the template deployment you started in the first task of the previous exercise has completed. 
+   > **注**：开始此任务之前，请确保您在上次练习的第一个任务中启动的模板部署已经完成。 
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Load Balancer**.
+1. 从 **创建资源** 边栏选项卡，搜索 Azure Marketplace 中的 **负载均衡器**。
 
-1. Use the list of search results to navigate to the **Create load balancer** blade.
+1. 请使用搜索结果列表，导航到 **创建负载均衡器** 边栏选项卡。
 
-1. From the **Create load balancer** blade, create a new Azure Load Balancer with the following settings:
+1. 从 **创建负载均衡器** 边栏选项卡中，使用以下设置创建新的 Azure 负载均衡器：
 
-    - Name: **az1010301w-lb**
+    - 名称： **az1010301w-lb**
 
-    - Type: **Public**
+    - 类型： **公共**
 
-    - SKU: **Basic**
+    - SKU： **基础**
 
-    - Public IP address: a new public IP address named **az1010301w-lb-pip**
+    - 公共 IP 地址：一个名为 **az1010301w-lb-pip** 的新公共 IP 地址
 
-    - Assignment: **Dynamic**
+    - 转让： **动态**
 
-    - Subscription: the name of the subscription you are using in this lab
+    - 订阅：在本次逻辑阵列模块中您所使用的订阅名称
 
-    - Resource group: **az1010301-RG**
+    - 资源组： **az1010301-RG**
 
-    - Location: the name of the Azure region in which you deployed Azure VMs in the first task of the previous exercise
+    - 位置：您在上一练习的第一个任务中部署 Azure VM 的 Azure 区域的名称
 
-1. In the Azure portal, navigate to the blade of the newly deployed Azure load balancer **az1010301w-lb**.
+1. 在 Azure 门户中，导航到新部署的 Azure 负载均衡器 **az1010301w-lb** 的边栏选项卡。
 
-1. From the **az1010301w-lb** blade, display the **az1010301w-lb - Backend pools** blade.
+1. 从 **az1010301w-lb** 边栏选项卡，显示 **az1010301w-lb 后端池** 边栏选项卡。
 
-1. From the **az1010301w-lb - Backend pools** blade, add a backend pool with the following settings:
+1. 从 **az1010301w-lb - 后端池** 边栏选项卡，添加具有以下设置的后端池：
 
-    - Name: **az1010301w-bepool**
+    - 名称： **az1010301w-bepool**
 
-    - IP version: **IPv4**
+    - IP 版本： **IPv4**
 
-    - Associated to: **Availability set**
+    - 关联： **可用性集**
 
-    - Availability set: **az1010301w-avset**
+    - 可用性集： **az1010301w-avset**
 
-    - Virtual machine: **az1010301w-vm0** 
+    - 虚拟机： **az1010301w-vm0** 
 
-    - Network IP configuration: **az1010301w-nic0/ipconfig1 (10.101.31.4)**
+    - 网络 IP 配置： **az1010301w-nic0/ipconfig1 (10.101.31.4)**
 
-    - Virtual machine: **az1010301w-vm1** 
+    - 虚拟机： **az1010301w-vm1** 
 
-    - Network IP configuration: **az1010301w-nic1/ipconfig1 (10.101.31.5)**
+    - 网络 IP 配置： **az1010301w-nic1/ipconfig1 (10.101.31.5)**
 
-   > **Note**: It is possible that the IP addresses of the Azure VMs are assigned in the reverse order. 
+   > **注**：可能会按相反顺序分配 Azure VM 的 IP 地址。 
 
-   > **Note**: Wait for the operation to complete. This should take less than a minute.
+   > **注**：等待操作完成。这应该需要不到一分钟。
 
-1. From the **az1010301w-lb - Backend pools** blade, display the **az1010301w-lb - Health probes** blade.
+1. 从 **az1010301w-lb-后端池** 边栏选项卡，显示 **az1010301w-lb -运行状况探测** 边栏选项卡。
 
-1. From the **az1010301w-lb - Health probes** blade, add a health probe with the following settings:
+1. 从 **az1010301w-lb -运行状况探测** 边栏选项卡，添加具有以下设置的运行状况探测：
 
-    - Name: **az1010301w-healthprobe**
+    - 名称： **az1010301w-healthprobe**
 
-    - Protocol: **TCP**
+    - 协议： **TCP**
 
-    - Port: **80**
+    - 端口： **80**
 
-    - Interval: **5** seconds
+    - 间隔： **5 秒**
 
-    - Unhealthy threshold: **2** consecutive failures
+    - 不正常阈值： **2** 个连续故障
 
-    > **Note**: Wait for the operation to complete. This should take less than a minute.
+    > **注**：等待操作完成。这应该需要不到一分钟。
 
-1. From the **az1010301w-lb - Health probes** blade, display the **az1010301w-lb - Load balancing rules** blade.
+1. 从 **az1010301w-lb-运行状况探测** 边栏选项卡，显示 **az1010301w-lb -负载均衡规则** 边栏选项卡。
 
-1. From the **az1010301w-lb - Load balancing rules** blade, add a load balancing rule with the following settings:
+1. 从 **az1010301w-lb -负载均衡规则** 边栏选项卡，添加具有以下设置的负载均衡规则：
 
-    - Name: **az1010301w-lbrule01**
+    - 名称： **az1010301w-lbrule01**
 
-    - IP Version: **IPv4**
+    - IP 版本： **IPv4**
 
-    - Frontend IP address: **LoadBalancerFrontEnd**
+    - 前端 IP 地址：**LoadBalancerFrontEnd**
 
-    - Protocol: **TCP**
+    - 协议：**TCP**
 
-    - Port: **80**
+    - 端口：**80**
 
-    - Backend port: **80**
+    - 后端端口：**80**
 
-    - Backend pool: **az1010301w-bepool (2 virtual machines)**
+    - 后端池： **az1010301w-bepool（2 台虚拟机）**
 
-    - Health probe: **az1010301w-healthprobe (TCP:80)**
+    - 运行状况探测： **az1010301w-healthprobe (TCP:80)**
 
-    - Session persistence: **None**
+    - 会话持久性： **无**
 
-    - Idle timeout (minutes): **4**
+    - 空闲超时（分钟）： **4**
 
-    - Floating IP (direct server return): **Disabled**
+    - 浮动 IP（直接服务器返回）： **禁用**
 
 
-#### Task 2: Implement Azure load balancing rules in the second region
+#### 任务 2：在第二个区域中实施 Azure 负载均衡规则
 
-   > **Note**: Before you start this task, ensure that the template deployment you started in the second task of the previous exercise has completed. 
+   > **注**：开始此任务之前，请确保您在上次练习的第二个任务中启动的模板部署已经完成。 
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Load Balancer**.
+1. 从 **创建资源** 边栏选项卡，搜索 Azure Marketplace 中的 **负载均衡器**。
 
-1. Use the list of search results to navigate to the **Create load balancer** blade.
+1. 请使用搜索结果列表，导航到 **创建负载均衡器** 边栏选项卡。
 
-1. From the **Create load balancer** blade, create a new Azure Load Balancer with the following settings:
+1. 从 **创建负载均衡器** 边栏选项卡中，使用以下设置创建新的 Azure 负载均衡器：
 
-    - Name: **az1010302w-lb**
+    - 名称： **az1010302w-lb**
 
-    - Type: **Public**
+    - 类型： **公共**
 
-    - SKU: **Basic**
+    - SKU： **基础**
 
-    - Public IP address: a new public IP address named **az1010302w-lb-pip**
+    - 公共 IP 地址：一个名为 **az1010302w-lb-pip** 的新公共 IP 地址
 
-    - Assignment: **Dynamic**
+    - 转让：**动态**
 
-    - Subscription: the name of the subscription you are using in this lab
+    - 订阅：在本次逻辑阵列模块中您所使用的订阅名称
 
-    - Resource group: **az1010302-RG**
+    - 资源组： **az1010302-RG**
 
-1. In the Azure portal, navigate to the blade of the newly deployed Azure load balancer **az1010302w-lb**.
+    - 位置：您在上一练习的第二个任务中部署 Azure VM 的 Azure 区域的名称
 
-1. From the **az1010302w-lb** blade, display the **az1010302w-lb - Backend pools** blade.
+1. 在 Azure 门户中，导航到新部署的 Azure 负载均衡器 **az1010302w-lb** 的边栏选项卡。
 
-1. From the **az1010302w-lb - Backend pools** blade, add a backend pool with the following settings:
+1. 从 **az1010302w-lb** 边栏选项卡，显示 **az1010302w-lb - 后端池** 边栏选项卡。
 
-    - Name: **az1010302w-bepool**
+1. 从 **az1010302w-lb - 后端池** 边栏选项卡，添加具有以下设置的后端池：
 
-    - IP version: **IPv4**
+    - 名称： **az1010302w-bepool**
 
-    - Associated to: **Availability set**
+    - IP 版本： **IPv4**
 
-    - Availability set: **az1010302w-avset**
+    - 关联： **可用性集**
 
-    - Virtual machine: **az1010302w-vm0** 
+    - 可用性集： **az1010302w-avset**
 
-    - Network IP configuration: **az1010302w-nic0/ipconfig1 (10.101.32.4)**
+    - 虚拟机： **az1010302w-vm0** 
 
-    - Virtual machine: **az1010302w-vm1** 
+    - 网络 IP 配置： **az1010302w-nic0/ipconfig1 (10.101.32.4)**
 
-    - Network IP configuration: **az1010302w-nic1/ipconfig1 (10.101.32.5)**
+    - 虚拟机： **az1010302w-vm1** 
 
-   > **Note**: It is possible that the IP addresses of the Azure VMs are assigned in the reverse order. 
+    - 网络 IP 配置： **az1010302w-nic1/ipconfig1 (10.101.32.5)**
 
-   > **Note**: Wait for the operation to complete. This should take less than a minute.
+   > **注**：可能会按相反顺序分配 Azure VM 的 IP 地址。 
 
-1. From the **az1010302w-lb - Backend pools** blade, display the **az1010302w-lb - Health probes** blade.
+   > **注**：等待操作完成。这应该需要不到一分钟。
 
-1. From the **az1010302w-lb - Health probes** blade, add a health probe with the following settings:
+1. 从 **az1010302w-lb - 后端池** 边栏选项卡，显示 **az1010302w-lb - 运行状况探测** 边栏选项卡。
 
-    - Name: **az1010302w-healthprobe**
+1. 从 **az1010302w-lb - 运行状况探测** 边栏选项卡，添加具有以下设置的运行状况探测：
 
-    - Protocol: **TCP**
+    - 名称： **az1010302w-healthprobe**
 
-    - Port: **80**
+    - 协议： **TCP**
 
-    - Interval: **5** seconds
+    - 端口： **80**
 
-    - Unhealthy threshold: **2** consecutive failures
+    - 间隔： **5 秒**
 
-    > **Note**: Wait for the operation to complete. This should take less than a minute.
+    - 不正常阈值： **2** 个连续故障
 
-1. From the **az1010302w-lb - Health probes** blade, display the **az1010302w-lb - Load balancing rules** blade.
+    > **注**：等待操作完成。这应该需要不到一分钟。
 
-1. From the **az1010302w-lb - Load balancing rules** blade, add a load balancing rule with the following settings:
+1. 从 **az1010302w-lb - 运行状况探测** 边栏选项卡，显示 **az1010302w-lb - 负载均衡规则** 边栏选项卡。
 
-    - Name: **az1010302w-lbrule01**
+1. 从 **az1010302w-lb - 负载均衡规则** 边栏选项卡，添加具有以下设置的负载均衡规则：
 
-    - IP Version: **IPv4**
+    - 名称： **az1010302w-lbrule01**
 
-    - Frontend IP address: **LoadBalancerFrontEnd**
+    - IP 版本： **IPv4**
 
-    - Protocol: **TCP**
+    - 前端 IP 地址： **LoadBalancerFrontEnd**
 
-    - Port: **80**
+    - 协议： **TCP**
 
-    - Backend port: **80**
+    - 端口： **80**
 
-    - Backend pool: **az1010302w-bepool (2 virtual machines)**
+    - 后端端口： **80**
 
-    - Health probe: **az1010302w-healthprobe (TCP:80)**
+    - 后端池： **az1010302w-bepool（2 台虚拟机）**
 
-    - Session persistence: **None**
+    - 运行状况探测： **az1010302w-healthprobe (TCP:80)**
 
-    - Idle timeout (minutes): **4**
+    - 会话持久性： **无**
 
-    - Floating IP (direct server return): **Disabled**
+    - 空闲超时（分钟）： **4**
 
+    - 浮动 IP（直接服务器返回）： **禁用**
 
-#### Task 3: Implement Azure NAT rules in the first region
 
-1. In the Azure portal, navigate to the blade of the Azure load balancer **az1010301w-lb**.
+#### 任务 3：在第一个区域中实施 Azure NAT 规则
 
-1. From the **az1010301w-lb** blade, display the **az1010301w-lb - Inbound NAT rules** blade.
+1. 在 Azure 门户中，导航到 Azure 负载均衡器 **az1010301w-lb** 的边栏选项卡。
 
-   > **Note**: The NAT functionality does not rely on health probes.
+1. 从 **az1010301w-lb** 边栏选项卡，显示 **az101031w-lb-入站 NAT 规则** 边栏选项卡。
 
-1. From the **az1010301w-lb - Inbound NAT rules** blade, add the first inbound NAT rule with the following settings:
+   > **注**：NAT 功能不依赖于运行状况探测。
 
-    - Name: **az1010301w-vm0-RDP**
+1. 从 **az1010301w-lb-入站 NAT 规则** 边栏选项卡，添加具有以下设置的第一个入站 NAT 规则：
 
-    - Frontend IP address: **LoadBalancerFrontEnd**
+    - 名称： **az1010301w-vm0-RDP**
 
-    - IP Version: **IPv4**
+    - 前端 IP 地址： **LoadBalancerFrontEnd**
 
-    - Service: **Custom**
+    - IP 版本： **IPv4**
 
-    - Protocol: **TCP**
+    - 服务： **自定义**
 
-    - Port: **33890**
+    - 协议： **TCP**
 
-    - Target virtual machine: **az1010301w-vm0**
+    - 端口： **33890**
 
-    - Network IP configuration: **ipconfig1 (10.101.31.4)** or **ipconfig1 (10.101.31.5)**
+    - 目标虚拟机： **az1010301w-vm0**
 
-    - Port mapping: **Custom**
+    - 网络 IP 配置： **ipconfig1 (10.101.31.4)** 或 **ipconfig1 (10.101.31.5)**
 
-    - Floating IP (direct server return): **Disabled**
+    - 端口映射： **自定义**
 
-    - Target port: **3389**
+    - 浮动 IP（直接服务器返回）： **禁用**
 
-    > **Note**: Wait for the operation to complete. This should take less than a minute.
+    - 目标端口： **3389**
 
-1. From the **az1010301w-lb - Inbound NAT rules** blade, add the second inbound NAT rule with the following settings:
+    > **注**：等待操作完成。这应该需要不到一分钟。
 
-    - Name: **az1010301w-vm1-RDP**
+1. 从 **az1010301w-lb - 入站 NAT 规则** 边栏选项卡，添加具有以下设置的第二个入站 NAT 规则：
 
-    - Frontend IP address: **LoadBalancerFrontEnd**
+    - 名称： **az1010301w-vm1-RDP**
 
-    - IP Version: **IPv4**
+    - 前端 IP 地址： **LoadBalancerFrontEnd**
 
-    - Service: **Custom**
+    - IP 版本： **IPv4**
 
-    - Protocol: **TCP**
+    - 服务： **自定义**
 
-    - Port: **33891**
+    - 协议： **TCP**
 
-    - Target virtual machine: **az1010301w-vm1**
+    - 端口： **33891**
 
-    - Network IP configuration: **ipconfig1 (10.101.31.4)** or **ipconfig1 (10.101.31.5)**
+    - 目标虚拟机： **az1010301w-vm1**
 
-    - Port mapping: **Custom**
+    - 网络 IP 配置： **ipconfig1 (10.101.31.4)** 或 **ipconfig1 (10.101.31.5)**
 
-    - Floating IP (direct server return): **Disabled**
+    - 端口映射： **自定义**
 
-    - Target port: **3389**
+    - 浮动 IP（直接服务器返回）： **禁用**
 
-    > **Note**: Wait for the operation to complete. This should take less than a minute.
+    - 目标端口： **3389**
 
+    > **注**：等待操作完成。这应该需要不到一分钟。
 
-#### Task 4: Implement Azure NAT rules in the second region
 
-1. In the Azure portal, navigate to the blade of the Azure load balancer **az1010302w-lb**.
+#### 任务 4：在第二个区域中实施 Azure NAT 规则
 
-1. From the **az1010302w-lb** blade, display the **az1010302w-lb - Inbound NAT rules** blade.
+1. 在 Azure 门户中，导航到 Azure 负载均衡器 **az1010302w-lb** 的边栏选项卡。
 
-1. From the **az1010302w-lb - Inbound NAT rules** blade, add the first inbound NAT rule with the following settings:
+1. 从 **az1010302w-lb** 边栏选项卡，显示 **az1010302w-lb - 入站 NAT 规则** 边栏选项卡。
 
-    - Name: **az1010302w-vm0-RDP**
+1. 从 **az1010302w-lb - 入站 NAT 规则** 边栏选项卡，添加具有以下设置的第一个入站 NAT 规则：
 
-    - Frontend IP address: **LoadBalancedFrontEnd**
+    - 名称： **az1010302w-vm0-RDP**
 
-    - IP Version: **IPv4**
+    - 前端 IP 地址： **LoadBalancedFrontEnd**
 
-    - Service: **Custom**
+    - IP 版本： **IPv4**
 
-    - Protocol: **TCP**
+    - 服务： **自定义**
 
-    - Port: **33890**
+    - 协议： **TCP**
 
-    - Target virtual machine: **az1010302w-vm0**
+    - 端口： **33890**
 
-    - Network IP configuration: **ipconfig1 (10.101.32.4)** or **ipconfig1 (10.101.32.5)**
+    - 目标虚拟机： **az1010302w-vm0**
 
-    - Port mapping: **Custom**
+    - 网络 IP 配置： **ipconfig1 (10.101.32.4)** 或 **ipconfig1 (10.101.32.5)**
 
-    - Floating IP (direct server return): **Disabled**
+    - 端口映射： **自定义**
 
-    - Target port: **3389**
+    - 浮动 IP（直接服务器返回）： **禁用**
 
-    > **Note**: Wait for the operation to complete. This should take less than a minute.
+    - 目标端口： **3389**
 
-1. From the **az1010302w-lb - Inbound NAT rules** blade, add the second inbound NAT rule with the following settings:
+    > **注**：等待操作完成。这应该需要不到一分钟。
 
-    - Name: **az1010302w-vm1-RDP**
+1. 从 **az1010302w-lb - 入站 NAT 规则** 边栏选项卡，添加具有以下设置的第二个入站 NAT 规则：
 
-    - Frontend IP address: **LoadBalancedFrontEnd**
+    - 名称： **az1010302w-vm1-RDP**
 
-    - IP Version: **IPv4**
+    - 前端 IP 地址： **LoadBalancedFrontEnd**
 
-    - Service: **Custom**
+    - IP 版本： **IPv4**
 
-    - Protocol: **TCP**
+    - 服务： **自定义**
 
-    - Port: **33891**
+    - 协议： **TCP**
 
-    - Target virtual machine: **az1010302w-vm1**
+    - 端口： **33891**
 
-    - Network IP configuration: **ipconfig1 (10.101.32.4)** or **ipconfig1 (10.101.32.5)**
+    - 目标虚拟机： **az1010302w-vm1**
 
-    - Port mapping: **Custom**
+    - 网络 IP 配置： **ipconfig1 (10.101.32.4)** 或 **ipconfig1 (10.101.32.5)**
 
-    - Floating IP (direct server return): **Disabled**
+    - 端口映射： **自定义**
 
-    - Target port: **3389**
+    - 浮动 IP（直接服务器返回）： **禁用**
 
-    > **Note**: Wait for the operation to complete. This should take less than a minute.
+    - 目标端口： **3389**
 
+    > **注**：等待操作完成。这应该需要不到一分钟。
 
-#### Task 5: Verify Azure load balancing and NAT rules.
 
-1. In the Azure portal, navigate to the blade of the Azure load balancer **az1010301w-lb**.
+#### 任务 5：验证 Azure 负载均衡和 NAT 规则。
 
-1. On the **az1010301w-lb** blade, identify the public IP address assigned to the load balancer frontend.
+1. 在 Azure 门户中，导航到 Azure 负载均衡器 **az1010301w-lb** 的边栏选项卡。
 
-1. In the Microsoft Edge window, open a new tab and browse to the IP address you identified in the previous step.
+1. 在 **az1010301w-lb** 边栏选项卡上，标识分配给负载均衡器前端的公共 IP 地址。
 
-1. Verify that the tab displays the default Internet Information Services home page.
+1. 在 Microsoft Edge 窗口中，打开一个新选项卡，并浏览到您在上一步中识别的 IP 地址。
 
-1. Close the browser tab displaying the default Internet Information Services home page.
+1. 确认选项卡显示默认的 Internet 信息服务主页。
 
-1. In the Azure portal, navigate to the blade of the Azure load balancer **az1010301w-lb**.
+1. 关闭显示默认 Internet 信息服务主页的浏览器选项卡。
 
-1. On the **az1010301w-lb** blade, identify the public IP address assigned to the load balancer frontend.
+1. 在 Azure 门户中，导航到 Azure 负载均衡器 **az1010301w-lb** 的边栏选项卡。
 
-1. From the lab virtual machine, run the following command, after replacing the &lt;az1010301w-lb_public_IP&lt; placeholder with the IP address you identified in the previous task:
+1. 在 **az1010301w-lb** 边栏选项卡上，标识分配给负载均衡器前端的公共 IP 地址。
+
+1. 在逻辑阵列模块虚拟机中，使用您在上一任务中确定的 IP 地址替换&lt;az1010301w-lb_public_IP&lt;占位符后，运行以下命令：
 
    ```
    mstsc /v:<az1010301w-lb_public_IP>:33890
    ```
 
-   > **Note**: This command initiates a Remote Desktop session to the **az1010301w-vm0** Azure VM by using the **az1010301w-vm0-RDP** NAT rule you created in the previous task.
+   > **注**：此命令使用您在上一任务中创建的 **az1010301w-vm0-RDP** NAT 规则，启动到 **az1010301w-vm0** Azure VM 的远程桌面会话。
 
-1. When prompted to sign in, provide the following credentials:
+1. 当系统提示您登录时，请提供以下凭据：
 
-    - Admin Username: **Student**
+    - 管理员用户名：**学生**
 
-    - Admin Password: **Pa55w.rd1234**
+    - 管理员密码：**Pa55w.rd1234**
 
-1. Once you sign in, from the command prompt, run the following command:
+1. 登录后，在命令提示符下运行以下命令：
 
    ```
    hostname
    ```
 
-1. Review the output and verify that you are actually connected to the **az1010301w-vm0** Azure VM.
+1. 查看输出并验证您是否实际连接到 **az1010301w-vm0** Azure VM。
 
-   > **Note**: Repeat the same tests for the second region.
+   > **注**：对第二个区域重复相同的测试。
 
-> **Result**: After you completed this exercise, you have implemented and verified load balancing rules and NAT rules of Azure load balancers in both regions.
-
-
-### Exercise 2: Implement Azure Traffic Manager load balancing
-
-The main tasks for this exercise are as follows:
-
-1. Assign DNS names to public IP addresses of Azure load balancers
-
-1. Implement Azure Traffic Manager load balancing
-
-1. Verify Azure Traffic Manager load balancing
+> **结果**：完成本次练习后，您已经在两个区域实施并验证了 Azure 负载均衡器的负载均衡规则和 NAT 规则。
 
 
-#### Task 1: Assign DNS names to public IP addresses of Azure load balancers
+### 练习 2：实施 Azure 流量管理器负载均衡
 
-   > **Note**: This task is necessary because each Traffic Manager endpoint must have a DNS name assigned. 
+本次练习的主要任务如下：
 
-1. In the Azure portal, navigate to the blade of the public IP address resource associated with the Azure load balancer in the first region named **az1010301w-lb-pip**. 
+1. 将 DNS 名称分配给 Azure 负载均衡器的公共 IP 地址
 
-1. From the **az1010301w-lb-pip** blade, display its **Configuration** blade. 
+1. 实施 Azure 流量管理器负载均衡
 
-1. From the **az1010301w-lb-pip - Configuration** blade set the **DNS name label** of the public IP address to a unique value. 
-
-   > **Note**: The green check mark in the **DNS name label (optional)** text box will indicate whether the name you typed in is valid and unique. 
-
-1. Navigate to the blade of the public IP address resource associated with the Azure load balancer in the second region named **az1010302w-lb-pip**. 
-
-1. From the **az1010302w-lb-pip** blade, display its **Configuration** blade. 
-
-1. From the **az1010302w-lb-pip - Configuration** blade set the **DNS name label** of the public IP address to a unique value. 
-
-   > **Note**: The green check mark in the **DNS name label (optional)** text box will indicate whether the name you typed in is valid and unique. 
+1. 验证 Azure 流量管理器负载均衡
 
 
-#### Task 2: Implement Azure Traffic Manager load balancing
+#### 任务 1：将 DNS 名称分配给 Azure 负载均衡器的公共 IP 地址
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+   > **注**：此任务是必要的，因为每个流量管理器终结点都必须分配一个 DNS 名称。 
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Traffic Manager profile**.
+1. 在 Azure 门户中，导航到名为 **az1010301w-lb-pip** 的第一个区域中与 Azure 负载均衡器关联的公共 IP 地址资源的边栏选项卡。 
 
-1. Use the list of search results to navigate to the **Create Traffic Manager profile** blade.
+1. 从 **az1010301w-lb-pip** 边栏选项卡，显示其 **配置** 边栏选项卡。 
 
-1. From the **Create Traffic Manager profile** blade, create a new Azure Traffic Manager profile with the following settings:
+1. 从 **az1010301w-lb-pip-配置** 边栏选项卡将公共 IP 地址的 **DNS 名称标签** 设置为唯一值。 
 
-    - Name: a globally unique name in the trafficmanager.net DNS namespace
+   > **注**： **DNS 名称标签（可选）** 文本框中的绿色复选标记将指示您输入的名称是否有效且唯一。 
 
-    - Routing method: **Weighted**
+1. 导航到名为 **az1010302w-lb-pip** 的第二个区域中与 Azure 负载均衡器关联的公共 IP 地址资源的边栏选项卡。 
 
-    - Subscription: the name of the subscription you are using in this lab
+1. 从 **az1010302w-lb-pip** 边栏选项卡，显示其 **配置** 边栏选项卡。 
 
-    - Resource group: the name of a new resource group **az1010303-RG**
+1. 从 **az1010302w-lb-pip - 配置** 边栏选项卡，将公共 IP 地址的 **DNS 名称标签** 设置为唯一值。 
 
-    - Location: either of the Azure regions you used earlier in this lab
-
-1. In the Azure portal, navigate to the blade of the newly provisioned Traffic Manager profile.
-
-1. From the Traffic Manager profile blade, display its **Configuration** blade and review the configuration settings.
-
-   > **Note**: The default TTL of the Traffic Manager profile DNS records is 60 seconds
-
-1. From the Traffic Manager profile blade, display its **Endpoints** blade.
-
-1. From the **Endpoints** blade, add the first endpoint with the following settings:
-
-    - Type: **Azure endpoint**
-
-    - Name: **az1010301w-lb-pip**
-
-    - Target resource type: **Public IP address**
-
-    - Target resource: **az1010301w-lb-pip**
-
-    - Weight: **100**
-
-    - Custom Header settings: leave blank
-
-    - Add as disabled: leave blank
-
-1. From the **Endpoints** blade, add the second endpoint with the following settings:
-
-    - Type: **Azure endpoint**
-
-    - Name: **az1010302w-lb-pip**
-
-    - Target resource type: **Public IP address**
-
-    - Target resource: **az1010302w-lb-pip**
-
-    - Weight: **100**
-
-    - Custom Header settings: leave blank
-
-    - Add as disabled: leave blank
-
-1. On the **Endpoints** blade, examine the entries in the **MONITORING STATUS** column for both endpoints. Wait until both are listed as **Online** before you proceed to the next task.
+   > **注**： **DNS 名称标签（可选）** 文本框中的绿色复选标记将指示您输入的名称是否有效且唯一。 
 
 
-#### Task 3: Verify Azure Traffic Manager load balancing
+#### 任务 2：实施 Azure 流量管理器负载均衡
 
-1. From the **Endpoints** blade, switch to the **Overview** section of the Traffic Manager profile blade.
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. Note the DNS name assigned to the Traffic Manager profile (the string following the **http://** prefix). 
+1. 从 **创建资源** 边栏选项卡中，搜索 Azure Marketplace 中的 **Traffic Manager 个人资料**。
 
-1. From the Azure Portal, start a PowerShell session in the Cloud Shell pane. 
+1. 使用搜索结果列表导航到 **创建流量管理器个人资料** 边栏选项卡。
 
-   > **Note**:  If this is the first time you are launching the Cloud Shell in the current Azure subscription, you will be asked to create an Azure file share to persist Cloud Shell files. If so, accept the defaults, which will result in creation of a storage account in an automatically generated resource group.
+1. 从 **创建流量管理器个人资料** 边栏选项卡，使用以下设置创建新的 Azure 流量管理器个人资料：
 
-1. In the Cloud Shell pane, run the following command, replacing the &lt;TM_DNS_name&lt; placeholder with the value of the DNS name assigned to the Traffic Manager profile you identified in the previous task:
+    - 名称：trafficmanager.net DNS 命名空间中的全局唯一名称
 
-   ```
-   nslookup <TM_DNS_name>
-   ```
+    - 路由方法： **加权**
 
-1. Review the output and note the **Name** entry. This should match the DNS name of the one of the Traffic Manager profile endpoints you created in the previous task.
+    - 订阅：在本次逻辑阵列模块中您所使用的订阅名称
 
-1. Wait for at least 60 seconds and run the same command again:
+    - 资源组：新资源组的名称 **az1010303-RG**
+
+    - 位置：您之前在本逻辑阵列模块中使用的任何一个 Azure 区域
+
+1. 在 Azure 门户中，导航到新预配的流量管理器个人资料 **az1010303-tm** 的边栏选项卡。
+
+1. 从 **az1010303-tm** 边栏选项卡，显示 **az1010303-tm-配置** 边栏选项卡并查看配置设置。
+
+   > **注**：流量管理器个人资料 DNS 记录的默认 TTL 为 60 秒
+
+1. 从 **az1010303-tm** 边栏选项卡，显示 **az1010303-tm -终结点** 边栏选项卡。
+
+1. 从 **az1010303-tm-终结点** 边栏选项卡，添加具有以下设置的第一个终结点：
+
+    - 类型：**Azure 终结点**
+
+    - 名称： **az1010301w-lb-pip**
+
+    - 目标资源类型： **公共 IP 地址**
+
+    - 目标资源： **az1010301w-lb-pip**
+
+    - 权重：**100**
+
+    - 自定义页眉设置：保留为空
+
+    - 添加为禁用：保留为空
+
+1. 从 **az1010303-tm - 终结点** 边栏选项卡，添加具有以下设置的第二个终结点：
+
+    - 类型： **Azure 终结点**
+
+    - 名称： **az1010302w-lb-pip**
+
+    - 目标资源类型： **公共 IP 地址**
+
+    - 目标资源： **az1010302w-lb-pip**
+
+    - 权重： **100**
+
+    - 自定义页眉设置：保留为空
+
+    - 添加为禁用：保留为空
+
+1. 在 **az1010303-tm - 终结点** 边栏选项卡上，检查 **监控状态** 列中两个终结点的条目。请等待两个终结点都列为 **联机** 状态，然后再继续执行下一个任务。
+
+
+#### 任务 3：验证 Azure 流量管理器负载均衡
+
+1. 从 **az1010303-tm-终结点** 边栏选项卡，切换到 **az1010303-tm** 边栏选项卡以显示 **概述** 部分。
+
+1. 请注意分配给流量管理器个人资料的 DNS 名称（位于 **http://** prefix 后面的字符串）。 
+
+1. 从 Azure 门户，在 Cloud Shell 窗格中启动 PowerShell 会话。 
+
+   > **注**：  如果这是您第一次在当前 Azure 订阅中启动 Cloud Shell，则会要求您创建 Azure 文件共享以保留 Cloud Shell 文件。如果是，接受默认设置，这样会在自动生成的资源组中创建存储帐户。
+
+1. 在 Cloud Shell 窗格中，运行以下命令，将&lt;TM_DNS_name&lt;占位符替换为分配给您在上一任务中标识的流量管理器个人资料的 DNS 名称的值：
 
    ```
    nslookup <TM_DNS_name>
    ```
-1. Review the output and note the **Name** entry. This time, the entry should match the DNS name of the other Traffic Manager profile endpoint you created in the previous task.
 
-> **Result**: After you completed this exercise, you have implemented and verified Azure Traffic Manager load balancing
+1. 查看输出并记下 **名称** 条目。这应该与您在上一任务中创建的一个流量管理器个人资料终结点的 DNS 名称相匹配。
+
+1. 等待至少 60 秒，然后再次运行相同的命令：
+
+   ```
+   nslookup <TM_DNS_name>
+   ```
+1. 查看输出并记下 **名称** 条目。此时，条目应与您在上一任务中创建的其他流量管理器个人资料终结点的 DNS 名称相匹配。
+
+> **结果**：完成本次练习后，您已实施并验证了 Azure 流量管理器负载均衡

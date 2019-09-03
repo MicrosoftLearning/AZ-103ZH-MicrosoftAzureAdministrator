@@ -1,287 +1,251 @@
+﻿---
+逻辑阵列模块：
+    标题：‘配置 Azure DNS’
+    模块：‘虚拟网络’
 ---
-lab:
-    title: 'Configure Azure DNS'
-    module: 'Module 04 - Virtual Networking'
----
 
-# Lab: Configure Azure DNS
+# 逻辑阵列模块：配置 Azure DNS
   
-All tasks in this lab are performed from the Azure portal (including a PowerShell Cloud Shell session) 
+本逻辑阵列模块中的所有任务都是从 Azure 门户执行的（包括 PowerShell Cloud Shell 会话） 
 
-   > **Note**: When not using Cloud Shell, the lab virtual machine must have the Azure PowerShell 1.2.0 module (or newer) installed [https://docs.microsoft.com/en-us/powershell/azure/install-az-ps](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps)
+   > **注**：不使用 Cloud Shell 时，逻辑阵列模块虚拟机必须安装 Azure PowerShell 1.2.0 模块（或更新版本） https://docs.Microsoft.com/zh-cn/powershell/ Azure /install-az-ps?view=azps-1.2.0
 
-Lab files: 
+逻辑阵列模块文件： 
 
--  **Labfiles\\Module_04\\Configure_Azure_DNS\\az-100-04b_01_azuredeploy.json**
+-  **Allfiles/Labfiles/AZ-100.4/az-100-04b_01_ Azure deploy.json**
 
--  **Labfiles\\Module_04\\Configure_Azure_DNS\\az-100-04b_02_azuredeploy.json**
+-  **Allfiles/Labfiles/AZ-100.4/az-100-04b_02_azuredeploy.json**
 
--  **Labfiles\\Module_04\\Configure_Azure_DNS\\az-100-04_azuredeploy.parameters.json**
+-  **Allfiles/Labfiles/AZ-100.4/az-100-04_ Azure deploy.parameters.json**
 
 
-### Scenario
+### 方案
   
-Adatum Corporation wants to implement public and private DNS service in Azure without having to deploy its own DNS servers. 
+Adatum Corporation 希望在 Azure 中实现公共和私人 DNS 服务，而无需部署其自身 DNS 服务器。 
 
 
-### Objectives
+### 目标
   
-After completing this lab, you will be able to:
+完成本逻辑阵列模块后，您将能够：
 
-- Configure Azure DNS for public domains
+- 为公共域配置 Azure DNS
 
-- Configure Azure DNS for private domains
-
-
-### Exercise 1: Configure Azure DNS for public domains
-
-The main tasks for this exercise are as follows:
-
-1. Create a public DNS zone
-
-1. Create a DNS record in the public DNS zone
-
-1. Validate Azure DNS-based name resolution for the public domain
+- 为私有域配置 Azure DNS
 
 
-#### Task 1: Create a public DNS zone
+### 练习 1：为公共域配置 Azure DNS
+
+本次练习的主要任务如下：
+
+1. 创建公共 DNS 区域
+
+1. 在公共 DNS 区域中创建 DNS 记录
+
+1. 验证公共域的基于 Azure DNS 的名称解析
+
+
+#### 任务 1：创建公共 DNS 区域
   
-1. From the lab virtual machine, start Microsoft Edge, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using a Microsoft account that has the Owner role in the Azure subscription you intend to use in this lab.
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，在 **http://portal.Azure.com** 上浏览至 Azure 门户，并使用在您计划用于本次逻辑阵列模块的 Azure 订阅中具有“所有者”角色的 Microsoft 帐户进行登录。
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+1. 在 Azure 门户中，请导航到“**新建**”边栏选项卡。
 
-1. From the **Create a resource** blade, search Azure Marketplace for **DNS zone**.
+1. 从“**新建**”边栏选项卡，搜索 Azure 市场中的 **DNS 区域**。
 
-1. Select **DNS Zone**, and then click **Create**.
+1. 请使用搜索结果列表，导航到“**创建 DNS 区域**”边栏选项卡。
 
-1. From the to **Create DNS zone** blade, create a new DNS zone with the following settings: 
+1. 从“**创建 DNS 区域**”边栏选项卡，创建新的 DNS 区域，设置如下： 
 
-    - Subscription: the name of the Azure subscription you are using in this lab
+    - 名称：**com** 命名空间中任何唯一、有效的 DNS 域名
 
-    - Resource group: the name of a new resource group **az1000401b-RG**
+    - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
-    - Name: any unique, valid DNS domain name in the **.com** namespace
+    - 资源组：新资源组 **az1000401b-RG** 的名称
 
-    - Resource group location: **East US** (or a supported region near you)
+    - 资源组位置：最靠近逻辑阵列模块位置的 Azure 区域名称并且您可以在其中设置 Azure DNS 区域
 
 
-#### Task 2: Create a DNS record in the public DNS zone
+#### 任务 2：在公共 DNS 区域中创建 DNS 记录
   
-1. From the Azure Portal, start a PowerShell session in the Cloud Shell. 
+1. 在 Azure 门户中，在 Cloud Shell 中启动 PowerShell 会话。 
 
-   > **Note**: If this is the first time you are launching the Cloud Shell in the current Azure subscription, you will be asked to create an Azure file share to persist Cloud Shell files. If so, accept the defaults, which will result in creation of a storage account in an automatically generated resource group.
+   > **注**：如果这是您第一次在当前 Azure 订阅中启动 Cloud Shell，则会要求您创建 Azure 文件共享以保留 Cloud Shell 文件。如果是，接受默认设置，这样会在自动生成的资源组中创建存储帐户。
 
-1. From your lab computer open a Powershell session, run the following in order to identify the public IP address of your lab computer:
+1. 在 Cloud Shell 窗格中，运行以下命令以标识逻辑阵列模块计算机的公共 IP 地址：
 
-   ```pwsh
+   ```
    Invoke-RestMethod http://ipinfo.io/json | Select-Object -ExpandProperty IP
    ```
 
-   > **Note**: Take a note of this IP address. You will use it later in this task.
+   > **注**：记下该 IP 地址。在本任务中，您后续将需要用到该地址。
 
-1. In the Cloud Shell pane, run the following in order to create a public IP address resource:
+1. 在 Cloud Shell 窗格中，运行以下命令以创建公共 IP 地址资源：
 
-   ```pwsh
-   $rg = Get-AzResourceGroup -Name az1000401b-RG
+   ```
+   $rg=Get-AzResourceGroup -Name az1000401b-RG
 
    New-AzPublicIpAddress -ResourceGroupName $rg.ResourceGroupName -Sku Basic -AllocationMethod Static -Name az1000401b-pip -Location $rg.Location
    ```
 
-1. In the Azure portal, navigate to the **az1000401b-RG** resource group blade.
+1. 在 Azure 门户中，导航到 **az1000401b-RG** 资源组边栏选项卡。
 
-1. From the **az1000401b-RG** resource group blade, navigate to the blade displaying newly created public DNS zone.
+1. 从 **az1000401b-RG** 资源组边栏选项卡，导航到显示新创建公共 DNS 区域的边栏选项卡。
 
-1. From the DNS zone blade, click **+ Record set** to navigate to the **Add record set** blade
+1. 从 DNS 区域边栏选项卡，导航到“**添加记录集**”边栏并创建 DNS 记录，设置如下：
 
-1. Create a DNS record with the following settings:
+    - 名称： **mylabvmpip**
 
-    - Name: **mylabvmpip**
+    - 类型： **A**
 
-    - Type: **A**
+    - 别名记录集: **否**
 
-    - Alias record set: **No**
+    - TTL： **1**
 
-    - TTL: **1**
+    - TTL 单位： **小时**
 
-    - TTL unit: **Hours**
+    - IP 地址：您在此任务中先前确定的逻辑阵列模块计算机的公共 IP 地址
 
-    - IP ADDRESS: the public IP address of your lab computer you identified earlier in this task
+1. 从“**添加记录集**”边栏选项卡，创建另一条记录，设置如下：
 
-1. From the Overview blade, click **+ Record set**, and create another record with the following settings:
+    - 名称： **my Azure pip**
 
-    - Name: **myazurepip**
+    - 类型： **A**
 
-    - Type: **A**
+    - 别名记录集: **是**
 
-    - Alias record set: **Yes**
+    - 别名类型： **Azure 资源**
 
-    - Alias type: **Azure resource**
+    - 选择订阅：您希望用于本逻辑阵列模块的 Azure 订阅名称。
 
-    - Choose a subscription: the name of the Azure subscription you are using in this lab
+    - Azure 资源： **az1000401b-pip**
 
-    - Azure resource: **az1000401b-pip**
+    - TTL： **1**
 
-    - TTL: **1**
-
-    - TTL unit: **Hours**
+    - TTL 单位： **小时**
 
 
-#### Task 3: Validate Azure DNS-based name resolution for the public domain
+#### 任务 3：验证公共域的基于 Azure DNS 的名称解析
 
-1. On the DNS zone blade, note the list of the name servers that host the zone you created. You will use the first of them named in the next step.
+1. 在 DNS 区域边栏选项卡上，记下承载您创建区域的名称服务器列表。您将使用在下一步中命名的第一个。
 
-1. From the lab virtual machine, start Command Prompt and run the following to validate the name resolution of the two newly created DNS records (where &lt;custom_DNS_domain&gt; represents the custom DNS domain you created in the first task of this exercise and &lt;name_server&gt; represents the name of the DNS name server you identified in the previous step): 
+1. 从逻辑阵列模块虚拟机，启动命令提示符并运行以下命令以验证两个新创建 DNS 记录的名称解析（其中，&lt；custom_DNS_domain&gt；表示您在本次练习的第一个任务中创建的自定义 DNS 域，并且&lt；name_server&gt；表示您在上一步中确定的 DNS 名称服务器的名称）： 
 
    ```
    nslookup mylabvmpip.<custom_DNS_domain> <name_server>
    
-   nslookup myazurepip.<custom_DNS_domain> <name_server>
+   nslookup my Azure pip.<custom_DNS_domain> <name_server>
    ```
 
-1. Verify that the IP addresses returned match those you identified earlier in this task.
+1. 验证返回的 IP 地址是否与您在此任务中先前确定的 IP 地址相匹配。
 
-> **Result**: After you completed this exercise, you have created a public DNS zone, created a DNS record in the public DNS zone, and validated Azure DNS-based name resolution for the public domain.
+> **结果**：完成此练习后，您已创建公共 DNS 区域，在公共 DNS 区域中创建 DNS 记录，并验证公共域的基于 Azure DNS 的名称解析。
 
 
-### Exercise 2: Configure Azure DNS for private domains
+### 练习 2：为私有域配置 Azure DNS
   
-The main tasks for this exercise are as follows:
+本次练习的主要任务如下：
 
-1. Provision a multi-virtual network environment
+1. 提供多虚拟网络环境
 
-1. Create a private DNS zone
+1. 创建私人 DNS 区域
 
-1. Deploy Azure VMs into virtual networks
+1. 将 Azure VM 部署至虚拟网络中
 
-1. Validate Azure DNS-based name reservation and resolution for the private domain
+1. 验证专用域的基于 Azure DNS 的名称保留和解析
 
 
-#### Task 1: Provision a multi-virtual network environment
+#### 任务 1：提供多虚拟网络环境
   
-1. From the Azure Portal, start a PowerShell session in the Cloud Shell. 
+1. 在 Azure 门户中，在 Cloud Shell 中启动 PowerShell 会话。 
 
-1. In the Cloud Shell pane, run the following in order to create a resource group:
+1. 在 Cloud Shell 窗格中，运行以下命令以创建资源组：
 
-   ```pwsh
-   $rg1 = Get-AzResourceGroup -Name 'az1000401b-RG'
+   ```
+   $rg1=Get-AzResourceGroup -Name 'az1000401b-RG'
 
-   $rg2 = New-AzResourceGroup -Name 'az1000402b-RG' -Location $rg1.Location
+   $rg2=New-AzResourceGroup -Name 'az1000402b-RG' -Location $rg1.Location
    ```
 
-1. In the Cloud Shell pane, run the following in order to create two Azure virtual networks:
+1. 在 Cloud Shell 窗格中，运行以下命令以创建两个 Azure 虚拟网络：
 
-   ```pwsh
-   $subnet1 = New-AzVirtualNetworkSubnetConfig -Name subnet1 -AddressPrefix '10.104.0.0/24'
+   ```
+   $subnet1=New-AzVirtualNetworkSubnetConfig -Name subnet1-AddressPrefix'10.104.0.0/24'
 
-   $vnet1 = New-AzVirtualNetwork -ResourceGroupName $rg2.ResourceGroupName -Location $rg2.Location -Name az1000402b-vnet1 -AddressPrefix 10.104.0.0/16 -Subnet $subnet1
+   $vnet1=New-AzVirtualNetwork -ResourceGroupName $rg2.ResourceGroupName -Location $rg2.Location -Name az1000402b-vnet1 -AddressPrefix 10.104.0.0/16 -Subnet $subnet1
 
    $subnet2 = New-AzVirtualNetworkSubnetConfig -Name subnet1 -AddressPrefix '10.204.0.0/24'
 
-   $vnet2 = New-AzVirtualNetwork -ResourceGroupName $rg2.ResourceGroupName -Location $rg2.Location -Name az1000402b-vnet2 -AddressPrefix 10.204.0.0/16 -Subnet $subnet2
+   $vnet2=New-AzVirtualNetwork -ResourceGroupName $rg2.ResourceGroupName -Location $rg2.Location -Name az1000402b-vnet2 -AddressPrefix 10.204.0.0/16 -Subnet $subnet2
    ```
 
-#### Task 2: Create a private DNS zone
+#### 任务 2：创建私人 DNS 区域
 
-1. In the Cloud Shell pane, run the following in order to create a private DNS zone with the first virtual network supporting registration and the second virtual network supporting resolution:
+1. 在 Cloud Shell 窗格中，运行以下命令以创建私人 DNS 区域，其中第一个虚拟网络支持注册，第二个虚拟网络支持解析：
 
-   ```pwsh
-   $vnet1 = Get-AzVirtualNetwork -Name az1000402b-vnet1
-
-   $vnet2 = Get-AzVirtualNetwork -name az1000402b-vnet2
-
-   New-AzDnsZone -Name adatum.local -ResourceGroupName $rg2.ResourceGroupName -ZoneType Private -RegistrationVirtualNetworkId @($vnet1.Id) -ResolutionVirtualNetworkId @($vnet2.Id)
+   ```
+   New-Az DNS Zone -Name adatum.local -ResourceGroupName $rg2.ResourceGroupName -ZoneType Private -RegistrationVirtualNetworkId @（$vnet1.Id）-ResolutionVirtualNetworkId @（$vnet2.Id）
    ```
 
-   > **Note**: Virtual networks that you assign to an Azure DNS zone cannot contain any resources.
+   > **注**：分配给 Azure DNS 区域的虚拟网络不能包含任何资源。
 
-1. In the Cloud Shell pane, run the following in order to verify that the private DNS zone was successfully created:
+1. 在 Cloud Shell 窗格中，运行以下命令以验证是否已成功创建私人 DNS 区域：
 
-   ```pwsh
-   Get-AzDnsZone -ResourceGroupName $rg2.ResourceGroupName
+   ```
+   Get-Az DNS Zone-ResourceGroupName $rg2.ResourceGroupName
    ```
 
 
-#### Task 3: Deploy Azure VMs into virtual networks
+#### 任务 3：将 Azure VM 部署至虚拟网络中
 
-1. In the Cloud Shell pane, upload **az-100-04b_01_azuredeploy.json**, **az-100-04b_02_azuredeploy.json**, and **az-100-04_azuredeploy.parameters.json** files.
+1. 在 Cloud Shell 窗格中，上传 **az-100-04b_01_Azure deploy.json**、**az-100-04b_02_Azure deploy.json** 和 **az-100-04_Azure deploy.parameters.json** 文件
 
-1. In the Cloud Shell pane, run the following in order to deploy an Azure VM into the first virtual network:
+1. 在 Cloud Shell 窗格中，运行以下命令，以将 Azure VM 部署至第一个虚拟网络中：
 
-   ```pwsh
-   cd $home
-
-   New-AzResourceGroupDeployment -ResourceGroupName $rg2.ResourceGroupName -TemplateFile "./az-100-04b_01_azuredeploy.json" -TemplateParameterFile "./az-100-04_azuredeploy.parameters.json" -AsJob
+   ```
+   New-AzResourceGroupDeployment -ResourceGroupName $rg2.ResourceGroupName -TemplateFile "$home/az-100-04b_01_Azure deploy.json" -TemplateParameterFile "$home/az-100-04_Azure deploy.parameters.json" -AsJob
    ```
 
-1. In the Cloud Shell pane, run the following in order to deploy an Azure VM into the second virtual network:
+1. 在 Cloud Shell 窗格中，运行以下命令，以将 Azure VM 部署至第二个虚拟网络中：
 
-   ```pwsh
-   New-AzResourceGroupDeployment -ResourceGroupName $rg2.ResourceGroupName -TemplateFile "./az-100-04b_02_azuredeploy.json" -TemplateParameterFile "./az-100-04_azuredeploy.parameters.json" -AsJob
+   ```
+   New-AzResourceGroupDeployment -ResourceGroupName $rg2.ResourceGroupName -TemplateFile "$home/az-100-04b_02_azuredeploy.json" -TemplateParameterFile "$home/az-100-04_azuredeploy.parameters.json" -AsJob
    ```
 
-   > **Note**: Wait for both deployments to complete before you proceed to the next task. You can identify the state of the jobs by running the `Get-Job` cmdlet in the Cloud Shell pane.
+   > **注**：在继续执行下一个任务前，请等待两个部署完成。您可通过在 Cloud Shell 窗格中运行`Get-Job` cmdlet 来识别工作的状态。
 
 
-#### Task 4: Validate Azure DNS-based name reservation and resolution for the private domain
+#### 任务 4：验证专用域的基于 Azure DNS 的名称保留和解析
 
-1. In the Azure portal, navigate to the blade of the **az1000402b-vm2** Azure VM. 
+1. 在 Azure 门户中，导航到该边栏的 **az1000402b-vm2** Azure VM . 
 
-1. From the **Overview** pane of the **az1000402b-vm2** blade, generate an RDP file and use it to connect to **az1000402b-vm2**.
+1. 来自“**概述**”窗格的 **az1000402b-vm2** 边栏选项卡，生成 RDP 文件并使用它连接至 **az1000402b-vm2**。
 
-1. When prompted, authenticate by specifying the following credentials:
+1. 出现提示时，通过指定以下凭据进行身份验证：
 
-    - User name: **Student**
+    - 用户名称： **学生**
 
-    - Password: **Pa55w.rd1234**
+    - 密码： **Pa55w.rd1234**
 
-1. Within the Remote Desktop session to **az1000402b-vm2**, start a Command Prompt window and run the following: 
+1. 在 **az1000402b-vm2** 远程桌面会话中，启动命令提示符窗口并运行以下命令： 
 
    ```
    nslookup az1000402b-vm1.adatum.local
    ```
 
-1. Verify that the name is successfully resolved.
+1. 验证该名称是否已成功被解析。
 
-1. Switch back to the lab virtual machine and, in the Cloud Shell pane of the Azure portal window, run the following in order to create an additional DNS record in the private DNS zone:
+1. 切换至逻辑阵列模块虚拟机，并在 Azure 门户窗口的 Cloud Shell 窗格中，在私人 DNS 区域中运行以下命令，以创建其他 DNS 记录：
 
-   ```pwsh
-   New-AzDnsRecordSet -ResourceGroupName $rg2.ResourceGroupName -Name www -RecordType A -ZoneName adatum.local -Ttl 3600 -DnsRecords (New-AzDnsRecordConfig -IPv4Address "10.104.0.4")
+   ```
+   New-Az DNS RecordSet-ResourceGroupName $rg2.ResourceGroupName -Name www -RecordType A -ZoneName adatum.local -Ttl 3600 - DNS Records（New-Az DNS RecordConfig -IPv4Address "10.104.0.4"）
    ```
 
-1. Switch again to the Remote Desktop session to **az1000402b-vm2** and run the following from the Command Prompt window: 
+1. 再次切换至 **az1000402b-vm2** 远程桌面会话，并在命令提示符窗口运行以下命令： 
 
    ```
    nslookup www.adatum.local
    ```
 
-1. Verify that the name is successfully resolved.
+1. 验证该名称是否已成功被解析。
 
-> **Result**: After completing this exercise, you have provisioned a multi-virtual network environment, created a private DNS zone, deployed Azure VMs into virtual networks, and validated Azure DNS-based name reservation and resolution for the private domain
-
-## Exercise 3: Remove lab resources
-
-#### Task 1: Open Cloud Shell
-
-1. At the top of the portal, click the **Cloud Shell** icon to open the Cloud Shell pane.
-
-1. At the Cloud Shell interface, select **Bash**.
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to list all resource groups you created in this lab:
-
-   ```sh
-   az group list --query "[?starts_with(name,'az1000')].name" --output tsv
-   ```
-
-1. Verify that the output contains only the resource groups you created in this lab. These groups will be deleted in the next task.
-
-#### Task 2: Delete resource groups
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
-
-   ```sh
-   az group list --query "[?starts_with(name,'az1000')].name" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-   ```
-
-1. Close the **Cloud Shell** prompt at the bottom of the portal.
-
-> **Result**: In this exercise, you removed the resources used in this lab.
+> **结果**：完成此操作后，您已配置多虚拟网络环境，创建私人 DNS 区域，将 Azure VM 部署至虚拟网络中，并验证基于 Azure DNS 的名称保留和专用域解析

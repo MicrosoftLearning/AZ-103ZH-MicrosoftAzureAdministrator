@@ -1,377 +1,334 @@
+﻿---
+逻辑阵列块：
+    标题：'实施和管理存储'
+    单元：'实施和管理存储'
 ---
-lab:
-    title: 'Implement and Manage Storage'
-    module: 'Module 03 - Azure Storage'
----
 
-# Lab: Implement and Manage Storage
+# 逻辑阵列块：实施和管理存储
 
-All tasks in this lab are performed from the Azure portal (including a PowerShell Cloud Shell session) except for Exercise 2 Task 2, which includes steps performed from a Remote Desktop session to an Azure VM
+本练习中的所有任务都是从Azure门户（包括PowerShell Cloud Shell会话）执行的，但练习2中的任务2除外，包括从远程桌面会话到Azure VM执行的步骤
 
-   > **Note**: When not using Cloud Shell, the lab virtual machine must have the Azure PowerShell 1.2.0 module (or newer) installed [https://docs.microsoft.com/en-us/powershell/azure/install-az-ps](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps)
+   > **注意**: 不使用Cloud Shell时，逻辑阵列块虚拟机必须安装Azure PowerShell 1.2.0模块（或更新版本） [https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps?view=azps-1.2.0](https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps?view=azps-1.2.0)
 
-Lab files: 
+逻辑阵列块文件： 
 
--  **Labfiles\\Module_03\\Implement_and_Manage_Storage\\az-100-02_azuredeploy.json**
+-  **Labfiles\\AZ100\\Mod02\\az-100-02_azuredeploy.json**
 
--  **Labfiles\\Module_03\\Implement_and_Manage_Storage\\az-100-02_azuredeploy.parameters.json**
+-  **Labfiles\\AZ100\\Mod02\\az-100-02_azuredeploy.parameters.json**
 
-### Scenario
+### 方案
   
-Adatum Corporation wants to leverage Azure Storage for hosting its data
+Adatum Corporation希望利用Azure存储来托管其数据
 
-### Objectives
+### 目标
   
-After completing this lab, you will be able to:
+完成本逻辑阵列快后，您将能够：
 
--  Deploy an Azure VM by using an Azure Resource Manager template
+-  使用 Azure资源管理器 模板部署Azure VM
 
--  Implement and use Azure Blob Storage
+-  实施和使用Azure Blob存储
 
--  Implement and use Azure File Storage
+-  实施和使用Azure File存储
 
 
-### Exercise 0: Prepare the lab environment
+### 练习 0：准备逻辑阵列块环境
   
-The main tasks for this exercise are as follows:
+本练习的主要任务如下：
 
-1. Deploy an Azure VM by using an Azure Resource Manager template
+1. 使用 Azure资源管理器 模板部署Azure VM
 
 
-#### Task 1: Deploy an Azure VM by using an Azure Resource Manager template
+#### 任务 1：使用 Azure资源管理器 模板部署Azure VM
 
-1. From the lab virtual machine, start Microsoft Edge, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using a Microsoft account that has the Owner role in the Azure subscription you intend to use in this lab.
+1. 从逻辑阵列块虚拟机启动Microsoft Edge，浏览到Azure门户 [**http://portal.azure.com**](http://portal.azure.com) 并使用您打算在本逻辑阵列块中使用的Azure订阅中具有所有者角色的Microsoft帐户登录。
 
-1. In the Azure portal, navigate to the **Subscriptions** blade.
+1. 在Azure门户中，导航到 **订阅** 边栏选项卡。
 
-1. From the **Subscriptions** blade, navigate to the blade displaying properties of your Azure subscription.
+1. 从 **订阅** 边栏选项卡，导航到显示Azure订阅属性的边栏选项卡。
 
-1. From the blade displaying the properties of your subscription, navigate to its **Resource providers** blade.
+1. 从显示订阅属性的边栏选项卡中，导航到 **资源提供程序** 边栏选项卡。
 
-1. On the **Resource providers** blade, register the following resource providers (if these resource providers have not been yet registered):
+1. 在 **资源提供程序** 边栏选项卡上，注册以下资源提供程序（如果这些资源提供程序尚未注册）：
 - Microsoft.Network
 - Microsoft.Compute
 - Microsoft.Storage
 
-**Note:** This step registers the Azure Resource Manager Microsoft.Network, Microsoft.Compute, and Microsoft.Storage resource providers. This is a one-time operation (per subscription) required when using Azure Resource Manager templates to deploy resources managed by these resource providers (if these resource providers have not been yet registered).
+**注意:** 此步骤注册Azure资源管理器Microsoft.Network，Microsoft.Compute和Microsoft.Storage资源提供程序。这是使用Azure 资源管理器模板部署由这些资源提供程序管理的资源时所需的一次性操作（每个订阅）（如果这些资源提供程序尚未注册）。
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+1. 在Azure门户中，导航到 **创建资源** 边栏选项卡。
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Template deployment**, and select **Template deployment (deploy using custom templates)**
+1. 从 **创建资源** 边栏选项卡，在Azure应用市场内搜索 **模板部署**。
 
-1. Click **Create**.
+1. 使用搜索结果列表导航到 **部署自定义模板** 边栏选项卡。
 
-1. On the **Custom deployment** blade, click the **Build your own template in the editor** link. If you do not see this link, click **Edit template** instead.
+1. 在 **自定义部署** 边栏选项卡上，选择 **在编辑器中构建自己的模板**。
 
-1. From the **Edit template** blade, load the template file **Labfiles\\Module_03\\Implement_and_Manage_Storage\\az-100-02_azuredeploy.json**. 
+1. 从 **编辑模板** 边栏选项卡，加载模板文件 **Labfiles\\AZ100\\Mod02\\az-100-02_azuredeploy.json**. 
 
-   > **Note**: Review the content of the template and note that it defines deployment of an Azure VM hosting Windows Server 2016 Datacenter.
+   > **注意**: 查看模板的内容，并注意它定义了托管Windows Server 2016 数据中心的Azure VM的部署。
 
-1. Save the template and return to the **Custom deployment** blade. 
+1. 保存模板并返回到 **自定义部署** 边栏选项卡。 
 
-1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
+1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数** 边栏选项卡。
 
-1. From the **Edit parameters** blade, load the parameters file **Labfiles\\Module_03\\Implement_and_Manage_Storage\\az-100-02_azuredeploy.parameters.json**. 
+1. 从 **编辑模板** 边栏选项卡，加载模板文件 **Labfiles\\AZ100\\Mod02\\az-100-02_azuredeploy.parameters.json**. 
 
-1. Save the parameters and return to the **Custom deployment** blade. 
+1. 保存参数并返回 **自定义部署** 边栏选项卡。 
 
-1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
+1. 从 **自定义部署** 边栏选项卡，使用以下设置初始化模板部署：
 
-    - Subscription: the name of the subscription you are using in this lab
+    - 订阅：您用于本逻辑阵列块的订阅名称
 
-    - Resource group: the name of a new resource group **az1000201-RG**
+    - 资源组：新资源组 **az1000201-RG** 的名称
 
-    - Location: the name of the Azure region which is closest to the lab location and where you can provision Azure VMs
+    - 位置：最靠近逻辑阵列块位置的Azure区域名称，可在其中配置Azure VMs的位置
 
-    - Vm Size: **Standard_DS2_v2**
+    - VM 大小： **Standard_DS1_v2**
 
-    - Vm Name: **az1000201-vm1**
+    - Vm名称： **az1000201-vm1**
 
-    - Admin Username: **Student**
+    - 管理员用户名： **学员**
 
-    - Admin Password: **Pa55w.rd1234**
+    - 管理员密码： **Pa55w.rd1234**
 
-    - Virtual Network Name: **az1000201-vnet1**
+    - 虚拟网络名称: **az1000201-vnet1**
 
-   > **Note**: To identify Azure regions where you can provision Azure VMs, refer to [**https://azure.microsoft.com/en-us/regions/offers/**](https://azure.microsoft.com/en-us/regions/offers/)
+   > **注意**: 标识可以配置Azure VM的Azure区域，请登陆：[**https://azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)
 
-   > **Note**: Do not wait for the deployment to complete but proceed to the next exercise. You will use the virtual machine **az1000201-vm1** in the second exercise of this lab.
+   > **注意**: 不要等待第二台虚拟机部署完成，请继续进行下一个练习您将使用虚拟机 **az1000201-vm1** 在本逻辑阵列块的第二次练习中。
 
-> **Result**: After you completed this exercise, you have initiated template deployment of an Azure VM **az1000201-vm1** that you will use in the second exercise of this lab.
-
-
-### Exercise 1: Implement and use Azure Blob Storage
-
-The main tasks for this exercise are as follows:
-
-1. Create Azure Storage accounts
-
-1. Review configuration settings of Azure Storage accounts
-
-1. Manage Azure Storage Blob Service
-
-1. Copy a container and blobs between Azure Storage accounts
-
-1. Use a Shared Access Signature (SAS) key to access a blob
+> **结果**: 完成此练习后，您已启动Azure VM **az1000201-VM1** 的模板部署，您将在本逻辑阵列块的第二次练习中使用它。
 
 
-#### Task 1: Create Azure Storage accounts
+### 练习 1：实施和使用Azure Blob存储
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+本练习的主要任务如下：
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Storage account**.
+1. 创建Azure存储帐户
 
-1. Use the list of search results to navigate to the **Create storage account** blade.
+1. 查看Azure存储帐户的配置设置
 
-1. From the **Create storage account** blade, create a new storage account with the following settings: 
+1. 管理Azure存储Blob服务
 
-    - Subscription: the same subscription you selected in the previous task
+1. 在Azure存储帐户之间复制容器和Blobs
 
-    - Resource group: the name of a new resource group **az1000202-RG**
-
-    - Storage account name: any valid, unique name between 3 and 24 characters consisting of lowercase letters and digits
-
-    - Location: the name of the Azure region which you selected in the previous task
-
-    - Performance: **Standard**
-
-    - Account kind: **Storage (general purpose v1)**
-
-    - Replication: **Locally-redundant storage (LRS)**
-
-1. Click **Review + create**, and then click **Create**.
-
-1. Do not wait for the storage account to be provisioned but proceed to the next step.
-
-1. In the Azure portal, navigate to the **Create a resource** blade.
-
-1. From the **Create a resource** blade, search Azure Marketplace for **Storage account**.
-
-1. Use the list of search results to navigate to the **Create storage account** blade.
-
-1. From the **Create storage account** blade, create a new storage account with the following settings: 
-
-    - Subscription: the same subscription you selected in the previous task
-
-    - Resource group: the name of a new resource group **az1000203-RG**
-
-    - Storage account name: any valid, unique name between 3 and 24 characters consisting of lowercase letters and digits
-
-    - Location: the name of an Azure region different from the one you chose when creating the first storage account
-
-    - Performance: **Standard**
-
-    - Account kind: **StorageV2 (general purpose v2)**
-
-    - Access tier: **Hot**
-
-    - Replication: **Geo-redundant storage (GRS)**
-
-1. Click **Review + create**, then click **Create**.
-
-1. Wait for the storage account to be provisioned. This should take less than a minute.
+1. 使用共享访问签名（SAS）密钥访问blob
 
 
-#### Task 2: Review configuration settings of Azure Storage accounts
+#### 任务 1：创建Azure存储帐户
+
+1. 在Azure门户中，导航到 **创建资源** 边栏选项卡。
+
+1. 从 **创建资源** 边栏选项卡，在Azure应用市场内搜索 **存储帐户**。
+
+1. 使用搜索结果列表导航到 **创建存储帐户** 边栏选项卡。
+
+1. 从 **创建存储账户** 边栏选项卡，使用以下设置创建新的存储帐户： 
+
+    - 订阅：您在上一个任务中选择的订阅
+
+    - 资源组：新资源组 **az1000202-RG** 的名称
+
+    - 存储帐户名称：由小写字母和数字构成的一个长度在 3 到 24 个字符之间的唯一有效字符串
+
+    - 位置：您在上一个任务中选择的Azure区域名称
+
+    - 性能： **标准**
+
+    - 帐户类型： **存储（通用v1）**
+
+    - 复制： **本地冗余存储（LRS）**
+
+    - 需要安全传输： **已禁用**
+
+    - 允许访问： **所有网络**
+
+    - **Data Lake Storage Gen2** 分层名称空间：**已禁用**
+
+1. 不要等待配置存储帐户，而是继续执行下一步。
+
+1. 在Azure门户中，导航到 **创建资源** 边栏选项卡。
+
+1. 从 **创建资源** 边栏选项卡，在Azure应用市场内搜索 **存储帐户**。
+
+1. 使用搜索结果列表导航到 **创建存储帐户** 边栏选项卡。
+
+1. 从 **创建存储账户** 边栏选项卡，使用以下设置创建新的存储帐户： 
+
+    - 订阅：您在上一个任务中选择的订阅
+
+    - 资源组：新资源组 **az1000203-RG** 的名称
+
+    - 存储帐户名称：由小写字母和数字构成的一个长度在 3 到 24 个字符之间的唯一有效字符串
+
+    - 位置：Azure区域名称与您在创建第一个存储帐户时选择的名称不同
+
+    - 性能： **标准**
+
+    - 帐户类型： **存储（通用v2）**
+
+    - 访问层： **热**
+
+    - 复制： **异地冗余存储 (GRS)**
+
+    - 需要安全传输： **已禁用**
+
+    - 允许访问： **所有网络**
+    
+    - **Data Lake Storage Gen2** 分层名称空间：**已禁用**
+
+1. 等待配置存储帐户。此操作持续不到一分钟。
+
+
+#### 任务 2：查看Azure存储帐户的配置设置
   
-1. In Azure Portal, navigate to the blade of the first storage account you created. 
+1. 在Azure门户中，导航到您创建的第一个存储帐户的边栏选项卡。 
 
-1. With your storage account blade open, review the storage account configuration in the **Overview** section, including the performance, replication, and account kind settings.
+1. 打开存储帐户边栏选项卡后，请在 **概观** 部分查看存储帐户配置 ，包括性能、复制和帐户类型设置。
 
-1. Display the **Access keys** blade. Note that you have the option of copying the values of storage account name, as well as the values of key1 and key2. You also have the option to regenerate each of the keys.
+1. 显示 **访问密钥** 边栏选项卡。请注意，您可以选择复制存储帐户名的值，以及key1和key2的值。您还可以选择重新生成每个密钥。
 
-1. Display the **Configuration** blade of the storage account.
+1. 显示存储帐户的 **配置** 边栏选项卡。
 
-1. On the **Configuration** blade, note that you have the option of performing an upgrade to **General Purpose v2** account, enforcing secure transfer, and changing the replication settings to either **Geo-redundant storage (GRS)** or **Read-access geo-redundant storage (RA-GRS)**. However, you cannot change the performance setting (this setting can only be assigned when the storage account is created).
+1. 在 **组态** 边栏选项卡，请注意您可以执行升级至 **通用v2** 帐户，强制执行安全传输以及将复制设置更改为 **异地冗余存储（GRS）** 或 **读访问地理冗余存储（RA-GRS）**。但是，您无法更改性能设置（此设置只能在创建存储帐户时分配）。
 
-1. Display the **Encryption** blade of the storage account. Note that encryption is enabled by default and that you have the option of using your own key.
+1. 显示存储帐户的 **加密** 边栏选项卡。请注意，默认情况下启用加密，您可以选择使用自己的密钥。
 
-   > **Note**: Do not change the configuration of the storage account. 
+   > **注意**: 请勿更改存储帐户的配置。 
 
-1. In Azure Portal, navigate to the blade of the second storage account you created. 
+1. 在Azure门户中，导航到您创建的第二个存储帐户的边栏选项卡。 
 
-1. With your storage account blade open, review the storage account configuration in the **Overview** section, including the performance, replication, and account kind settings.
+1. 打开存储帐户边栏选项卡后，请在 **概观** 部分查看存储帐户配置 ，包括性能、复制和帐户类型设置。
 
-1. Display the **Configuration** blade of the storage account.
+1. 显示存储帐户的 **配置** 边栏选项卡。
 
-1. On the **Configuration** blade, note that you have the option of disabling the secure transfer requirement, setting the default access tier to **Cool**, and changing the replication settings to either **Locally-redundant storage (LRS)** or **Read-access geo-redundant storage (RA-GRS)**. In this case, you also cannot change the performance setting.
+1. 在 **配置** 边栏选项卡上，请注意您可以选择禁用安全传输要求，将默认访问层设置为 **冷却**，以及将复制设置更改为 **本地冗余存储（LRS）** 或 **读取访问地理冗余存储（RA）-GRS）。** 在这种情况下，您也无法更改性能设置。
 
-1. Display the **Encryption** blade of the storage account. Note that in this case encryption is also enabled by default and that you have the option of using your own key.
-
-
-#### Task 3: Manage Azure Storage Blob Service
-
-1. In the Azure portal, navigate to the **Blobs** blade of the first storage account you created. 
-
-1. From the **Blobs** blade of the first storage account, create a new container named **az1000202-container** with the **Public access level** set to **Private (no anonymous access)**. 
-
-1. From the **az1000202-container** blade, upload **Labfiles\\Module_03\\Implement_and_Manage_Storage\\az-100-02_azuredeploy.json** and **Labfiles\\Module_03\\Implement_and_Manage_Storage\\az-100-02_azuredeploy.parameters.json** into the container.
+1. 显示存储帐户的 **加密** 边栏选项卡。请注意，默认情况下启用加密，您可以选择使用自己的密钥。
 
 
-#### Task 4: Copy a container and blobs between Azure Storage accounts
+#### 任务 3：管理Azure存储Blob服务
 
-1. From the Azure Portal, start a PowerShell session in the Cloud Shell pane. 
+1. 在Azure门户中，导航到您创建的第一个存储帐户的 **Blobs** 边栏选项卡。 
 
-   > **Note**: If this is the first time you are launching the Cloud Shell in the current Azure subscription, you will be asked to create an Azure file share to persist Cloud Shell files. If so, accept the defaults, which will result in creation of a storage account in an automatically generated resource group.
+1. 从第一个存储帐户的 **Blobs** 边栏选项卡中，Blobs创建一个名为 **az1000202-container** 的新容器，其 **公用访问级别** 设置为 **Private（无匿名访问）**。 
 
-1. In the Cloud Shell pane, run the following commands:
+1. 从 **az1000202-container** 边栏选项卡, 将 **Labfiles\\AZ100\\Mod02\\az-100-02_azuredeploy.json** 和 **Labfiles\\AZ100\\Mod02\\az-100-02_azuredeploy.parameters.json** 上传到容器中。
 
-   ```pwsh
-   $containerName = 'az1000202-container'
+
+#### 任务 4：在Azure存储帐户之间复制容器和Blobs
+
+1. 从Azure门户，在Cloud Shell窗格中启动PowerShell会话。 
+
+   > **注意**: 如果这是您第一次在当前Azure订阅中启动Cloud Shell，则会要求您创建Azure文件共享以保留Cloud Shell文件。如果是，请接受默认值，这将导致在自动生成的资源组中创建存储帐户。
+
+1. 在“Cloud Shell”窗格中，运行以下命令：
+
+   ```
    $storageAccount1Name = (Get-AzStorageAccount -ResourceGroupName 'az1000202-RG')[0].StorageAccountName
    $storageAccount2Name = (Get-AzStorageAccount -ResourceGroupName 'az1000203-RG')[0].StorageAccountName
    $storageAccount1Key1 = (Get-AzStorageAccountKey -ResourceGroupName 'az1000202-RG' -StorageAccountName $storageAccount1Name)[0].Value
    $storageAccount2Key1 = (Get-AzStorageAccountKey -ResourceGroupName 'az1000203-RG' -StorageAccountName $storageAccount2Name)[0].Value
-   $context1 = New-AzStorageContext -StorageAccountName $storageAccount1Name -StorageAccountKey $storageAccount1Key1
-   $context2 = New-AzStorageContext -StorageAccountName $storageAccount2Name -StorageAccountKey $storageAccount2Key1
-   ```
-   > **Note**: These commands set the values of variables representing the names of the blob container containing the blobs you uploaded in the previous task, the two storage accounts, their corresponding keys, and the corresponding security context for each. You will use these values to generate a SAS token to copy blobs between storage accounts by using the AZCopy command line utility.
-
-1. In the Cloud Shell pane, run the following command:
-
-   ```pwsh
-   New-AzStorageContainer -Name $containerName -Context $context2 -Permission Off
-   ```
-   > **Note**: This command creates a new container with the matching name in the second storage account
-   
-1. In the Cloud Shell pane, run the following commands:
-
-   ```pwsh
-   $containerToken1 = New-AzStorageContainerSASToken -Context $context1 -ExpiryTime(get-date).AddHours(24) -FullUri -Name $containerName -Permission rwdl
-   $containerToken2 = New-AzStorageContainerSASToken -Context $context2 -ExpiryTime(get-date).AddHours(24) -FullUri -Name $containerName -Permission rwdl
-   ```
-   > **Note**: These commands generate SAS keys that you will use in the next step to copy blobs between two containers.
-   
-1. In the Cloud Shell pane, run the following command:
-
-   ```pwsh
-   azcopy cp $containerToken1 $containerToken2 --recursive=true
    ```
 
-   > **Note**: This command uses the AzCopy utility to copy the content of the container between the two storage accounts. 
+   > **注意**: 这些命令设置表示每个存储帐户名称及其对应键的变量值。您将使用这些值在下一步中使用AZCopy命令行实用程序在存储帐户之间复制blobs。
 
-1. Verify that the command returned the results confirming that the two files were transferred. 
+1. 在“Cloud Shell”窗格中，运行以下命令：
 
-1. Navigate to the **Blobs** blade of the second storage account and verify that it includes the entry representing the newly created **az1000202-container** and that the container includes two copied blobs.
+   ```
+   azcopy --source https://$storageAccount1Name.blob.core.windows.net/az1000202-container/ --destination https://$storageAccount2Name.blob.core.windows.net/az1000302-container/ --source-key $storageAccount1Key1 --dest-key $storageAccount2Key1 --include "az" --sync-copy --recursive
+   ```
 
+   > **注意**: 此命令使用AzCopy实用程序在两个存储帐户之间复制容器的内容。 
 
-#### Task 5: Use a Shared Access Signature (SAS) key to access a blob
+1. 验证该命令是否返回了确认已传输这两个文件的结果。 
 
-1. From the **Blobs** blade of the second storage account, navigate to the container **az1000202-container**, and then open the **az-100-02_azuredeploy.json** blade.
-
-1. On the **az-100-02_azuredeploy.json** blade, copy the value of the **URL** property.
-
-1. Open another Microsoft Edge window and navigate to the URL you copied in the previous step. 
-
-   > **Note**: The browser will display the **ResourceNotFound**. This is expected since the container has the **Public access level** set to **Private (no anonymous access)**.
-
-1. On the **az-100-02_azuredeploy.json** blade, generate a shared access signature (SAS) and the corresponding URL with the following settings:
-
-    - Permissions: **Read**
-
-    - Start date/time: specify the current date/time in your current time zone
-
-    - Expiry date/time: specify the date/time 24 hours ahead of the current time
-
-    - Allowed IP addresses: leave blank
-
-    - Allowed protocols: **HTTP**
-
-    - Signing key: **Key 1**
-
-1. On the **az-100-02_azuredeploy.json** blade, copy **Blob SAS URL**.
-
-1. From the previously opened Microsoft Edge window, navigate to the URL you copied in the previous step. 
-
-   > **Note**: This time, you will be prompted whether you want to open or save **az-100-02_azuredeploy.json**. This is expected as well, since this time you are no longer accessing the container anonymously, but instead you are using the newly generated SAS key, which is valid for the next 24 hours.
-
-1. Close the Microsoft Edge window displaying the prompt. 
-
-> **Result**: After you completed this exercise, you have created two Azure Storage accounts, reviewed their configuration settings, created a blob container, uploaded blobs into the container, copied the container and blobs between the storage accounts, and used a SAS key to access one of the blobs. 
+1. 导航到 第二个存储帐户的 **Blobs** 边栏选项卡并验证它是否包含表示新创建的 **az1000202容器** 条目并且容器是否包含两个复制的blobs。
 
 
-### Exercise 2: Implement and use Azure File Storage
+#### 任务 5：使用共享访问签名（SAS）密钥访问blob
 
-The main tasks for this exercise are as follows:
+1. 从第二个存储帐户的 **Blobs** 边栏选项卡，导航到容器 **az1000202-container**，然后打开 **az-100-02_azuredeploy.json** 边栏选项卡。
 
-1. Create an Azure File Service share
+1. 在 **az-100-02_azuredeploy.json** 边栏选项卡，复制 **URL** 属性值。
 
-1. Map a drive to the Azure File Service share from an Azure VM
+1. 打开另一个Microsoft Edge窗口并导航到您在上一步中复制的URL处。 
+
+   > **注意**: 浏览器将显示 **没有发现资源文件**。这是预期的，因为容器由 **公共访问级别** 调成 **私人（无匿名访问）**。
+
+1. 在 **az-100-02_azuredeploy.json** 边栏选项卡上，使用以下设置生成共享访问签名（SAS）和相应的URL：
+
+    - 权限： **读取**
+
+    - 开始日期/时间：指定您当前时区内的当前日期/时间
+
+    - 到期日期/时间：指定当前时间提前24小时的日期/时间
+
+    - 允许的IP地址：留空
+
+    - 允许的协议： **HTTP**
+
+    - 签名密钥： **密钥 1**
+
+1. 在 **az-100-02_azuredeploy.json** 边栏选项卡，复制 **Blob SAS URL**。
+
+1. 从先前打开的Microsoft Edge窗口，导航到您在上一步中复制的URL。 
+
+   > **注意**: 这次，系统将提示您是否要打开或保存 **AZ-100-02_azuredeploy.json**。这也是预期的，因为这次您不再匿名访问容器，而是使用新生成的SAS密钥，该密钥在接下来的24小时内有效。
+
+1. 关闭显示提示的Microsoft Edge窗口。 
+
+> **结果**: 完成此练习后，您已创建了两个Azure存储帐户，检查了其配置设置，创建了blob容器，将Blob上载到了容器中，在存储帐户之间复制了容器和blob，并使用了SAS密钥访问其中一个blobs。 
 
 
-#### Task 1: Create an Azure File Service share
+### 练习 2：实施和使用Azure File存储
+
+本练习的主要任务具体如下：
+
+1. 创建Azure文件服务共享
+
+1. 将驱动器映射到Azure VM的Azure文件服务共享
+
+
+#### 任务 1：创建Azure文件服务共享
   
-1. In the Azure portal, navigate to the blade displaying the properties of the second storage account you created in the previous exercise.
+1. 在Azure门户中，导航到显示您在上一个练习中创建的第二个存储帐户属性的边栏选项卡。
 
-1. From the storage account blade, display the properties of its File Service.
+1. 从存储帐户边栏选项卡，显示其文件服务的属性。
 
-1. From the storage account **Files** blade, create a new file share with the following settings:
+1. 从存储账户 **文件** 边栏选项卡，使用以下设置创建新文件共享：
 
-    - Name: **az10002share1**
+    - 名称： **az10002share1**
 
-    - Quota: **5 GB**
+    - 配额: **5 GB**
 
 
-#### Task 2: Map a drive to the Azure File Service share from an Azure VM
+#### 任务 2：将驱动器映射到Azure VM的Azure文件服务共享
 
-   > **Note**: Before you start this task, ensure that the template deployment you started in Exercise 0 has completed. 
+   > **注意**: 在开始此任务之前，请确保您在练习0中启动的模板部署已完成。 
 
-1. Navigate to the **az10002share1** blade and display the **Connect** blade.
+1. 导航到 **az10002share1** 边栏选项卡，显示 **连接** 边栏选项卡。
 
-1. From the **Connect** blade, copy into Clipboard the PowerShell commands that connect to the file share from a Windows computer.
+1. 从 **连接** 边栏选项卡，将从Windows计算机连接到文件共享的PowerShell命令复制到剪贴板中。
 
-1. In the Azure portal, navigate to the **az1000201-vm1** blade.
+1. 在Azure门户中，导航到 **az1000201-vm1** 边栏选项卡。
 
-1. From the **az1000201-vm1** blade, connect to the Azure VM via the RDP protocol and, when prompted to sign in, provide the following credentials:
+1. 从 **az1000201-vm1** 边栏选项卡，通过RDP协议连接到Azure VM，并在提示登录时提供以下凭据：
 
-    - Admin Username: **Student**
+    - 管理员用户名： **学员**
 
-    - Admin Password: **Pa55w.rd1234**
+    - 管理员密码： **Pa55w.rd1234**
 
-1. Within the RDP session, start a Windows PowerShell ISE session. 
+1. 在RDP会话中，启动Windows PowerShell ISE会话。 
 
-1. From the Windows PowerShell ISE session, open the script pane and paste into it the content of your local Clipboard.
+1. 在Windows PowerShell ISE会话中，打开脚本窗格并将其粘贴到本地剪贴板的内容中。
 
-1. Paste the script into the PowerShell ISE session, add `` -Persist `` at the end of the script, execute the script, and verify that its output confirms successful mapping of the Z: drive to the Azure Storage File Service share.
+1. 执行脚本并验证其输出确认Z的成功映射: 驱动器已成功映射到 Azure 存储文件服务共享。
 
-1. Start File Explorer, navigate to the Z: drive and create a folder named **Folder1**.
+1. 启动文件资源管理器，导航到Z：驱动器并创建一个名为 **文件夹1** 的文件夹。
 
-1. In the File Explorer window, navigate to **Folder1** and create a text document named **File1.txt**. 
+1. 在文件资源管理器窗口中，导航到 **文件夹1** 并创建一个名为 **FILE1.TXT** 的文本文档 。 
 
-   > **Note**: Make sure that you take into account the default configuration of File Explorer that does not display known file extensions in order to avoid creating a file named **File1.txt.txt**.
+   > **注意**: 请确保考虑到未显示已知文件扩展名的文件资源管理器的默认配置，以避免创建名为 **File1.txt.txt** 的文件。
 
-1. From the PowerShell prompt, enter **Z:** to change the directory context to the mapped drive. 
-
-1. From the PowerShell prompt, enter **dir** to list the contents of the drive. You should see the directory that you created from File Explorer.
-
-1. From the PowerShell prompt, enter **cd Folder1** to change directories to the folder. Run the **dir** command again to list the file contents.
-
-> **Result**: After you completed this exercise, you have created an Azure File Service share, mapped a drive to the file share from an Azure VM, and used File Explorer from the Azure VM to create a folder and a file in the file share.
-
-## Exercise 3: Remove lab resources
-
-#### Task 1: Open Cloud Shell
-
-1. At the top of the portal, click the **Cloud Shell** icon to open the Cloud Shell pane.
-
-1. At the Cloud Shell interface, select **Bash**.
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to list all resource groups you created in this lab:
-
-   ```sh
-   az group list --query "[?starts_with(name,'az1000')].name" --output tsv
-   ```
-
-1. Verify that the output contains only the resource groups you created in this lab. These groups will be deleted in the next task.
-
-#### Task 2: Delete resource groups
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
-
-   ```sh
-   az group list --query "[?starts_with(name,'az1000')].name" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-   ```
-
-1. Close the **Cloud Shell** prompt at the bottom of the portal.
-
-> **Result**: In this exercise, you removed the resources used in this lab.
+> **结果**: 完成本练习后，您已创建了Azure文件服务共享，将驱动器从Azure VM映射到了文件共享，并使用了Azure VM中的文件资源管理器在文件共享中创建文件夹和文件。

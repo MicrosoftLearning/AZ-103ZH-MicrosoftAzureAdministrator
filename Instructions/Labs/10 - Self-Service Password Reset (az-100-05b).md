@@ -1,349 +1,349 @@
+﻿---
+逻辑阵列模块：
+    标题：'自助密码重置'
+    模块：'实施和管理混合同一性'
 ---
-lab:
-    title: 'Self-Service Password Reset'
-    module: 'Module 10 - Securing Identtities'
----
 
-# Lab: Self-Service Password Reset
+# 逻辑阵列模块：自助密码重置
   
-All tasks in this lab are performed from the Azure portal 
+本逻辑阵列模块中的所有任务都是从 Azure 门户执行的 
 
-Lab files: none
+逻辑阵列模块文件：无
 
-### Scenario
+### 方案
   
-Adatum Corporation wants to take advantage of Azure AD Premium features
+Adatum Corporation 希望利用 Azure AD Premium 功能
 
 
-### Objectives
+### 目标
   
-After completing this lab, you will be able to:
+完成本逻辑阵列模块后，您将能够：
 
-- Manage Azure AD users and groups
+- 请创建 Azure AD 用户和群组。
 
-- Manage Azure AD-integrated SaaS applications
+- 管理 Azure AD 集成的 SaaS 应用程序。
 
 
-### Exercise 1: Manage Azure AD users and groups
+### 练习 1：请创建 Azure AD 用户和群组。
 
-The main tasks for this exercise are as follows:
+本次练习的主要任务如下：
 
-1. Create a new Azure AD tenant
+1. 请创建一个新 Azure AD 租户。
 
-1. Activate Azure AD Premium v2 trial
+1. 请激活 Azure AD Premium v2 试用版
 
-1. Create and configure Azure AD users
+1. 创建和配置 Azure AD 用户。
 
-1. Assign Azure AD Premium v2 licenses to Azure AD users
+1. 将 Azure AD Premium v2 许可证分配给 Azure AD 用户
 
-1. Manage Azure AD group membership
+1. 管理 Azure AD 组成员。
 
-1. Configure self-service password reset functionality
+1. 配置自助密码重置功能
 
-1. Validate self-service password reset functionality
+1. 验证自助密码重置功能
 
 
-#### Task 1: Create a new Azure AD tenant
+#### 任务 1：请创建一个新 Azure AD 租户。
 
-1. From the lab virtual machine, start Microsoft Edge, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using a Microsoft account that has the Owner role in the Azure subscription you intend to use in this lab.
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，浏览到 Azure 门户 [**http://portal.azure.com**](http://portal.azure.com) 并使用在您打算在本逻辑阵列模块中使用的 Azure 订阅中的具有所有者角色的 Microsoft 帐户登录。
 
-1. In the Azure portal, navigate to the **New** blade. 
+1. 在 Azure 门户中，请导航到 **新建** 边栏选项卡。 
 
-1. From the **New** blade, search Azure Marketplace for **Azure Active Directory**.
+1. 从 **新建** 边栏选项卡，搜索 Azure Marketplace **Azure Active Directory**。
 
-1. Use the list of search results to navigate to the **Create directory** blade.
+1. 使用搜索结果列表导航到 **创建目录** 边栏选项卡。
 
-1. From the **Create directory** blade, create a new Azure AD tenant with the following settings: 
+1. 从 **创建目录** 边栏选项卡，创建一个新的“Azure AD 租户”，设置如下：： 
 
-  - Organization name: **AdatumLab100-5b**
+  - 组织名称： **AdatumLab100-4d**
 
-  - Initial domain name: a unique name consisting of a combination of letters and digits. 
+  - 初始域名：由字母和数字组合组成的唯一名称。 
 
-  - Country or region: **United States**
+  - 国家或地区： **美国**
 
-   > **Note**: Take a note of the initial domain name. You will need it later in this lab. 
+   > **注**：记录初始域名。在本逻辑阵列模块中，您后续将需要该域名。 
 
 
-#### Task 2: Activate Azure AD Premium v2 trial
+#### 任务 2：请激活 Azure AD Premium v2 试用版
 
-1. In the Azure portal, set the **Directory + subscription** filter to the newly created Azure AD tenant.
+1. 在 Azure 门户中，将 **目录+订阅筛选器** 设置为新创建的“ Azure AD 租户”。
 
-   > **Note**: The **Directory + subscription** filter appears to the right of the Cloud Shell icon in the toolbar of the Azure portal 
+   > **注**：该 **目录+订阅筛选器** 显示在 Azure 门户工具栏的“Cloud Shell”图标右侧 
 
-   > **Note**: You might need to refresh the browser window if the **AdatumLab100-5b** entry does not appear in the **Directory + subscription** filter list.
+   > **注**：如果是，您可能需要刷新浏览器窗口 **AdatumLab100-5b** 条目没有出现在 **目录订阅** 过滤列表。
 
-1. In the Azure portal, navigate to the **AdatumLab100-5b - Overview** blade.
+1. 在 Azure 门户中，导航到 **AdatumLab100-5b - 概述** 边栏选项卡。
 
-1. From the **AdatumLab100-5b - Overview** blade, navigate to the **Licenses - Overview** blade.
+1. 从 **AdatumLab100-5b - 概述** 边栏选项卡，导航到 **许可证 - 概述** 边栏选项卡。
 
-1. From the **Licenses - Overview** blade, navigate to the **Products** blade. 
+1. 从 **许可证 - 概述** 边栏选项卡，导航至 **产品** 边栏选项卡。 
 
-1. From the **Products** blade, navigate to the **Activate** blade and activate **Azure AD Premium P2** free trial.
+1. 从 **产品** 边栏选项卡，导航至 **启用** 边栏和启用 **Azure AD Premium P2** 免费试用版。
 
 
-#### Task 3: Create and configure Azure AD users
+#### 任务 3：创建和配置 Azure AD 用户。
+ 
+1. 在 Azure 门户中，导航到 AdatumLab100-5b Azure AD 租户的 **用户 - 所有用户** 边栏选项卡。
 
-1. In the Azure portal, navigate to the **Users - All users** blade of the AdatumLab100-5b Azure AD tenant.
+1. 在 **用户 - 所有用户** 边栏选项卡中，使用以下设置创建新用户：
 
-1. From the **Users - All users** blade, create a new user with the following settings:
+    - 名称： **aaduser1**
 
-    - Name: **aaduser1**
+    - 用户名： **aaduser1 @＆LT; DNS 域-名称＆gt; .onmicrosoft.com** 其中＆lt; DNS-domain-name＆gt;表示您在本次练习的第一个任务中指定的初始域名。 
 
-    - User name: **aaduser1@&lt;DNS-domain-name&gt;.onmicrosoft.com** where &lt;DNS-domain-name&gt; represents the initial domain name you specified in the first task of this exercise. 
+   > **注**：记下此用户名。在本逻辑阵列模块中，您后续将需要该域名。
 
-   > **Note**: Take a note of this user name. You will need it later in this lab.
+    - 个人资料： 
 
-    - Profile: 
+        - 部门 **销售**
 
-        - Department: **Sales**
+    - 属性： **默认**
 
-    - Properties: **Default**
+    - 群组： **选定了 0 个组**
 
-    - Groups: **0 groups selected**
+    - 目录角色： **用户**
 
-    - Directory role: **User**
+    - 密码：选中 **显示密码** 复选框并注意 **密码** 文本框中出现的字符串。在本逻辑阵列模块中，您后续将需要该域名。
 
-    - Password: select the checkbox **Show Password** and note the string appearing in the **Password** text box. You will need it later in this lab.
+1. 在 **用户 - 所有用户** 边栏选项卡中，使用以下设置创建新用户：
 
-1. From the **Users - All users** blade, create a new user with the following settings:
+    - 名称： **aaduser2**
 
-    - Name: **aaduser2**
+    - 用户名： **aaduser2 @＆LT; DNS 域-名称＆gt; .onmicrosoft.com** 其中＆lt; DNS-domain-name＆gt;表示您在本次练习的第一个任务中指定的初始域名。 
 
-    - User name: **aaduser2@&lt;DNS-domain-name&gt;.onmicrosoft.com** where &lt;DNS-domain-name&gt; represents the initial domain name you specified in the first task of this exercise. 
+   > **注**：记下此用户名。在本逻辑阵列模块中，您后续将需要该域名。
 
-   > **Note**: Take a note of this user name. You will need it later in this lab.
+    - 个人资料： 
 
-    - Profile: 
+        - 部门 **财务**
 
-        - Department: **Finance**
+    - 属性： **默认**
 
-    - Properties: **Default**
+    - 群组： **选定了 0 个组**
 
-    - Groups: **0 groups selected**
+    - 目录角色： **用户**
 
-    - Directory role: **User**
+    - 密码：选中 **显示密码** 复选框并注意 **密码** 文本框中出现的字符串。在本逻辑阵列模块中，您后续将需要该域名。
 
-    - Password: select the checkbox **Show Password** and note the string appearing in the **Password** text box. You will need it later in this lab.
 
+#### 任务 4：将 Azure AD Premium v2 许可证分配给 Azure AD 用户
 
-#### Task 4: Assign Azure AD Premium v2 licenses to Azure AD users
+   > **注**：要将 Azure AD Premium v2 许可证分配给 Azure AD 用户，首先必须设置其位置属性。
 
-   > **Note**: In order to assign Azure AD Premium v2 licenses to Azure AD users, you first have to set their location attribute.
+1. 从 **用户 - 所有用户** 边栏选项卡，导航至 **aaduser1-个人资料** 边栏并将 **使用地点** 设置为 **美国**。
 
-1. From the **Users - All users** blade, navigate to the **aaduser1 - Profile** blade and set the **Usage location** to **United States**.
+1. 从 **aaduser1 - 个人资料** 边栏选项卡，导航到 **aaduser1  - 许可证** 边栏选项卡并为用户分配 Azure Active Directory Premium P2 许可证，并启用所有许可选项。
 
-1. From the **aaduser1 - Profile** blade, navigate to the **aaduser1 - Licenses** blade and assign to the user an Azure Active Directory Premium P2 license with all licensing options enabled.
+1. 回到 **用户 - 所有用户** 边栏选项卡，导航到 **aaduser2  - 个人资料** 边栏选项卡，并设置 **使用位置** 至 **美国**。
 
-1. Return to the **Users - All users** blade, navigate to the **aaduser2 - Profile** blade, and set the **Usage location** to **United States**.
+1. 从 **aaduser2 - 个人资料** 边栏选项卡，导航到 **aaduser2 - 许可证** 边栏选项卡并为用户分配 Azure Active Directory Premium P2 许可证，并启用所有许可选项。
 
-1. From the **aaduser2 - Profile** blade, navigate to the **aaduser2 - Licenses** blade and assign to the user an Azure Active Directory Premium P2 license with all licensing options enabled.
+1. 回到 **用户 - 所有用户** 边栏选项卡，导航到您的用户帐户的个人资料条目并设置 **使用位置** 至 **美国**。
 
-1. Return to the **Users - All users** blade, navigate to the Profile entry of your user account and set the **Usage location** to **United States**.
+1. 导航您的用户帐户的 **许可证** 边栏选项卡，并为其分配 Azure Active Directory Premium P2 许可证，并启用所有许可选项。
 
-1. Navigate to **Licenses** blade of your user account and assign to it an Azure Active Directory Premium P2 license with all licensing options enabled.
+1. 从门户网站注销，然后使用您在本逻辑阵列模块中使用的相同帐户重新登录。 
 
-1. Sign out from the portal and sign back in using the same account you are using for this lab. 
+   > **注**：必须执行此步骤才能使许可证分配生效。 
 
-   > **Note**: This step is necessary in order for the license assignment to take effect. 
 
+#### 任务 5：管理 Azure AD 组成员。
 
-#### Task 5: Manage Azure AD group membership
+1. 在 Azure 门户中，导航到 **群组 - 所有群组** 边栏选项卡。 
 
-1. In the Azure portal, navigate to the **Groups - All groups** blade. 
+1. 从 **群组 - 所有群组** 边栏选项卡，导航到 **群组** 边栏选项卡并使用以下设置创建新组：
 
-1. From the **Groups - All groups** blade, navigate to the **Group** blade and create a new group with the following settings:
+    - 组类型: **安全**
 
-    - Group type: **Security**
+    - 组名: **销售**
 
-    - Group name: **Sales**
+    - 小组介绍： **销售部门中的所有用户**
 
-    - Group description: **All users in the Sales department**
+    - 成员身份类型： **动态用户**
 
-    - Membership type: **Dynamic User**
+    - 动态用户成员： 
 
-    - Dynamic user members: 
+        - 简单的规则
 
-        - Simple rule
+        - 添加用户： **部门平均销售额**
 
-        - Add users where: **department Equals Sales**
+1. 从 **群组 - 所有群组** 边栏选项卡，导航到 **群组** 边栏选项卡并使用以下设置创建新组：
 
-1. From the **Groups - All groups** blade, navigate to the **Group** blade and create a new group with the following settings:
+    - 组类型: **安全**
 
-    - Group type: **Security**
+    - 组名 **销售和财务**
 
-    - Group name: **Sales and Finance**
+    - 小组介绍： **销售和财务部门的所有用户**
 
-    - Group description: **All users in the Sales and Finance departments**
+    - 成员身份类型： **动态用户**
 
-    - Membership type: **Dynamic User**
+    - 动态用户成员： 
 
-    - Dynamic user members: 
+        - 高级规则： **（用户部门 - 例如“销售”） - 或（用户部门 - 例如“营销”）**
 
-        - Advanced rule: **(user.department -eq "Sales") -or (user.department -eq "Finance")**
+1. 来自 **群组 - 所有群组** 边栏选项卡，导航到边栏选项卡 **销售** 和 **销售和财务** 组，并注意组成员资格评估正在进行中。等到评估完成，然后导航到 **成员** 边栏选项卡，并验证组成员身份是否正确。
 
-1. From the **Groups - All groups** blade, navigate to the blades of **Sales** and **Sales and Finance** groups, and note that the group membership evaluation is in progress. Wait until the evalution completes, then navigate to the **Members** blade, and verify that the group membership is correct.
 
+#### 任务 6：配置自助密码重置功能
 
-#### Task 6: Configure self-service password reset functionality
+1. 在 Azure 门户中，导航到 **AdatumLab100-5b - 概述** 边栏选项卡。 
 
-1. In the Azure portal, navigate to the **AdatumLab100-5b - Overview** blade. 
+1. 从 **AdatumLab100-5b - 概述** 边栏选项卡，导航到 **密码重置 - 属性** 边栏选项卡。 
 
-1. From the **AdatumLab100-5b - Overview** blade, navigate to the **Password reset - Properties** blade. 
+1. 在 **密码重置 - 属性** 边栏选项卡上，配置以下设置：
 
-1. On the **Password reset - Properties** blade, configure the following settings:
+    - 自助密码重置 **Select**
 
-    - Self service password reset enabled: **Selected**
+    - 选择“组”。 **销售**
 
-    - Selected group: **Sales**
+1. 从 **密码重置 - 属性** 边栏选项卡，导航到 **密码重置 - 验证方法** 边栏选项卡并配置以下设置：
 
-1. From the **Password reset - Properties** blade, navigate to the **Password reset - Auhentication methods** blade and configure the following settings:
+    - 重置所需的方法数： **1**
 
-    - Number of methods required to reset: **1**
+    - 用户可用的方法： 
 
-    - Methods available to users: 
+        - **电子邮件**
 
-        - **Email**
+        - **移动电话**
 
-        - **Mobile phone**
+        - **办公室电话**
 
-        - **Office phone**
+        - **安全问题**
 
-        - **Security questions**
+        - 注册所需的安全问题数量：**3**
 
-        - Number of security questions required to register: **3**
+        - 重置所需的安全问题数量：**3**
 
-        - Number of security questions required to reset: **3**
+        - 选择安全问题：选择 **预定义** 并添加 5 个预定义安全问题的任意组合
 
-        - Select security questions: select **Predefined** and add any combination of 5 predefined security questions
+1. 从 **密码重置 - 身份验证方法** 边栏选项卡，导航到 **密码重置 - 注册** 边栏选项卡，并确保配置以下设置：
 
-1. From the **Password reset - Authentication methods** blade, navigate to the **Password reset - Registration** blade, and ensure that the following settings are configured:
+    - 要求用户在登录时注册？： **是**
 
-    - Require users to register when signing in?: **Yes**
+    - 要求用户重新确认其身份验证信息的天数： **180**
 
-    - Number of days before users are asked to re-confirm their authentication information: **180**
 
+#### 任务 7：验证自助密码重置功能
 
-#### Task 7: Validate self-service password reset functionality
+1. 打开 InPrivate Microsoft Edge 窗口。
 
-1. Open an InPrivate Microsoft Edge window.
+1. 在新的浏览器窗口中，导航至 Azure 门户并使用 **aaduser1** 用户帐户登录。出现提示时，将密码更改为新值。
 
-1. In the new browser window, navigate to the Azure portal and sign in using the **aaduser1** user account. When prompted, change the password to a new value.
+   > **注**：您需要提供 **aaduser1** 用户帐户的完全限定名，包括 Azure AD 租户 DNS 域名，如本逻辑阵列模块前面所述。
 
-   > **Note**: You will need to provide a fully qualified name of the **aaduser1** user account, including the Azure AD tenant DNS domain name, as noted earlier in this lab.
+1. 当提示时 **需要更多信息** 消息，继续 **不要失去对您帐户的访问权限** 页。
 
-1. When prompted with the **More information required** message, continue to the **don't lose access to your account** page.
+1. 在 **不要失去对您帐户的访问权限** 页面，请注意您需要至少设置以下选项之一：
 
-1. On the **don't lose access to your account** page, note that you need to set up at least one of the following options:
+    - **办公室电话**
 
-    - **Office phone**
+    - **认证电话**
 
-    - **Authentication Phone**
+    - **认证电邮**
 
-    - **Authentication Email**
+    - **安全问题**
 
-    - **Security Questions**
+1. 来自 **不要失去对您帐户的访问权限** 页面，配置您在上一个任务中选择的 5 个安全问题的答案
 
-1. From the **don't lose access to your account** page, configure answers to 5 security questions you selected in the previous task
+1. 验证您是否已成功登录 Azure 门户。
 
-1. Verify that you successfully signed in to the Azure portal.
+1. 退出为 **aaduser1** 并关闭 InPrivate 浏览器窗口。
 
-1. Sign out as **aaduser1** and close the InPrivate browser window.
+1. 打开 InPrivate Microsoft Edge 窗口。
 
-1. Open an InPrivate Microsoft Edge window.
+1. 在新的浏览器窗口中，导航到 Azure 门户，然后在 **选一个帐户** 页面，输入 **aaduser1** 用户帐户名称。 
 
-1. In the new browser window, navigate to the Azure portal and, on the **Pick an account** page, type in the **aaduser1** user account name. 
+1. 在 **输入密码** 页面，单击 **忘了我的密码** 链接。
 
-1. On the **Enter password** page, click the **Forgot my password** link.
+1. 在 **返回您的帐户** 页面，验证 **用户身份**，输入图片中的字符或音频中的字词，然后继续下一页。
 
-1. On the **Get back into your account** page, verify the **User ID**, enter the characters in the picture or the words in the audio, and proceed to the next page.
+1. 在下一页中，使用您在上一个任务中指定的答案提供 thre 安全问题的答案。
 
-1. On the next page, provide answers to thre security questions using answers you specified in the previous task.
+1. 在下一页上，输入两次新密码并完成密码重置过程。
 
-1. On the next page, enter twice a new password and complete the password reset process.
+1. 验证您是否可以使用新重置的密码登录 Azure 门户。 
 
-1. Verify that you can sign in to the Azure portal by using the newly reset password. 
+> **结果**：完成本次练习后，您已请创建一个新 Azure AD 租户。，激活 Azure AD Premium v2 试用版，创建和配置 Azure AD 用户，为 Azure AD 用户分配 Azure AD Premium v2 许可证，管理 Azure AD 组成员身份以及配置和验证的自助密码重置功能
 
-> **Result**: After you completed this exercise, you have created a new Azure AD tenant, activated Azure AD Premium v2 trial, created and configured Azure AD users, assigned Azure AD Premium v2 licenses to Azure AD users, managed Azure AD group membership, as well as configured and validated self-service password reset functionality
 
+### 练习 2：管理 Azure AD 集成的 SaaS 应用程序。
 
-### Exercise 2: Manage Azure AD-integrated SaaS applications
+本次练习的主要任务如下：
 
-The main tasks for this exercise are as follows:
+1. 从 Azure AD 库中添加应用程序
 
-1. Add an application from the Azure AD gallery
+1. 配置单点登录的应用程序
 
-1. Configure the application for a single sign-on
+1. 您可以定义每个角色的权限和分配给用户的角色。
 
-1. Assign users to the application
+1. 验证应用程序的单点登录
 
-1. Validate single sign-on for the application
 
+#### 任务 1：从 Azure AD 库中添加应用程序
 
-#### Task 1: Add an application from the Azure AD gallery
+1. 在 Azure 门户中，导航到 **AdatumLab100-5b - 概述** 边栏选项卡。 
 
-1. In the Azure portal, navigate to the **AdatumLab100-5b - Overview** blade. 
+1. 从 **AdatumLab100-5b - 概述** 边栏选项卡，导航到 **企业应用 - 所有应用** 边栏选项卡
 
-1. From the **AdatumLab100-5b - Overview** blade, navigate to the **Enterprise applications - All applications** blade.
+1. 从 **企业应用 - 所有应用** 边栏选项卡，导航到 **添加应用程序** 边栏选项卡。 
 
-1. From the **Enterprise applications - All applications** blade, navigate to the **Add an application** blade. 
+1. 在 **添加应用程序** 边栏选项卡，搜索应用程序库 **Microsoft OneDrive**。 
 
-1. On the **Add an application** blade, search the application gallery for the **Microsoft OneDrive**. 
+1. 使用搜索结果列表导航到 **Microsoft OneDrive** 添加应用边栏选项卡并添加应用。
 
-1. Use the list of search results to navigate to the **Microsoft OneDrive** add app blade and add the app.
 
+#### 任务 2：配置单点登录的应用程序
 
-#### Task 2: Configure the application for a single sign-on
+1. 从 **Microsoft OneDrive - 概述** 边栏选项卡，导航到 **Microsoft OneDrive - 入门** 边栏选项卡。 
 
-1. From the **Microsoft OneDrive - Overview** blade, navigate to the **Microsoft OneDrive - Getting started** blade. 
+1. 在 **Microsoft OneDrive - 入门** 边栏选项卡，使用 **配置单点登录（必填）** 导航到的选项 **Microsoft OneDrive - 单点登录** 边栏选项卡。 
 
-1. On the **Microsoft OneDrive - Getting started** blade, use the **Configure single sign-on (required)** option to navigate to the **Microsoft OneDrive - Single sign-on** blade. 
+1. 在 **Microsoft OneDrive - 单一登录** 边栏选项卡，选择 **基于密码** 选项并保存配置。
 
-1. On the **Microsoft OneDrive - Single sign-on** blade, select the **Password-based** option and save the configuration.
 
+#### 任务 3：您可以定义每个角色的权限和分配给用户的角色。
 
-#### Task 3: Assign users to the application
+1. 导航回到 **Microsoft OneDrive - 入门** 边栏选项卡。 
 
-1. Navigate back to the **Microsoft OneDrive - Getting started** blade. 
+1. 在 **Microsoft OneDrive - 入门** 边栏选项卡，使用 **分配用户进行测试（必需）** 导航到的选项 用于 **Microsoft OneDrive** 的 **用户和组** 边栏选项卡 。 
 
-1. On the **Microsoft OneDrive - Getting started** blade, use the **Assign a user for testing (required)** option to navigate to the **Users and groups** blade for **Microsoft OneDrive**. 
+1. 从用于 **Microsoft OneDrive ** 的 **用户和组** 边栏选项卡，导航到 **添加作业** 边栏选项卡并添加以下任务：
 
-1. From the **Users and groups** blade for **Microsoft OneDrive**, navigate to the **Add Assignment** blade and add the following assignment:
+    - 用户和组 **销售和财务**
 
-    - Users and groups: **Sales and Finance**
+    - （请选择一个角色） **默认访问权限**
 
-    - Select role: **Default access**
+    - 分配凭据： 
 
-    - Assign Credentials: 
+        - 分配要在所有组成员之间共享的凭据： **是**
 
-        - Assign credentials to be shared among all group members: **Yes**
+        - 订阅：您希望用于本逻辑阵列模块的订阅名称。
 
-        - Email Address: the name of the Microsoft Account you are using for this lab
+        - 订阅：您希望用于本逻辑阵列模块的订阅名称。
 
-        - Password: the password of the Microsoft Account you are using for this lab
+1. 从 Azure 门户注销并关闭 Microsoft Edge 窗口。
 
-1. Sign out from the Azure portal and close the Microsoft Edge window.
 
+#### 任务 4：验证应用程序的单点登录
 
-#### Task 4: Validate single sign-on for the application
+1. 打开 Microsoft Edge 窗口。
 
-1. Open a Microsoft Edge window.
+1. 在 Microsoft Edge 窗口中，导航到位于的应用程序访问面板 [**HTTP：//myapps.microsoft.com**](http://myapps.microsoft.com) 并使用。登录 **aaduser2** 用户帐号。出现提示时，将密码更改为新值。
 
-1. In the Microsoft Edge window, navigate to the Application Access Panel at [**http://myapps.microsoft.com**](http://myapps.microsoft.com) and sign in by using the **aaduser2** user account. When prompted, change the password to a new value.
+   > **注**：您需要提供完全限定的名称 **aaduser2** 用户帐户，包括 Azure AD 租户 DNS 域名，如本逻辑阵列模块前面所述。
 
-   > **Note**: You will need to provide a fully qualified name of the **aaduser2** user account, including the Azure AD tenant DNS domain name, as noted earlier in this lab.
+1. 在“访问面板应用程序”页面上，单击 **Microsoft OneDrive** 图标。
 
-1. On the Access Panel Applications page, click the **Microsoft OneDrive** icon.
+1. 出现提示时，添加 My Apps Secure Sign-in Extension 并启用它，包括 **允许 InPrivate 浏览** 选项。
 
-1. When prompted, add the My Apps Secure Sign-in Extension and enable it, including the **Allow for InPrivate browsing** option.
+1. 再次导航到应用程序访问面板 [**http://myapps.microsoft.com**](http://myapps.microsoft.com) 并使用。登录 **aaduser2** 用户帐号。 
 
-1. Navigate again to the Application Access Panel at [**http://myapps.microsoft.com**](http://myapps.microsoft.com) and sign in by using the **aaduser2** user account. 
+1. 在“访问面板应用程序”页面上，单击 **Microsoft OneDrive** 图标。
 
-1. On the Access Panel Applications page, click the **Microsoft OneDrive** icon.
+1. 验证您是否已成功访问 Microsoft OneDrive 应用程序，而无需重新进行身份验证。
 
-1. Verify that you have successfully accessed the Microsoft OneDrive application without having to re-authenticate.
+1. 从应用程序访问面板注销并关闭 Microsoft Edge 窗口。
 
-1. Sign out from the Application Access Panel and close the Microsoft Edge window.
+   > **注**：确保再次启动 Microsoft Edge，浏览到 Azure 门户，使用您在本逻辑阵列模块中使用的 Azure 订阅中具有所有者角色的 Microsoft 帐户登录，并使用 **目录订阅** 完成本逻辑阵列模块后，过滤以切换到默认的 Azure AD 租户。
 
-   > **Note**: Make sure to launch Microsoft Edge again, browse to the Azure portal, sign in by using the Microsoft account that has the Owner role in the Azure subscription you were using in this lab, and use the **Directory + subscription** filter to switch to your default Azure AD tenant once you complete this lab.
-
-> **Result**: After you completed this exercise, you have added an application from the Azure AD gallery, configured the application for a single sign-on, assigned users to the application, and validated single sign-on for the application.
+> **结果**：完成本次练习后，您已从 Azure AD 库中添加了应用程序，将应用程序配置为单点登录，为应用程序分配用户，以及为应用程序验证单点登录。

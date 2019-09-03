@@ -1,552 +1,543 @@
+﻿---
+逻辑阵列模块：
+    标题：‘使用 Azure 网络观察程序监控网络连通性和排除故障’
+    模块：‘实施高级虚拟网络’
 ---
-lab:
-    title: 'Azure Network Watcher'
-    module: 'Module 06 - Monitoring'
----
 
-# Lab: Use Azure Network Watcher for monitoring and troubleshooting network connectivity
+# 逻辑阵列模块：使用 Azure 网络观察程序监控网络连通性和排除故障
 
-All tasks in this lab are performed from the Azure portal (including a PowerShell Cloud Shell session)  
+本逻辑阵列模块中的所有任务都是从 Azure 门户执行的（包括 PowerShell Cloud Shell 会话）  
 
-   > **Note**: When not using Cloud Shell, the lab virtual machine must have the Azure PowerShell 1.2.0 module (or newer) installed[https://docs.microsoft.com/en-us/powershell/azure/install-az-ps](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps)
+   > **注**：不使用 Cloud Shell 时，逻辑阵列模块虚拟机必须安装 Azure PowerShell 1.2.0 模块（或更新版本） https://docs.Microsoft.com/zh-cn/powershell/ Azure /install-az-ps?view=azps-1.2.0
 
-Lab files: 
+逻辑阵列模块文件： 
 
--  **Labfiles\\Module_06\\Network_Watcher\\az-101-03b_01_azuredeploy.json**
+-  **Allfiles/Labfiles/AZ-101.3/az-101-03b_01_Azure deploy.json**
 
--  **Labfiles\\Module_06\\Network_Watcher\\az-101-03b_02_azuredeploy.json**
+-  **Allfiles/Labfiles/AZ-101.3/az-101-03b_02_azuredeploy.json**
 
--  **Labfiles\\Module_06\\Network_Watcher\\az-101-03b_01_azuredeploy.parameters.json**
+-  **Allfiles/Labfiles/AZ-101.3/az-101-03b_01_ Azure deploy.parameters.json**
 
--  **Labfiles\\Module_06\\Network_Watcher\\az-101-03b_02_azuredeploy.parameters.json**
+-  **Allfiles/Labfiles/AZ-101.3/az-101-03b_02_azuredeploy.parameters.json**
 
 
-### Scenario
+### 方案
   
-Adatum Corporation wants to monitor Azure virtual network connectivity by using Azure Network Watcher.
+Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟网络连通性。
 
 
-### Objectives
+### 目标
   
-After completing this lab, you will be able to:
+完成本逻辑阵列模块后，您将能够：
 
--  Deploy Azure VMs, Azure storage accounts, and Azure SQL Database instances by using Azure Resource Manager templates
+-  使用 Azure 资源管理器模板部署 Azure VM， Azure 存储帐户和 Azure SQL 数据库实例
 
--  Use Azure Network Watcher to monitor network connectivity
+-  使用 Azure 网络观察程序来监控网络连通性
 
 
-### Exercise 1: Prepare infrastructure for Azure Network Watcher-based monitoring
+### 练习 1：为基于 Azure 网络观察程序的监控准备基础设施
   
-The main tasks for this exercise are as follows:
+本次练习的主要任务如下：
 
-1. Deploy Azure VMs, an Azure Storage account, and an Azure SQL Database instance by using an Azure Resource Manager template
+1. 使用 Azure 资源管理器模板部署 Azure VM、Azure 存储帐户和 Azure SQL 数据库实例
 
-1. Enable Azure Network Watcher service
+1. 启用 Azure 网络观察程序服务
 
-1. Establish peering between Azure virtual networks
+1. 在 Azure 虚拟网络之间建立对等互连
 
-1. Establish service endpoints to an Azure Storage account and Azure SQL Database instance
+1. 建立至 Azure 存储帐户和 Azure SQL 数据库实例的服务终结点
 
 
-#### Task 1: Deploy Azure VMs, an Azure Storage account, and an Azure SQL Database instance by using Azure Resource Manager templates
+#### 任务 1：使用 Azure 资源管理器模板部署 Azure VM、Azure 存储帐户和 Azure SQL 数据库实例
 
-1. From the lab virtual machine, start Microsoft Edge, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using a Microsoft account that has the Owner role in the target Azure subscription.
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge 并浏览 Azure 门户，网址：**http://portal.Azure.com** 并使用在目标 Azure 订阅中具有所有者角色的 Microsoft 帐户登录。
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+1. 在 Azure 门户中，请导航到“**新建**”边栏选项卡。
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Template deployment**.
+1. 在“**新建**”边栏选项卡上，在Azure Marketplace 搜索 **模板部署**。
 
-1. In the list of results, click **Template deployment (deploy using custom templates)**, and then click **Create**.
+1. 请使用搜索结果列表，导航到“**自定义部署**”边栏选项卡。
 
-1. On the **Custom deployment** blade, click the **Build your own template in the editor** link. If you do not see this link, click **Edit template** instead.
+1. 在“**自定义部署**”边栏选项卡上，请选择“**在编辑器中构建自己的模板**”。
 
-1. From the **Edit template** blade, load the template file **az-101-03b_01_azuredeploy.json**. 
+1. 在“**编辑模板**”边栏选项卡上，请加载模板文件 **az-101-03b_01_azuredeploy.json**。 
 
-   > **Note**: Review the content of the template and note that it defines deployment of an Azure VM, an Azure SQL Database, and an Azure Storage account.
+   > **注**：查看模板内容，并注意其中定义了 Azure VM、Azure SQL 数据库和 Azure 存储帐户的部署。
 
-1. Save the template and return to the **Custom deployment** blade. 
+1. 请保存模板并返回“**自定义部署**”边栏选项卡。 
 
-1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
+1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数** 边栏选项卡
 
-1. From the **Edit parameters** blade, load the parameters file **az-101-03b_01_azuredeploy.parameters.json**. 
+1. 在“**编辑参数**”边栏选项卡上，请加载参数文件 **az-101-03b_01_azuredeploy.parameters.json**。 
 
-1. Save the parameters and return to the **Custom deployment** blade. 
+1. 请保存参数并返回“**自定义部署**”边栏选项卡。 
 
-1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
+1. 从 **自定义部署** 边栏选项卡，使用以下设置启动模板部署：
 
-    - Subscription: the name of the subscription you intend to use in this lab
+    - 订阅：您希望用于本逻辑阵列模块的订阅名称。
 
-    - Resource group: the name of a new resource group **az1010301b-RG**
+    - 资源组：新资源组 **az1010301b-RG** 的名称
 
-    - Location: the name of the Azure region which is closest to the lab location and where you can provision Azure VMs and Azure SQL Database
+    - 位置：最靠近逻辑阵列模块位置的 Azure 区域的名称，您可以在其中配置 Azure VM 和 Azure SQL 数据库
 
-    - Vm Size: **Standard_DS2_v2**
+    - VM 大小： **Standard_DS1_v2**
 
-    - Vm Name: **az1010301b-vm1**
+    - Vm 名称： **az1010301b-vm1**
 
-    - Admin Username: **Student**
+    - 管理员用户名： **学生**
 
-    - Admin Password: **Pa55w.rd1234**
+    - 管理员密码： **Pa55w.rd1234**
 
-    - Virtual Network Name: **az1010301b-vnet1**
+    - 虚拟网络名称： **az1010301b-vnet1**
 
-    - Sql Login Name: **Student**
+    - Sql 登录名： **学生**
 
-    - Sql Login Password: **Pa55w.rd1234**
+    - Sql 登录密码： **Pa55w.rd1234**
 
-    - Database Name: **az1010301b-db1**
+    - 数据库名称： **az1010301b-db1**
 
-    - Sku Name: **Basic**
+    - Sku 名称： **基本**
 
-    - Sku Tier: **Basic**
+    - Sku 层级： **基本**
 
-   > **Note**: To identify VM sizes available in your subscription in a given region, run the following from Cloud Shell and review the values in the **Restriction** column (where &lt;location&gt; represents the target Azure region):
+   > **注**：如需识别给定区域内您订阅中的可用 VM 大小，请从 Cloud Shell 运行以下命令并查看“**限制列**”中的值（其中，&lt;location&gt;表示目标 Azure 区域）：
    
-   ```pwsh
+   ```
    Get-AzComputeResourceSku | where {$_.Locations -icontains "<location>"} | Where-Object {($_.ResourceType -ilike "virtualMachines")}
    ```
    
-   > **Note**: To identify whether you can provision Azure SQL Database in a given region, run the following from Cloud Shell and ensure that the resulting **Status** is set to **Available** (where &lt;location&gt; represents the target Azure region):
+   > **注**：如需确定是否可以在给定区域中配置 Azure SQL 数据库，请从 Cloud Shell 运行以下命令并确保生成的“**状态**”设置为“**可用**”（其中，&lt;location&gt;表示目标 Azure 区域）：
 
-   ```pwsh
-   Get-AzSqlCapability -LocationName <regionname>
+   ```
+   Get-AzSqlCapability -LocationName <location>
    ```
    
-   > **Note**: Do not wait for the deployment to complete but proceed to the next step. 
+   > **注**：请勿等待第一台虚拟机预配完成，继续进行下一项步骤。 
 
-1. In the Azure portal, navigate to the **Create a resource** blade.
+1. 在 Azure 门户中，请导航到“**新建**”边栏选项卡。
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Template deployment**.
+1. 在“**新建**”边栏选项卡上，在Azure Marketplace 搜索 **模板部署**。
 
-1. In the results, click **Template deployment (deploy using custom templates)**, and then click **Create**.
+1. 请使用搜索结果列表，导航到“ **自定义部署**”边栏选项卡。
 
-1. On the **Custom deployment** blade, click the **Build your own template in the editor** link. If you do not see this link, click **Edit template** instead.
+1. 在“**自定义部署**”边栏选项卡上，请选择“**在编辑器中构建自己的模板**”。
 
-1. From the **Edit template** blade, load the template file **az-101-03b_02_azuredeploy.json**. 
+1. 在“**编辑模板**”边栏选项卡上，请加载模板文件 **az-101-03b_02_azuredeploy.json**。 
 
-   > **Note**: Review the content of the template and note that it defines deployment of an Azure VM.
+   > **注**：查看模板内容，并注意其中定义了 Azure VM 的部署。
 
-1. Save the template and return to the **Custom deployment** blade. 
+1. 请保存模板并返回“**自定义部署**”边栏选项卡。 
 
-1. From the **Custom deployment** blade, navigate to the **Edit parameters** blade.
+1. 从 **自定义部署**边栏选项卡，导航到 **编辑参数** 边栏选项卡
 
-1. From the **Edit parameters** blade, load the parameters file **az-101-03b_02_azuredeploy.parameters.json**. 
+1. 在“**编辑参数**”边栏选项卡上，请加载参数文件 **az-101-03b_02_azuredeploy.parameters.json**。 
 
-1. Save the parameters and return to the **Custom deployment** blade. 
+1. 请保存参数并返回“**自定义部署**”边栏选项卡。 
 
-1. From the **Custom deployment** blade, initiate a template deployment with the following settings:
+1. 从 **自定义部署** 边栏选项卡，使用以下设置启动模板部署：
 
-    - Subscription: the name of the subscription you are using in this lab
+    - 订阅：在本次逻辑阵列模块中您所使用的订阅名称
 
-    - Resource group: the name of a new resource group **az1010302b-RG**
+    - 资源组：新资源组 **az1010302b-RG** 的名称
 
-    - Location: the name of an Azure region where you can provision Azure VMs, but which is **different** from the one you selected during previous deployment, 
+    - 位置：Azure 区域的名称，您可以在其中配置 Azure VM，但该区域与您在先前部署期间选择的区域不同， 
 
-    - Vm Size: **Standard_DS2_v2**
+    - VM 大小： **Standard_DS1_v2**
 
-    - Vm Name: **az1010302b-vm2**
+    - Vm 名称： **az1010302b-vm2**
 
-    - Admin Username: **Student**
+    - 管理员用户名： **学生**
 
-    - Admin Password: **Pa55w.rd1234**
+    - 管理员密码： **Pa55w.rd1234**
 
-    - Virtual Network Name: **az1010302b-vnet2**
+    - 虚拟网络名称： **az1010302b-vnet2**
 
-   > **Note**: Make sure to choose a different Azure region for this deployment
+   > **注**：确保为此部署选择不同的 Azure 区域
 
-   > **Note**: Do not wait for the deployment to complete but proceed to the next step. 
+   > **注**：请勿等待第一台虚拟机预配完成，继续进行下一项步骤。 
 
 
-#### Task 2: Enable Azure Network Watcher service
+#### 任务 2：启用 Azure 网络观察程序服务
 
-1. In the Azure portal, use the search text box on the **All services** blade to navigate to the **Network Watcher** blade.
+1. 在 Azure 门户中，使用“**所有服务**”边栏上的搜索文本框导航到“**网络观察程序**”边栏选项卡。
 
-2. On the **Network Watcher** blade, verify that Network Watcher is enabled in both Azure regions into which you deployed resources in the previous task and, if not, enable it.
+2. 在“**网络观察程序**”边栏选项卡上，验证您在上一个任务中已部署资源的两个 Azure 区域中是否启用了网络观察程序，如未启用，则将其启用。
 
 
-#### Task 3: Establish peering between Azure virtual networks
+#### 任务 3：在 Azure 虚拟网络之间建立对等互连
 
-   > **Note**: Before you start this task, ensure that the template deployment you started in the first task of this exercise has completed. 
+   > **注**：开始此任务之前，请确保您在本次练习的第一个任务中启动的模板部署已经完成。 
 
-1. In the Azure portal, navigate to the **az1010301b-vnet1** virtual network blade.
+1. 在 Azure 门户中，导航到 **az1010301b-vnet1** 虚拟网络边栏选项卡。
 
-1. From the **az1010301b-vnet1** virtual network blade, display the **az1010301b-vnet1 - Peerings** blade.
+1. 从 **az1010301b-vnet1** 虚拟网络边栏选项卡，显示 **az1010301b-vnet1-Peering** 边栏选项卡。
 
-1. From the **az1010301b-vnet1 - Peerings** blade, create a VNet peering with the following settings:
+1. 从 **az1010301b-vnet1-Peering** 边栏选项卡，创建 VNet 对等互连，设置如下：
 
-    - Name: **az1010301b-vnet1-to-az1010302b-vnet2**
+    - 名称： **az1010301b-vnet1-to-az1010302b-vnet2**
 
-    - Virtual network deployment model: **Resource manager**
+    - 虚拟网络部署模型： **资源管理器**
 
-    - Subscription: the name of the Azure subscription you are using in this lab
+    - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
-    - Virtual network: **az1010302b-vnet2**
+    - 虚拟网络： **az1010302b-vnet2**
 
-    - Name of peering from az1010302b-vnet2 to az1010301b-vnet1: **az1010302b-vnet2-to-az1010301b-vnet1**
+    - 允许虚拟网络访问： **启用**
 
-    - Allow virtual network access: **Enabled**
+    - 允许转发流量：禁用
 
-    - Allow forwarded traffic: **disabled**
+    - 允许网关中转：禁用
 
-    - Allow gateway transit: disabled
+    - 使用远程网关：禁用
 
-    > **Note**: The Azure portal allows you to configure both directions of the peering simultaneously. When using other management tools, each direction must be configured independently. 
+1. 在 Azure 门户中，导航到 **az1010302b-vnet2** 虚拟网络边栏选项卡。
 
-#### Task 4: Establish service endpoints to an Azure Storage account and Azure SQL Database instance
+1. 从 **az1010302b-vnet2** 虚拟网络边栏选项卡，显示 **az1010302b-vnet2 - Peerings** 边栏选项卡。
 
-1. In the Azure portal, navigate to the **az1010301b-vnet1** virtual network blade.
+1. 从 **az1010302b-vnet2 - Peerings** 边栏选项卡，创建 VNet 对等互连，设置如下：
 
-1. From the **az1010301b-vnet1** virtual network blade, display the **Service endpoints** blade.
+    - 名称： **az1010302b-vnet2-to-az1010301b-vnet1**
 
-1. From the **az1010301b-vnet1 - Service endpoints** blade, add a service endpoint with the following settings:
+    - 虚拟网络部署模型： **资源管理器**
 
-    - Service: **Microsoft.Storage**
+    - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
-    - Subnets: **subnet0**
+    - 虚拟网络： **az1010301b-vnet1**
 
-1. Repeat the step to create a second service endpoint:
+    - 允许虚拟网络访问：**启用**
 
-    - Service: **Microsoft.Sql**
+    - 允许转发流量：禁用
 
-    - Subnets: **subnet0**
+    - 允许网关中转：禁用
 
-1. In the Azure portal, navigate to the **az1010301b-RG** resource group blade.
+    - 使用远程网关：禁用
 
-1. From the **az1010301b-RG** resource group blade, navigate to the blade of the storage account included in the resource group. 
 
-1. From the storage account blade, navigate to its **Firewalls and virtual networks** blade.
+#### 任务 4：建立至 Azure 存储帐户和 Azure SQL 数据库实例的服务终结点
 
-1. From the **Firewalls and virtual networks** blade of the storage account, configure the following settings:
+1. 在 Azure 门户中，导航到 **az1010301b-vnet1** 虚拟网络边栏选项卡。
 
-    - Allow access from: **Selected networks**
+1. 从 **az1010301b-vnet1** 虚拟网络边栏选项卡，显示 **az1010301b-vnet1- 服务终结点** 边栏选项卡。
 
-    - Virtual networks: 
+1. 从 **az1010301b-vnet1- 服务终结点** 边栏选项卡，添加设置如下的服务终结点：
 
-        - VIRTUAL NETWORK: **az1010301b-vnet1**
+    - 服务： **Microsoft.Storage**
 
-            - SUBNET: **subnet0**
+    - 子网： **subnet0**
 
-    - Firewall: 
+    - 服务： **Microsoft.Sql**
 
-        - ADDRESS RANGE: none
+    - 子网： **subnet0**
 
-    - Exceptions: 
+1. 在 Azure 门户中，导航到 **az1000301b-RG** 资源组边栏选项卡。
 
-        - Allow trusted Microsoft services to access this storage account: **Enabled**
+1. 从 **az1010301b-RG** 资源组边栏选项卡，导航到资源组中包含的存储帐户边栏选项卡。 
 
-        - Allow read access to storage logging from any network: **Disabled**
+1. 从存储帐户边栏选项卡，导航到其 **防火墙和虚拟网络** 边栏选项卡。
 
-        - Allow read access to storage metrics from any network: **Disabled**
+1. 从存储帐户的 **防火墙和虚拟网络** 边栏选项卡，配置以下设置：
 
-1. In the Azure portal, navigate to the **az1010301b-RG** resource group blade.
+    - 允许从以下访问： **选定网络**
 
-1. From the **az1010301b-RG** resource group blade, navigate to the **az1010301b** Azure SQL Server blade. 
+    - 虚拟网络： 
 
-1. From the Azure SQL Server blade, navigate to its server's **Firewalls and virtual networks** blade.
+        - 虚拟网络： **az1010301b-vnet1**
 
-1. From the **Firewalls and virtual networks** blade of the Azure SQL Database server, configure the following settings:
+            - 子网： **subnet0**
 
-    - Allow access to Azure services: **ON**
+    - 防火墙： 
 
-    - No firewall rules configured 
+        - 地址范围：无
 
-    - Virtual networks:
+    - 例外项： 
 
-        - Name: **az1010301b-vnet1**
+        - 允许受信任的 Microsoft 服务访问此存储帐户： **启用**
 
-        - Subscription: the name of the subscription you are using in this lab
+        - 允许从任何网络对存储日志进行读访问： **禁用**
 
-        - Virtual network: **az1010301b-vnet1**
+        - 允许从任何网络对存储度量进行读访问： **禁用**
 
-        - Subnet name: **subnet0/ 10.203.0.0/24**
+1. 在 Azure 门户中，导航到 **az1010301b-RG** 资源组边栏选项卡。
 
-> **Result**: After you completed this exercise, you have deployed Azure VMs, an Azure Storage account, and an Azure SQL Database instance by using Azure Resource Manager templates, enabled Azure Network Watcher service, established global peering between Azure virtual networks, and established service endpoints to an Azure Storage account and Azure SQL Database instance.
+1. 从 **az1010301b-RG** 资源组边栏选项卡，导航到 **az1010301b-db1** Azure SQL 数据库边栏选项卡。 
 
+1. 从 **az1010301b-db1** Azure SQL 数据库边栏选项卡，导航到其服务器的“**防火墙设置**”边栏选项卡。
 
-### Exercise 2: Use Azure Network Watcher to monitor network connectivity
+1. 从 Azure SQL Database 服务器的“**防火墙设置**”边栏选项卡，配置以下设置：
+
+    - 允许访问 Azure 服务： **开**
+
+    - 未配置防火墙规则 
+
+    - 虚拟网络：
+
+        - 名称： **az1010301b-vnet1**
+
+        - 订阅：在本次逻辑阵列模块中您所使用的订阅名称
+
+        - 虚拟网络： **az1010301b-vnet1**
+
+        - 子网名称： **subnet0/10.203.0.0/24**
+
+> **结果**：完成本次练习后，您已使用 Azure 资源管理器模板部署 Azure VM、Azure 存储帐户和 Azure SQL 数据库实例；启用 Azure 网络观察程序服务；以及已建立 Azure 虚拟网络之间的全局对等互连以及已建立至 Azure 存储帐户和 Azure SQL 数据库实例的服务终结点。
+
+
+### 练习 2：使用 Azure 网络观察程序来监控网络连通性
   
-The main tasks for this exercise are as follows:
+本次练习的主要任务如下：
 
-1. Test network connectivity to an Azure VM via virtual network peering by using Network Watcher
+1. 使用网络观察程序通过虚拟网络对等互连测试至 Azure VM 的网络连通性
 
-1. Test network connectivity to an Azure Storage account by using Network Watcher
+1. 使用网络观察程序测试至 Azure 存储帐户的网络连通性
 
-1. Test network connectivity to an Azure SQL Database by using Network Watcher
-
-
-#### Task 1: Test network connectivity to an Azure VM via virtual network peering by using Network Watcher
-
-1. In the Azure portal, navigate to the **Network Watcher** blade.
-
-1. From the **Network Watcher** blade, navigate to the **Connection troubleshoot**.
-
-1. On the **Network Watcher - Connection troubleshoot** blade, initiate a check with the following settings:
-
-    - Source: 
-
-        - Subscription: the name of the Azure subscription you are using in this lab
-
-        - Resource group: **az1010301b-RG**
-
-        - Source type: **Virtual machine**
-
-        - Virtual machine: **az1010301b-vm1**
-
-    - Destination: **Specify manually**
-
-        - URI, FQDN or IPv4: **10.203.16.4**
-
-      > **Note**: **10.203.16.4** is the private IP address of the second Azure VM az1010302b-vm1 which you deployed to another Azure region
-
-    - Probe Settings:
-
-        - Protocol: **TCP**
-
-        - Destination port: **3389**
-
-    - Advanced settings:
-
-        - Source port: blank
-
-1. Wait until results of the connectivity check are returned and verify that the status is **Reachable**. Review the network path and note that the connection was direct, with no intermediate hops in between the VMs.
-
-    > **Note**: If this is the first time you are using Network Watcher, the check can take up to 5 minutes.
+1. 使用网络观察程序测试至 Azure SQL 数据库的网络连通性
 
 
-#### Task 2: Test network connectivity to an Azure Storage account by using Network Watcher
+#### 任务 1：使用网络观察程序通过虚拟网络对等互连测试至 Azure VM 的网络连通性
 
-1. From the Azure Portal, start a PowerShell session in the Cloud Shell. 
+1. 在 Azure 门户中，导航到 **虚拟监控器** 边栏选项卡。
 
-   > **Note**: If this is the first time you are launching the Cloud Shell in the current Azure subscription, you will be asked to create an Azure file share to persist Cloud Shell files. If so, accept the defaults, which will result in creation of a storage account in an automatically generated resource group.
+1. 从网络观察程序边栏选项卡，导航到 **网络观察程序-连接故障排除**。
 
-1. In the Cloud Shell pane, run the following command to identify the IP address of the blob service endpoint of the Azure Storage account you provisioned in the previous exercise:
+1. 在 **网络观察程序-连接故障排除** 边栏选项卡上，使用以下设置启动检查：
 
-   ```pwsh
-   [System.Net.Dns]::GetHostAddresses($(Get-AzStorageAccount -ResourceGroupName 'az1010301b-RG')[0].StorageAccountName + '.blob.core.windows.net').IPAddressToString
+    - 来源： 
+
+        - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
+
+        - 资源组： **az1010301b-RG**
+
+        - 来源类型： **虚拟机**
+
+        - 虚拟机： **az1010301b-wm1**
+
+    - 目的地： **手动指定**
+
+        - URI、FQDN 或 IPv4： **10.203.16.4**
+
+      >注： **10.203.16.4** 是您部署到另一个 Azure 区域的第二个 Azure VM az1010301b-vm1 的私有 IP 地址
+
+    - 传感器设置：
+
+        - 协议： **TCP**
+
+        - 目的地端口： **3389**
+
+    - 高级设置：
+
+        - 来源端口：空白
+
+1. 等到返回连接检查结果并验证状态是否为“**可到达**”。查看网络路径并注意连接是否为直连，VM 之间无中间跳点。
+
+    > **注**：如果这是您首次使用网络观察程序，则检查最多可能需要 5 分钟。
+
+
+#### 任务 2：使用网络观察程序测试至 Azure 存储帐户的网络连通性
+
+1. 在 Azure 门户中，在 Cloud Shell 中启动 PowerShell 会话。 
+
+   > **注**：如果这是您第一次在当前 Azure 订阅中启动 Cloud Shell，则会要求您创建 Azure 文件共享以保留 Cloud Shell 文件。如果是，接受默认设置，这样会在自动生成的资源组中创建存储帐户。
+
+1. 在 Cloud Shell 窗格中，运行以下命令以标识您在上一项练习中配置的 Azure 存储帐户的 blob 服务终结点 IP 地址：
+
+   ```
+   [System.Net.Dns]::GetHostAddresses($(Get-AzStorageAccount -ResourceGroupName 'az1010301b-RG')[0].StorageAccountName+'.blob.core.windows.net').IPAddressToString
    ```
 
-1. Note the resulting string and, from the **Network Watcher - Connection troubleshoot** blade, initiate a check with the following settings:
+1. 请注意生成的字符串，并且从 **网络观察程序 - 连接故障排除** 边栏选项卡，使用以下设置启动检查：
 
-    - Source: 
+    - 来源： 
 
-        - Subscription: the name of the Azure subscription you are using in this lab
+        - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
-        - Resource group: **az1010301b-RG**
+        - 资源组： **az1010301b-RG**
 
-        - Source type: **Virtual machine**
+        - 来源类型： **虚拟机**
 
-        - Virtual machine: **az1010301b-vm1**
+        - 虚拟机： **az1010301b-wm1**
 
-    - Destination: **Specify manually**
+    - 目的地： **手动指定**
 
-        - URI, FQDN or IPv4: the IP address of the blob service endpoint of the storage account you identified in the previous step of this task
+        - URI、FQDN 或 IPv4：您在此任务的上一步中确定的存储帐户的 blob 服务终结点 IP 地址
 
-    - Probe Settings:
+    - 传感器设置：
 
-        - Protocol: **TCP**
+        - 协议： **TCP**
 
-        - Destination port: **443**
+        - 目的地端口： **443**
 
-    - Advanced settings:
+    - 高级设置：
 
-        - Source port: blank
+        - 来源端口：空白
 
-1. Wait until results of the connectivity check are returned and verify that the status is **Reachable**. Review the network path and note that the connection was direct, with no intermediate hops in between the VMs, with minimal latency. 
+1. 等到返回连接检查结果并验证状态是否为“**可到达**”。查看网络路径并注意连接是否为直连，VM 之间无中间跳点，且延迟很短。 
 
-    > **Note**: The connection takes place over the service endpoint you created in the previous exercise. To verify this, you will use the **Next hop** tool of Network Watcher.
+    > **注**：在您在上一项练习中创建的服务终结点处建立连接。要验证这一点，您将使用网络观察程序的“**下一跳点**”工具。
 
-1. From the **Network Watcher - Connection troubleshoot** blade, navigate to the **Network Watcher - Next hop** blade and test next hop with the following settings:
+1. 从 **网络观察程序 - 连接故障排除** 边栏选项卡，导航到 **网络观察程序 - 下一跳点** 边栏并使用以下设置测试下一跳点：
 
-    - Subscription: the name of the Azure subscription you are using in this lab
+    - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
-    - Resource group: **az1010301b-RG**
+    - 资源组： **az1010301b-RG**
 
-    - Virtual machine: **az1010301b-vm1**
+    - 虚拟机： **az1010301b-wm1**
 
-    - Network interface: **az1010301b-nic1**
+    - 网络接口： **az1010301b-nic1**
 
-    - Source IP address: **10.203.0.4**
+    - 来源 IP 地址： **10.203.0.4**
 
-    - Destination IP address: the IP address of the blob service endpoint of the storage account you identified earlier in this task
+    - 目的地 IP 地址：您在此任务中先前确定的存储帐户的 blob 服务终结点 IP 地址
 
-1. Verify that the result identifies the next hop type as **VirtualNetworkServiceEndpoint**
+1. 验证结果是否将下一个跳点类型标识为 **VirtualNetworkServiceEndpoint**
 
-1. From the **Network Watcher - Connection troubleshoot** blade, initiate a check with the following settings:
+1. 从 **网络观察程序-连接故障排除** 边栏选项卡，使用以下设置启动检查：
 
-    - Source: 
+    - 来源： 
 
-        - Subscription: the name of the Azure subscription you are using in this lab
+        - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
-        - Resource group: **az1010302b-RG**
+        - 资源组： **az1010302b-RG**
 
-        - Source type: **Virtual machine**
+        - 来源类型： **虚拟机**
 
-        - Virtual machine: **az1010302b-vm2**
+        - 虚拟机： **az1010302b-vm2**
 
-    - Destination: **Specify manually**
+    - 目的地： **手动指定**
 
-        - URI, FQDN or IPv4: the IP address of the blob service endpoint of the storage account you identified earlier in this task
+        - URI、FQDN 或 IPv4：您在此任务中先前确定的存储帐户的 blob 服务终结点 IP 地址
 
-    - Probe Settings:
+    - 传感器设置：
 
-        - Protocol: **TCP**
+        - 协议： **TCP**
 
-        - Destination port: **443**
+        - 目的地端口： **443**
 
-    - Advanced settings:
+    - 高级设置：
 
-        - Source port: blank
+        - 来源端口：空白
 
-1. Wait until results of the connectivity check are returned and verify that the status is **Reachable**. 
+1. 等到返回连接检查结果并验证状态是否为“**可到达**”。 
 
-    > **Note**: The connection is successful, however it is established over Internet. To verify this, you will use again the **Next hop** tool of Network Watcher.
+    > **注**：连接成功，但是，该连接是通过互联网建立的。如需验证这一点，您需要再次使用网络观察程序的“**下一跳点**”工具。
 
-1. From the **Network Watcher - Connection troubleshoot** blade, navigate to the **Network Watcher - Next hop** blade and test next hop with the following settings:
+1. 从 **网络观察程序 - 连接故障排除** 边栏选项卡，导航到 **网络观察程序 - 下一跳点** 边栏并使用以下设置测试下一跳点：
 
-    - Subscription: the name of the Azure subscription you are using in this lab
+    - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
-    - Resource group: **az1010302b-RG**
+    - 资源组： **az1010302b-RG**
 
-    - Virtual machine: **az1010302b-vm2**
+    - 虚拟机： **az1010302b-vm2**
 
-    - Network interface: **az1010302b-nic1**
+    - 网络接口： **az1010302b-nic1**
 
-    - Source IP address: **10.203.16.4**
+    - 来源 IP 地址： **10.203.16.4**
 
-    - Destination IP address: the IP address of the blob service endpoint of the storage account you identified earlier in this task
+    - 目的地 IP 地址：您在此任务中先前确定的存储帐户的 blob 服务终结点 IP 地址
 
-1. Verify that the result identifies the next hop type as **Internet**
+1. 验证结果是否将下一个跳点类型标识为 **Internet**
 
 
-#### Task 3: Test network connectivity to an Azure SQL Database by using Network Watcher
+#### 任务 3：使用网络观察程序测试至 Azure SQL 数据库的网络连通性
 
-1. From the Azure Portal, start a PowerShell session in the Cloud Shell. 
+1. 在 Azure 门户中，在 Cloud Shell 中启动 PowerShell 会话。 
 
-1. In the Cloud Shell pane, run the following command to identify the IP address of the Azure SQL Database server you provisioned in the previous exercise:
+1. 在 Cloud Shell 窗格中，运行以下命令以标识您在上一项练习中配置的 Azure SQL Database 服务器 IP 地址：
 
-   ```pwsh
+   ```
    [System.Net.Dns]::GetHostAddresses($(Get-AzSqlServer -ResourceGroupName 'az1010301b-RG')[0].FullyQualifiedDomainName).IPAddressToString
    ```
 
-1. Note the resulting string and, from the **Network Watcher - Connection troubleshoot** blade, initiate a check with the following settings:
+1. 请注意生成的字符串，并且从 **网络观察程序 - 连接故障排除** 边栏选项卡，使用以下设置启动检查：
 
-    - Source: 
+    - 来源： 
 
-        - Subscription: the name of the Azure subscription you are using in this lab
+        - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
-        - Resource group: **az1010301b-RG**
+        - 资源组： **az1010301b-RG**
 
-        - Source type: **Virtual machine**
+        - 来源类型： **虚拟机**
 
-        - Virtual machine: **az1010301b-vm1**
+        - 虚拟机： **az1010301b-wm1**
 
-    - Destination: **Specify manually**
+    - 目的地： **手动指定**
 
-        - URI, FQDN or IPv4: the IP address of the Azure SQL Database server you identified in the previous step of this task
+        - URI、FQDN 或 IPv4：您在此任务的上一步中确定的 Azure SQL Database 服务器 IP 地址
 
-    - Probe Settings:
+    - 传感器设置：
 
-        - Protocol: **TCP**
+        - 协议： **TCP**
 
-        - Destination port: **1433**
+        - 目的地端口： **1433**
 
-    - Advanced settings:
+    - 高级设置：
 
-        - Source port: blank
+        - 来源端口：空白
 
-1. Wait until results of the connectivity check are returned and verify that the status is **Reachable**. Review the network path and note that the connection was direct, with no intermediate hops in between the VMs, with low latency. 
+1. 等到返回连接检查结果并验证状态是否为“**可到达**”。查看网络路径并注意连接是否为直连，VM 之间无中间跳点，且延迟短。 
 
-    > **Note**: The connection takes place over the service endpoint you created in the previous exercise. To verify this, you will use the **Next hop** tool of Network Watcher.
+    > **注**：在您在上一项练习中创建的服务终结点处建立连接。要验证这一点，您将使用网络观察程序的“**下一跳点**”工具。
 
-1. From the **Network Watcher - Connection troubleshoot** blade, navigate to the **Network Watcher - Next hop** blade and test next hop with the following settings:
+1. 从 **网络观察程序 - 连接故障排除** 边栏选项卡，导航到 **网络观察程序 - 下一跳点** 边栏并使用以下设置测试下一跳点：
 
-    - Subscription: the name of the Azure subscription you are using in this lab
+    - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
-    - Resource group: **az1010301b-RG**
+    - 资源组： **az1010301b-RG**
 
-    - Virtual machine: **az1010301b-vm1**
+    - 虚拟机： **az1010301b-wm1**
 
-    - Network interface: **az1010301b-nic1**
+    - 网络接口： **az1010301b-nic1**
 
-    - Source IP address: **10.203.0.4**
+    - 来源 IP 地址： **10.203.0.4**
 
-    - Destination IP address: the IP address of the Azure SQL Database server you identified earlier in this task
+    - 目的地 IP 地址：您在此任务中先前确定的 Azure SQL Database 服务器 IP 地址
 
-1. Verify that the result identifies the next hop type as **VirtualNetworkServiceEndpoint**
+1. 验证结果是否将下一个跳点类型标识为 **VirtualNetworkServiceEndpoint**
 
-1. From the **Network Watcher - Connection troubleshoot** blade, initiate a check with the following settings:
+1. 从 **网络观察程序-连接故障排除** 边栏选项卡，使用以下设置启动检查：
 
-    - Source: 
+    - 来源： 
 
-        - Subscription: the name of the Azure subscription you are using in this lab
+        - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
-        - Resource group: **az1010302b-RG**
+        - 资源组： **az1010302b-RG**
 
-        - Source type: **Virtual machine**
+        - 来源类型： **虚拟机**
 
-        - Virtual machine: **az1010302b-vm2**
+        - 虚拟机： **az1010302b-vm2**
 
-    - Destination: **Specify manually**
+    - 目的地： **手动指定**
 
-        - URI, FQDN or IPv4: the IP address of the Azure SQL Database server you identified earlier in this task
+        - URI、FQDN 或 IPv4：您在此任务中先前确定的 Azure SQL Database 服务器 IP 地址
 
-    - Probe Settings:
+    - 传感器设置：
 
-        - Protocol: **TCP**
+        - 协议： **TCP**
 
-        - Destination port: **1433**
+        - 目的地端口： **1433**
 
-    - Advanced settings:
+    - 高级设置：
 
-        - Source port: blank
+        - 来源端口：空白
 
-1. Wait until results of the connectivity check are returned and verify that the status is **Reachable**. 
+1. 等到返回连接检查结果并验证状态是否为“**可到达**”。 
 
-    > **Note**: The connection is successful, however it is established over Internet. To verify this, you will use again the **Next hop** tool of Network Watcher.
+    > **注**：连接成功，但是，该连接是通过互联网建立的。如需验证这一点，您需要再次使用网络观察程序的“**下一跳点**”工具。
 
-1. From the **Network Watcher - Connection troubleshoot** blade, navigate to the **Network Watcher - Next hop** blade and test next hop with the following settings:
+1. 从 **网络观察程序 - 连接故障排除** 边栏选项卡，导航到 **网络观察程序 - 下一跳点** 边栏并使用以下设置测试下一跳点：
 
-    - Subscription: the name of the Azure subscription you are using in this lab
+    - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
-    - Resource group: **az1010302b-RG**
+    - 资源组： **az1010302b-RG**
 
-    - Virtual machine: **az1010302b-vm2**
+    - 虚拟机： **az1010302b-vm2**
 
-    - Network interface: **az1010302b-nic1**
+    - 网络接口： **az1010302b-nic1**
 
-    - Source IP address: **10.203.16.4**
+    - 来源 IP 地址： **10.203.16.4**
 
-    - Destination IP address: the IP address of the Azure SQL Database server you identified earlier in this task
+    - 目的地 IP 地址：您在此任务中先前确定的 Azure SQL Database 服务器 IP 地址
 
-1. Verify that the result identifies the next hop type as **Internet**
+1. 验证结果是否将下一个跳点类型标识为 **Internet**
 
 
-> **Result**: After you completed this exercise, you have used Azure Network Watcher to test network connectivity to an Azure VM via virtual network peering, network connectivity to Azure Storage, and network connectivity to Azure SQL Database.
-
-## Exercise 3: Remove lab resources
-
-#### Task 1: Open Cloud Shell
-
-1. At the top of the portal, click the **Cloud Shell** icon to open the Cloud Shell pane.
-
-1. At the Cloud Shell interface, select **Bash**.
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to list all resource groups you created in this lab:
-
-   ```sh
-   az group list --query "[?starts_with(name,'az1010')].name" --output tsv
-   ```
-
-1. Verify that the output contains only the resource groups you created in this lab. These groups will be deleted in the next task.
-
-#### Task 2: Delete resource groups
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
-
-   ```sh
-   az group list --query "[?starts_with(name,'az1010')].name" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-   ```
-
-1. Close the **Cloud Shell** prompt at the bottom of the portal.
-
-> **Result**: In this exercise, you removed the resources used in this lab.
+> **结果**：完成本次练习后，您已使用 Azure 网络观察程序通过虚拟网络对等互连测试至 Azure VM 的网络连通性，至 Azure 存储的网络连通性以及至 Azure SQL 数据库的网络连通性。

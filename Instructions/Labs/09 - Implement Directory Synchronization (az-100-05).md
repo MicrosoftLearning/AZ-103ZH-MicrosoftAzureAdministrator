@@ -1,376 +1,298 @@
+﻿---
+逻辑阵列块：
+    标题：'实现目录同步'
+    单元：'实施和管理混合身份'
 ---
-lab:
-    title: 'Implement Directory Synchronization'
-    module: 'Module 09 - Azure Active Directory'
----
 
-# Lab: Implement Directory Synchronization
+# 逻辑阵列块：'实现目录同步'
   
-All tasks in this lab are performed from the Azure portal (including a PowerShell Cloud Shell session) except for Exercise 3 Task 1, Exercise 3 Task 2, and Exercise 3 Task 3, which include steps performed from a Remote Desktop session to an Azure VM
+本逻辑阵列块中的所有任务都是从Azure门户（包括PowerShell Cloud Shell会话）执行的，但练习3任务1、练习3任务2和练习3任务3除外，其中包括从远程桌面会话到Azure VM执行的步骤
 
-   > **Note**: When not using Cloud Shell, the lab virtual machine must have the Azure PowerShell 1.2.0 module (or newer) installed [https://docs.microsoft.com/en-us/powershell/azure/install-az-ps](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps)
+   > **注意**: 不使用Cloud Shell时，实验室虚拟机必须安装Azure PowerShell 1.2.0模块（或更新版本） [https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps?view=azps-1.2.0](https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps?view=azps-1.2.0)
 
-Lab files: none
+逻辑阵列块文件：无
 
-### Scenario
+### 方案
   
-Adatum Corporation wants to integrate its Active Directory with Azure Active Directory
+Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
 
-### Objectives
+### 目标
   
- After completing this lab, you will be able to:
+ 完成本实验后，您将能够：
 
-- Deploy an Azure VM hosting an Active Directory domain controller
+- 部署托管Active Directory域控制器的Azure VM
 
-- Create and configure an Azure Active Directory tenant
+- 创建和配置Azure Active Directory租户
 
-- Synchronize Active Directory forest with an Azure Active Directory tenant
-
-
-### Exercise 1: Deploy an Azure VM hosting an Active Directory domain controller
-
-The main tasks for this exercise are as follows:
-
-1. Identify an available DNS name for an Azure VM deployment
-
-1. Deploy an Azure VM hosting an Active Directory domain controller by using an Azure Resource Manager template
+- 将Active Directory林与Azure Active Directory租户同步
 
 
-#### Task 1: Identify an available DNS name for an Azure VM deployment
+### 练习 1：部署托管Active Directory域控制器的Azure VM
 
-1. From the lab virtual machine, start Microsoft Edge, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using a Microsoft account that has the Owner role in the Azure subscription you intend to use in this lab and is a Global Administrator of the Azure AD tenant associated with that subscription.
+本练习的主要任务如下：
 
-1. From the Azure Portal, start a PowerShell session in the Cloud Shell pane.
+1. 确定Azure VM部署的可用DNS名称
 
-   > **Note**: If this is the first time you are launching the Cloud Shell in the current Azure subscription, you will be asked to create an Azure file share to persist Cloud Shell files. If so, accept the defaults, which will result in creation of a storage account in an automatically generated resource group.
+1. 使用Azure资源管理器模板，部署可托管Active Directory域控制器的Azure VM
 
-1. In the Cloud Shell pane, run the following command, substituting the placeholder &lt;custom-label&gt; with any string which is likely to be unique and the placeholder &lt;location&gt; with the name of the Azure region into which you want to deploy the Azure VM that will host an Active Directory domain controller.
 
-   > **Note**: To identify Azure regions where you can provision Azure VMs, refer to [**https://azure.microsoft.com/en-us/regions/offers/**](https://azure.microsoft.com/en-us/regions/offers/)
+#### 任务 1：确定Azure VM部署的可用DNS名称
 
-   ```pwsh
+1. 从实验室虚拟机启动Microsoft Edge，浏览到Azure门户 [**http://portal.azure.com**](http://portal.azure.com) 并使用Microsoft帐户登录，该帐户在您打算在本逻辑阵列块中使用的Azure订阅中具有所有者角色，并且是与该订阅关联的Azure AD租户的全局管理员。
+
+1. 从Azure门户，在Cloud Shell窗格中启动PowerShell会话。
+
+   > **注意**: 如果这是您第一次在当前Azure订阅中启动Cloud Shell，则会要求您创建Azure文件共享以保留Cloud Shell文件。如果是，请接受默认值，这将导致在自动生成的资源组中创建存储帐户。
+
+1. 在Cloud Shell窗格中，运行以下命令，使用任何可能的唯一字符串和占位符&lt;location&gt;替换占位符&lt;custom-label&gt;  使用要在其中部署将承载Active Directory域控制器的Azure VM的Azure区域的名称。
+
+   > **注意**: 要标识可以配置Azure VM的Azure区域，请登陆： [**https://azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)
+
+   ```
    Test-AzDnsAvailability -DomainNameLabel <custom-label> -Location '<location>'
    ```
 
-1. Verify that the command returned **True**. If not, rerun the same command with a different value of the &lt;custom-label&gt; until the command returns **True**. 
+1. 验证返回命令 **True**。如果没有，请使用&lt;custom-label&gt; 的不同值重新运行相同的命令，直到命令返回 **True**。 
 
-1. Note the value of the &lt;custom-label&gt; that resulted in the successful outcome. You will need it in the next task
-
-
-#### Task 2: Deploy an Azure VM hosting an Active Directory domain controller by using an Azure Resource Manager template
-
-1. From the lab virtual machine, start another instance of Microsoft Edge, browse to the GitHub Azure QuickStart Templates page at  [**https://github.com/Azure/azure-quickstart-templates**](https://github.com/Azure/azure-quickstart-templates).
-
-1. On the Azure Quickstart Templates page, click **active-directory-new-domain**.
-
-1. On the **Create a new Windows VM and create a new AD Forest, Domain and DC** page, right-click **Deploy to Azure**, and click **Open in new tab**.
-
-1. On the **Create an Azure VM with a new AD Forest** blade, initiate a template deployment with the following settings:
-
-    - Subscription: the name of the subscription you are using in this lab
-
-    - Resource group: the name of a new resource group **az1000501-RG**
-
-    - Location: the name of the Azure region which you used in the previous task
-
-    - Admin Username: **Student**
-
-    - Admin Password: **Pa55w.rd1234**
-
-    - Domain Name: **adatum.com**
-
-    - Dns Prefix: the &lt;custom-label&gt; you identified in the previous task
-    
-    - VM Size: **Standard_D2s_v3**
-
-    - _artifacts Location: accept the default value
-
-    - _artifacts Location Sas Token: leave blank
-
-    - Location: accept the default value
-
-   > **Note**: Do not wait for the deployment to complete but proceed to the next exercise. You will use the virtual machine deployed in this task in the third exercise of this lab.
-
-> **Result**: After you completed this exercise, you have initiated deployment of an Azure VM that will host an Active Directory domain controller by using an Azure Resource Manager template
+1. 请注意导致成功结果的&lt;custom-label&gt;的值。您将在下一个任务中使用它
 
 
-### Exercise 2: Create and configure an Azure Active Directory tenant
+#### 任务 2：使用Azure资源管理器模板，部署可托管Active Directory域控制器的Azure VM
 
-The main tasks for this exercise are as follows:
+1. 在Azure门户中，导航到 **创建资源** 边栏选项卡。
 
-1. Create an Azure Active Directory (AD) tenant
+1. 从 **创建资源** 边栏选项卡，在Azure应用市场搜索 **模板部署**。
 
-1. Add a custom DNS name to the new Azure AD tenant
+1. 使用搜索结果列表导航到 **部署自定义模板** 边栏选项卡。
 
-1. Create an Azure AD user with the Global Administrator role
+1. 在 **自定义部署** 边栏选项卡，在 **加载GitHub快速入门模板** 下拉列表并选择 **主动目录新域** 条目。
+
+1. 在 **使用新的AD林创建Azure VM** 边栏选项卡，使用以下设置启动模板部署：
+
+    - 订阅：您用于本实验室的订阅名称
+
+    - 资源组：新资源组 **az1000501-RG** 的名称
+
+    - 位置：您在上一个任务中使用的Azure区域名称
+
+    - 管理员用户名： **学员**
+
+    - 管理员密码： **Pa55w.rd1234**
+
+    - 域名: **adatum.com**
+
+    - Dns前缀：您在上一个任务中标识的&lt;custom-label&gt; 
+
+    - _artifacts位置：接受默认值
+
+    - _artifacts位置Sas Token：留空
+
+    - 位置：接受默认值
+
+   > **注意**: 不要等待部署完成，而是继续下一个练习。您将在本逻辑阵列块的第三个练习中使用此任务中部署的虚拟机。
+
+> **结果:** 完成此练习后，您已使用Azure资源管理器模板启动了将托管Active Directory域控制器的Azure VM的部署
 
 
-#### Task 1: Create an Azure Active Directory (AD) tenant
+### 练习 2：创建和配置Azure Active Directory租户
 
-1. In the Azure portal, navigate to the **Create a resource** blade. 
+本练习的主要任务如下：
 
-1. From the **Create a resource** blade, search Azure Marketplace for **Azure Active Directory**.
+1. 创建Azure Active Directory（AD）租户
 
-1. Use the list of search results to navigate to the **Create directory** blade.
+1. 将自定义DNS名称添加到新的Azure AD租户
 
-1. From the **Create directory** blade, create a new Azure AD tenant with the following settings: 
-
-  - Organization name: **AdatumSync**
-
-  - Initial domain name: a unique name consisting of a combination of letters and digits. 
-
-  - Country or region: **United States**
-
-   > **Note**: The green check mark in the **Initial domain name** text box will indicate whether the domain name you typed in is valid and unique. 
+1. 使用全局管理员角色创建Azure AD用户
 
 
-#### Task 2: Add a custom DNS name to the new Azure AD tenant
+#### 任务 1：创建Azure Active Directory（AD）租户
+
+1. 在Azure门户中，导航到 **创建资源** 边栏选项卡。 
+
+1. 从 **创建资源** 边栏选项卡，在Azure应用市场内搜索 **Azure Active Directory**。
+
+1. 使用搜索结果列表导航到 **创建目录** 边栏选项卡。
+
+1. 从 **创建目录** 边栏选项卡，  创建一个新Azure AD租户，设置如下： 
+
+  - 组织名称： **AdatumSync**
+
+  - 初始域名：由字母和数字组合组成的唯一名称。 
+
+  - 国家或地区： **美国**
+
+   > **注意**: **“初始域名”**文本框中的绿色复选标记将指示您键入的域名是否有效且唯一。 
+
+
+#### 任务 2：将自定义DNS名称添加到新的Azure AD租户
   
-1. In the Azure portal, set the **Directory + subscription** filter to the newly created Azure AD tenant.
+1. 在Azure门户中，设置 **目录+订阅** 过滤器到新创建的Azure AD租户。
 
-   > **Note**: The **Directory + subscription** filter appears to the left of the notification icon in the toolbar of the Azure portal 
+   > **注意**: 该 **目录+订阅** 过滤器显示在Azure门户工具栏的通知图标的左侧 
 
-   > **Note**: You might need to refresh the browser window if the **AdatumSync** entry does not appear in the **Directory + subscription** filter list.
+   > **注意**: 如果 **AdatumSync** 条目未出现在 **目录 +订阅** 筛选器列表中，则可能需要刷新浏览器窗口。
 
-1. In the Azure portal, navigate to the **AdatumSync - Overview** blade.
+1. 在Azure门户中，导航到 **AdatumSync - 概述** 边栏选项卡。
 
-1. From the **AdatumSync - Overview** blade, display the **AdatumSync - Custom domain names** blade. 
+1. 从 **AdatumSync - 概述** 边栏选项卡，显示 **AdatumSync - 自定义域名** 边栏选项卡。 
 
-1. On the **AdatumSync - Custom domain names** blade, identify the primary, default DNS domain name associated with the Azure AD tenant. Note its value - you will need it in the next task.
+1. 在 **AdatumSync - 自定义域名** 边栏选项卡，标识与Azure AD租户关联的主要默认DNS域名。记住其数值-你将在下一个任务中需要它。
 
-1. From the **AdatumSync - Custom domain names** blade, add the **adatum.com** custom domain.
+1. 从 **AdatumSync - 自定义域名** 边栏选项卡，添加 **adatum.com** 自定义域名。
 
-1. On the **adatum.com** blade, review the information necessary to perform verification of the Azure AD domain name.
+1. 在 **adatum.com** 边栏选项卡上，查看执行Azure AD域名验证所需的信息。
 
-   > **Note**: You will not be able to complete the validation process because you do not own the **adatum.com** DNS domain name. This will not prevent you from synchronizing the **adatum.com** Active Directory domain with the Azure AD tenant. You will use for this purpose the default primary DNS name of the Azure AD tenant (the name ending with the **onmicrosoft.com** suffix), which you identified earlier in this task. However, keep in mind that, as a result, the DNS domain name of the Active Directory domain and the DNS name of the Azure AD tenant will differ. This means that Adatum users will need to use different names when signing in to the Active Directory domain and when signing in to Azure AD tenant.
-
-
-#### Task 3: Create an Azure AD user with the Global Administrator role
-
-1. In the Azure portal, navigate to the **Users - All users** blade of the **AdatumSync** Azure AD tenant.
-
-1. From the **Users - All users** blade, create a new user with the following settings:
-
-    - Name: **syncadmin**
-
-    - User name: **syncadmin@***<DNS-domain-name>* where *<DNS-domain-name>* represents the default primary DNS domain name you identified in the previous task. Take a note of this user name. You will need it later in this lab.
-
-    - Profile: **Not configured**
-
-    - Properties: **Default**
-
-    - Groups: **0 groups selected**
-
-    - Directory role: **Global administrator**
-
-    - Password: select the checkbox **Show Password** and note the string appearing in the **Password** text box. You will need it later in this task.
-
-   > **Note**: An Azure AD user with the Global Administrator role is required in order to implement Azure AD Connect.
-
-1. Open an InPrivate Microsoft Edge window.
-
-1. In the new browser window, navigate to the Azure portal and sign in using the **syncadmin** user account. When prompted, change the password to a new value.
-
-   > **Note**: You will need to provide the fully qualified name of the **syncadmin** user account, including the Azure AD tenant DNS domain name. 
-
-1. Sign out as **syncadmin** and close the InPrivate browser window.
-
-> **Result**: After you completed this exercise, you have created an Azure AD tenant, added a custom DNS name to the new Azure AD tenant, and created an Azure AD user with the Global Administrator role.
+   > **注意**: 您将无法完成验证过程，因为您不拥有 **adatum.com** DNS域名。这不会阻止您将 **adatum.com** Active Directory域与Azure AD租户同步。为此，您将使用Azure AD租户的默认主DNS名称（其名称以后缀 **onmicrosoft.com** 为结尾），您在此任务的前面已经确定了该名称。但是，请记住，Active Directory域的DNS域名和Azure AD租户的DNS名称将有所不同。这意味着Adatum用户在登录Active Directory域和登录Azure AD租户时需要使用不同的名称。
 
 
-### Exercise 3: Synchronize Active Directory forest with an Azure Active Directory tenant
+#### 任务 3：使用全局管理员角色创建Azure AD用户
 
-The main tasks for this exercise are as follows:
+1. 在Azure门户中，导航到 **AdatumSync** Azure AD租户的 **用户 - 所有用户** 边栏选项卡。
 
-1. Configure Active Directory in preparation for directory synchronization
+1. 在“**用户 - 所有用户**”边栏选项卡中，使用以下设置创建新用户：
 
-1. Install Azure AD Connect
+    - 名称： **syncadmin**
 
-1. Verify directory synchronization
+    - 用户名称： **syncadmin@***<DNS-domain-name>* 其中 *<DNS-domain-name>* 表示您在上一个任务中标识的默认主DNS域名。记下此用户名。您将在本逻辑阵列块后期需要它。
+
+    - 配置文件： **未配置**
+
+    - 属性： **默认**
+
+    - 组： **选定了 0 个组**
+
+    - 目录角色： **全局管理员**
+
+    - 密码：选中复选框 **显示密码** 并注意出现在 **密码** 文本框中的字符串。您将在此任务中稍后使用它。
+
+   > **注意**: 为实现Azure AD Connect，需要具有全局管理员角色的Azure AD用户。
+
+1. 打开InPrivate Microsoft Edge窗口。
+
+1. 在新的浏览器窗口中，导航到Azure门户并使用 **syncadmin** 登录用户帐号。出现提示时，将密码更改为新值。
+
+   > **注意**: 您需要提供 **syncadmin** 用户帐户的完全限定名称，包括Azure AD租户DNS域名。 
+
+1. 以 **syncadmin** 用户名签退并关闭InPrivate浏览器窗口。
+
+> **结果:** 完成此练习后，您已创建了Azure AD租户，为新的Azure AD租户添加了自定义DNS名称，并创建了具有全局管理员角色的Azure AD用户。
 
 
-#### Task 1: Configure Active Directory in preparation for directory synchronization
+### 练习 3：将Active Directory林与Azure Active Directory租户同步
 
-   > **Note**: Before you start this task, ensure that the template deployment you started in Exercise 1 has completed.
+本练习的主要任务如下：
+
+1. 配置Active Directory以准备目录同步
+
+1. 安装Azure AD Connect
+
+1. 验证目录同步
+
+
+#### 任务 1：配置Active Directory以准备目录同步
+
+   > **注意**: 在开始此任务之前，请确保您在练习1中启动的模板部署已完成。
   
-1. In the Azure portal, set the **Directory + subscription** filter back to the Azure AD tenant associated with the Azure subscription you used in the first exercise of this lab.
+1. 在Azure门户中，将 **目录+订阅** 过滤器设置回与您在本逻辑阵列块的第一个练习中使用的Azure订阅关联的Azure AD租户。
 
-   > **Note**: The **Directory + subscription** filter appears to the left of the notification icon in the toolbar of the Azure portal 
+   > **注意**: 该 **目录+订阅** 过滤器显示在Azure门户工具栏的通知图标的左侧 
 
-1. In the Azure portal, navigate to the **adVM** blade, displaying the properties of the Azure VM hosting an Active Directory domain controller that you deployed in the first exercise of this lab.
+1. 在Azure门户中，导航到 **adVM** 边栏选项卡，显示托管在本逻辑阵列块的第一个练习中部署的Active Directory域控制器的Azure VM属性。
 
-1. From the **Overview** pane of the **adVM** blade, generate an RDP file and use it to connect to **adVM**.
+1. 从 **adVM** 的 **概观** 窗格边栏选项卡，生成RDP文件并使用它连接 **adVM**。
 
-1. When prompted, authenticate by specifying the following credentials:
+1. 出现提示时，通过指定以下凭据进行身份验证：
 
-    - User name: **Student**
+    - 用户名称： **学员**
 
-    - Password: **Pa55w.rd1234**
+    - 密码： **Pa55w.rd1234**
 
-1. Within the Remote Desktop session to **adVM**, open the **Active Directory Administrative Center**.
+1. 在与 **adVM** 的远程桌面会话中，**打开Active Directory管理中心**。
 
-1. From **Active Directory Administrative Center**, create a root level organizational unit named **ToSync**.
-
-
-1. From **Active Directory Administrative Center**, in the organizational unit **ToSync**, create a new user account with the following settings:
-
-    - Full name: **aduser1**
-
-    - User UPN logon: **aduser1@adatum.com**
-
-    - User SamAccountName logon: **adatum\aduser1**
-
-    - Password: **Pa55w.rd1234**
-
-    - Other password options: **Password never expires**
+1. 从 **Active Directory管理中心**，创建一个名为 **ToSync** 的根级组织单位。
 
 
-#### Task 2: Install Azure AD Connect
+1. 从 **Active Directory管理中心**，在组织单位 **ToSync** 内，使用以下设置创建新用户帐户：
 
-1. Within the RDP session to **adVM**, from Server Manager, disable temporarily **IE Enhanced Security Configuration**.
+    - 全称: **aduser1**
 
-1. Within the RDP session to **adVM**, start Internet Explorer and download **Azure AD Connect** from [**https://www.microsoft.com/en-us/download/details.aspx?id=47594**](https://www.microsoft.com/en-us/download/details.aspx?id=47594)
+    - 用户UPN登录： **aduser1@adatum.com**
 
-1. Start **Microsoft Azure Active Directory Connect** wizard, accept the licensing terms, and, on the **Express Settings** page, select the **Customize** option.
+    - 用户SamAccountName登录： **adatum\aduser1**
 
-1. On the **Install required components** page, leave all optional configuration options deselected and start the installation.
+    - 密码： **Pa55w.rd1234**
 
-1. On the **User sign-in** page, ensure that only the **Password Hash Synchronization** is enabled.
-
-1. When prompted to connect to Azure AD, authenticate by using the credentials of the **syncadmin** account you created in the previous exercise.
-
-1. When prompted to connect your directories, add the **adatum.com** forest, choose the option to **Create new AD account**, and authenticate by using the following credentials:
-
-    - User name: **ADATUM\\Student**
-
-    - Password: **Pa55w.rd1234**
-
-1. On the **Azure AD sign-in configuration** page, note the warning stating **Users will not be able to sign-in to Azure AD with on-premises credentials if the UPN suffix does not match a verified domain name** and enable the checkbox **Continue without matching all UPN suffixes to verified domain**.
-
-   > **Note**: As explained earlier, this is expected, since you could not verify the custom Azure AD DNS domain **adatum.com**.
-
-1. On the **Domain and OU filtering** page, ensure that only the **ToSync** OU is selected.
-
-1. On the **Uniquely identifying your users** page, accept the default settings.
-
-1. On the **Filter users and devices** page, accept the default settings.
-
-1. On the **Optional features** page, accept the default settings.
-
-1. On the **Ready to configure** page, ensure that the **Start the synchronization process when configuration completes** checkbox is selected and continue with the installation process. 
-
-   > **Note**: Installation should take about 2 minutes.
-
-1. Close the Microsoft Azure Active Directory Connect window once the configuration is completed.
+    - 其他密码选项： **密码永不过期**
 
 
-#### Task 3: Verify directory synchronization
+#### 任务 2：安装Azure AD Connect
 
-1. Within the RDP session to **adVM**, start Internet Explorer, browse to the Azure portal at [**http://portal.azure.com**](http://portal.azure.com) and sign in by using the **syncadmin** account that you created in the previous exercise. 
+1. 在与 **adVM** 的RDP会话中，从服务器管理器暂时禁用 **IE增强安全配置**。
 
-1. In the Azure portal, navigate to the **AdatumSync - Overview** blade.
+1. 在与 **adVM** 的RDP会话中，启动Internet Explorer并从 [**https://www.microsoft.com/zh-cn/download/details.aspx?id=47594**](https://www.microsoft.com/zh-cn/download/details.aspx?id=47594)下载 **Azure AD Connect** 
 
-1. From the **AdatumSync - Overview** blade, display the **Users - All users** blade of the AdatumSync Azure AD tenant.
+1. 启动 **Microsoft Azure Active Directory Connect** 向导，接受许可条款，然后在“**快速设置**”页面上，选择“**自定义**”选项。
 
-1. On the **Users - All users** blade, note that the list of user objects includes the **aduser1** account, with the **Windows Server AD** appearing in the **SOURCE** column.
+1. 在 **安装所需组件** 页面上，取消选择所有可选配置选项并开始安装。
 
-1. From the **Users - All users** blade, display the **aduser1 - Profile** blade. Note that the **Department** attribute is not set.
+1. 在 **用户登录** 页面上，确保只有 **密码哈希同步** 已启用。
 
-1. Within the RDP session to **adVM**, switch to the **Active Directory Administrative Center**, open the window displaying properties of the **aduser1** user account, and set the value of its **Department** attribute to **Sales**.
+1. 当系统提示您连接到Azure AD时，请使用您在上一个练习中创建的 **syncadmin** 帐户凭据进行身份验证。
 
-1. Within the RDP session to **adVM**, start **Windows PowerShell** as Administrator.
+1. 当提示您连接目录时，请添加 **adatum.com** 森林，选择 **创建新的AD帐户** 选项，并使用以下凭据进行身份验证：
 
-1. From the Windows PowerShell prompt, start Azure AD Connect delta synchronization by running the following:
+    - 用户名称： **ADATUM\\学员**
 
-   ```pwsh
-   Import-Module -Name 'C:\Program Files\Microsoft Azure AD Sync\Bin\ADSync\ADSync.psd1'
-   
+    - 密码： **Pa55w.rd1234**
+
+1. 在 **Azure AD登录配置** 页面上，请注意警告说明 **如果UPN后缀与已验证的域名不匹配，则用户将无法使用内部部署凭据登录Azure AD，** 并启用该复选框 **继续，不将所有UPN后缀与已验证域匹配**。
+
+   > **注意**: 如前所述，这是预期的，因为您无法验证自定义Azure AD DNS域 **adatum.com**。
+
+1. 在 **域和OU过滤** 页面上，确保只有 **ToSync** OU已被选中。
+
+1. 在 **独特地识别您的用户** 页面上，接受默认设置。
+
+1. 在 **筛选用户和设备** 页面上，接受默认设置。
+
+1. 在 **可选功能** 页面上，接受默认设置。
+
+1. 在 **准备配置** 页面，确保 **配置完成后启动同步过程** 选中复选框并继续安装过程。 
+
+   > **注意**: 安装需要约 2 分钟。
+
+1. 配置完成后，关闭 Microsoft Microsoft Azure Active Directory Connect 窗口。
+
+
+#### 任务 3：验证目录同步
+
+1. 在与 **adVM** 的RDP会话中，启动Internet Explorer，浏览Azure门户网站 [**http://portal.azure.com**](http://portal.azure.com) ，然后使用您在上一个练习中创建的 **syncadmin** 账户登录。 
+
+1. 在Azure门户中，导航到 **AdatumSync - 概述** 边栏选项卡。
+
+1. 在 **AdatumSync - Overview** 边栏选项卡中, 显示AdatumSync Azure AD租户的 **用户 - 所有用户** 边栏选项卡。
+
+1. 在 **用户 - 所有用户** 边栏选项卡中，请注意用户对象列表包括 **aduser1** 帐户，与出现在 **资源** 柱中的 **Windows Server AD** 。
+
+1. 在 **用户 - 所有用户** 边栏选项卡中，显示 **aduser1  - 预置文件** 边栏选项卡。请注意 **部门** 属性未设置。
+
+1. 在与 **adVM** 的RDP会话中，切换到 **Active Directory管理中心**，打开显示 **aduser1** 用户帐户属性的窗口，并设置其值 **部门** 属性为 **销售**。
+
+1. 在与 **adVM** 的RDP会话中，启动 **Windows PowerShell** 作为管理员。
+
+1. 在Windows PowerShell提示符下，通过运行以下命令启动Azure AD Connect delta同步：
+
+   ```
    Start-ADSyncSyncCycle -PolicyType Delta
    ```
 
-1. Within the RDP session to **adVM**, switch to the Internet Explorer window displaying the Azure portal. 
+1. 在与 **adVM** 的RDP会话中，切换到显示Azure门户的Internet Explorer窗口。 
 
-1. In the Azure portal, navigate back to the **Users - All users** blade and refresh the page. 
+1. 在Azure门户中，导航到 **用户 - 所有用户** 边栏选项卡并刷新页面。 
 
-1. From the **Users - All users** blade, display the **aduser1 - Profile** blade. Note that the **Department** attribute is now set to **Sales**.
+1. 在 **用户 - 所有用户** 边栏选项卡中，显示 **aduser1 - 预置文件** 边栏选项卡。请注意， **部门** 属性设置为 **销售**。
 
-   > **Note**: You might need to wait for another minute and refresh the page again if the **Department** attribute remains not set.
+   > **注意**: 您可能需要等待一分钟，然后再次刷新页面如 **部门** 属性仍未设置。
 
-> **Result**: After you completed this exercise, you have configured Active Directory in preparation for directory synchronization, installed Azure AD Connect, and verified directory synchronization.
-
-## Exercise 4: Remove lab resources
-
-#### Task 1: Open Cloud Shell
-
-1. At the top of the portal, click the **Cloud Shell** icon to open the Cloud Shell pane.
-
-1. At the Cloud Shell interface, select **Bash**.
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to list all resource groups you created in this lab:
-
-   ```sh
-   az group list --query "[?starts_with(name,'az1000')].name" --output tsv
-   ```
-
-1. Verify that the output contains only the resource groups you created in this lab. These groups will be deleted in the next task.
-
-#### Task 2: Delete resource groups
-
-1. At the **Cloud Shell** command prompt, type in the following command and press **Enter** to delete the resource groups you created in this lab
-
-   ```sh
-   az group list --query "[?starts_with(name,'az1000')].name" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-   ```
-
-1. Close the **Cloud Shell** prompt at the bottom of the portal.
-
-#### Task 3: Delete the Azure AD tenant.
-
-1. Start Windows PowerShell as Administrator on the lab VM. 
-
-1. From the Windows PowerShell console on the lab VM, install the MsOnline PowerShell module by running the following (when prompted, in the NuGet provider is required to continue dialog box, click **Yes**):
-
-   ```pwsh
-   Install-Module MsOnline -Force
-   ```
-   
-1. From the Windows PowerShell console on the lab VM, connect to the AdatumSync Azure AD tenant by running the following (when prompted, sign in with the SyncAdmin credentials):
-
-   ```pwsh
-   Connect-MsolService
-   ```
-
-1. From the Windows PowerShell console on the lab VM, disable the Azure AD Connect synchronization by running the following:
-
-   ```pwsh
-   Set-MsolDirSyncEnabled -EnableDirSync $false -Force
-   ```
-
-1. From the Windows PowerShell console on the lab VM, verify that the operation was successful by running the following:
-
-   ```pwsh
-   (Get-MSOLCompanyInformation).DirectorySynchronizationEnabled 
-   ```   
-
-1. On the lab VM, sign out from the Azure portal and close the Microsoft Edge window. 
-
-1. From the lab VM, start Microsoft Edge, navigate to the Azure portal, and sign in by using the SyncAdmin credentials. 
-
-1. In the Azure portal, navigate to the **Users - All users** blade of the AdatumSync Azure AD tenant and delete all users with the exception of the AdatumSync account.
-
-> **Note**: You might need to wait a few hours before you can complete this step.
-
-1. Navigate to the AdatumSync - Overview blade and click **Properties**.
-
-1. On the **Properties** blade of Azure Active Directory click **Yes** in the **Access management for Azure resource** section and then click **Save**.
-
-1. Sign out from the Azure portal and sign back in by using the SyncAdmin credentials. 
-
-1. Navigate to the **AdatumSync - Overview** blade and delete the Azure AD tenant by clicking **Delete directory**.
-
-1. On the **Delete directory 'AdatumSync'?** blade, click **Delete**.
-
-> **Note**: For any additional  information regarding this task, refer to https://docs.microsoft.com/en-us/azure/active-directory/users-groups-roles/directory-delete-howto  
-
-> **Result**: In this exercise, you removed the resources used in this lab.
+> **结果:** 完成本练习后，您已配置了Active Directory以准备目录同步，安装了Azure AD Connect并验证了目录同步。
