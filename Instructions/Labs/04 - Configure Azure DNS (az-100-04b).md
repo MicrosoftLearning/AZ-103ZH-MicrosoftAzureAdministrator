@@ -1,7 +1,7 @@
 ﻿---
-逻辑阵列模块：
-    标题：‘配置 Azure DNS’
-    模块：‘虚拟网络’
+lab：
+    title：‘配置 Azure DNS’
+    module：‘虚拟网络’
 ---
 
 # 逻辑阵列模块：配置 Azure DNS
