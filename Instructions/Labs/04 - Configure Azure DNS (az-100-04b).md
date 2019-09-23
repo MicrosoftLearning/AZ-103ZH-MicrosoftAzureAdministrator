@@ -1,7 +1,7 @@
 ﻿---
 lab：
-    title：‘配置 Azure DNS’
-    module：‘虚拟网络’
+    title：'配置 Azure DNS'
+    module：'虚拟网络'
 ---
 
 # 逻辑阵列模块：配置 Azure DNS
