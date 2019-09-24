@@ -35,27 +35,27 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
 #### 任务 1：请使用 Azure 资源管理器模板部署 Azure VM
 
-1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，在 **http://portal.Azure.com** 上浏览至 Azure 门户，并使用在您计划用于本次逻辑阵列模块的 Azure 订阅中具有“所有者”角色的 Microsoft 帐户进行登录。
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，在 [**http://portal.azure.com**](http://portal.azure.com) 上浏览至 Azure 门户，并使用在您计划用于本次逻辑阵列模块的 Azure 订阅中具有“所有者”角色的 Microsoft 帐户进行登录。
 
-1. 在 Azure 门户中，请导航到“**新建**”边栏选项卡。
+1. 在 Azure 门户中，请导航到 **新建** 边栏选项卡。
 
-1. 在“**新建**”边栏选项卡上，在Azure Marketplace 搜索 **模板部署**。
+1. 在 **新建** 边栏选项卡上，在Azure Marketplace 搜索 **模板部署**。
 
-1. 请使用搜索结果列表，导航到“**自定义部署**”边栏选项卡。
+1. 请使用搜索结果列表，导航到 **自定义部署** 边栏选项卡。
 
-1. 在“**自定义部署**”边栏选项卡上，请选择“**在编辑器中构建自己的模板**”。
+1. 在 **自定义部署** 边栏选项卡上，请选择 **在编辑器中构建自己的模板**。
 
-1. 在“**编辑模板**”边栏选项卡上，请加载模板文件 **az-101-04b_ Azure deploy.json**。 
+1. 在 **编辑模板** 边栏选项卡上，请加载模板文件 **az-101-04b_ Azure deploy.json**。 
 
    > **注**：请查看模板的内容，并注意其定义了托管 Windows Server 2016 Datacenter 的 Azure VM 部署。
 
-1. 请保存模板并返回“**自定义部署**”边栏选项卡。 
+1. 请保存模板并返回 **自定义部署** 边栏选项卡。 
 
 1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数** 边栏选项卡
 
-1. 在“**编辑参数**”边栏选项卡上，请加载参数文件 **az-101-04b_ Azure deploy.parameters.json**。 
+1. 在 **编辑参数** 边栏选项卡上，请加载参数文件 **az-101-04b_ Azure deploy.parameters.json**。 
 
-1. 请保存参数并返回“**自定义部署**”边栏选项卡。 
+1. 请保存参数并返回 **自定义部署** 边栏选项卡。 
 
 1. 从 **自定义部署** 边栏选项卡，使用以下设置启动模板部署：
 
@@ -75,7 +75,7 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
     - “虚拟网络名称”： **az1010401b-vnet1**
 
-   > **注**：如需识别您可以提供 Azure VM 的 Azure 区域，请查阅 **https:// Azure.Microsoft.com/zh-cn/regions/offers/**。
+   > **注**：如需识别您可以提供 Azure VM 的 Azure 区域，请查阅 [**https://azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)。
 
    > **注**：请勿等待第一台虚拟机预配完成，请继续进行下一项练习。在本次逻辑阵列模块的最后一项练习中，您将使用该部署中所包含的虚拟机。
 
@@ -101,13 +101,13 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
 #### 任务 1：请创建一个新 Azure AD 租户。
 
-1. 在 Azure 门户中，请导航到“**新建**”边栏选项卡。 
+1. 在 Azure 门户中，请导航到 **新建** 边栏选项卡。 
 
 1. 从 **新建** 边栏选项卡，搜索 Azure Marketplace **Azure Active Directory**。
 
-1. 请使用搜索结果列表，导航到“**创建库**”边栏选项卡。
+1. 请使用搜索结果列表，导航到 **创建库** 边栏选项卡。
 
-1. 从“**创建**”目录边栏选项卡，创建一个新的“Azure AD 租户”，设置如下： 
+1. 从 **创建** 目录边栏选项卡，创建一个新的“Azure AD 租户”，设置如下： 
 
   - 组织名称： **AdatumLab101-4b**
 
@@ -120,24 +120,24 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
 #### 任务 2：请激活 Azure AD Premium v2 试用版
 
-1. 在 Azure 门户中，将“**目录+订阅筛选器**”设置为新创建的“ Azure AD 租户”。
+1. 在 Azure 门户中，将 **目录+订阅筛选器** 设置为新创建的“ Azure AD 租户”。
 
-   > **注**：该“**目录+订阅筛选器**”显示在 Azure 门户工具栏的“Cloud Shell”图标右侧 
+   > **注**：该 **目录+订阅筛选器** 显示在 Azure 门户工具栏的“Cloud Shell”图标右侧 
 
-   > **注**：如果 **AdatumLab101-4b** 条目未出现在“**目录+订阅筛选器**”列表中，可能需要刷新浏览器窗口。
+   > **注**：如果 **AdatumLab101-4b** 条目未出现在 **目录+订阅筛选器** 列表中，可能需要刷新浏览器窗口。
 
-1. 在 Azure 门户中，导航到“**AdatumLab101-4b-概述**”边栏选项卡。
+1. 在 Azure 门户中，导航到 **AdatumLab101-4b-概述** 边栏选项卡。
 
-1. 从“**AdatumLab101-4b-概述**”边栏选项卡，导航到 **许可证-概述** 边栏选项卡。
+1. 从 **AdatumLab101-4b-概述** 边栏选项卡，导航到 **许可证-概述** 边栏选项卡。
 
-1. 从 **许可证-概述** 边栏选项卡，导航到“**产品**”边栏选项卡。 
+1. 从 **许可证-概述** 边栏选项卡，导航到 **产品** 边栏选项卡。 
 
-1. 从“**产品**”边栏选项卡，导航到“**启用**”边栏和启用 **Azure AD Premium P2** 免费试用版。
+1. 从 **产品** 边栏选项卡，导航到 **启用** 边栏和启用 **Azure AD Premium P2** 免费试用版。
 
 
 #### 任务 3：创建 Azure AD 用户和群组。
 
-1. 在 Azure 门户中，导航到 AdatumLab101-4b Azure AD 租户的“**用户-所有用户**”边栏选项卡。
+1. 在 Azure 门户中，导航到 AdatumLab101-4b Azure AD 租户的 **用户-所有用户** 边栏选项卡。
 
 1. 在 **用户 - 所有用户** 边栏选项卡中，使用以下设置创建新用户：
 
@@ -155,7 +155,7 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
     - 目录角色： **用户**
 
-    - 密码：选中“**显示密码**”复选框并注意“**密码**”文本框中出现的字符串。在本逻辑阵列模块中，您后续将需要该域名。
+    - 密码：选中 **显示密码** 复选框并注意 **密码** 文本框中出现的字符串。在本逻辑阵列模块中，您后续将需要该域名。
 
 1. 在 **用户 - 所有用户** 边栏选项卡中，使用以下设置创建新用户：
 
@@ -173,24 +173,24 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
     - 目录角色： **用户**
 
-    - 密码：选中“**显示密码**”复选框并注意“**密码**”文本框中出现的字符串。在本逻辑阵列模块中，您后续将需要该域名。
+    - 密码：选中 **显示密码** 复选框并注意 **密码** 文本框中出现的字符串。在本逻辑阵列模块中，您后续将需要该域名。
 
 
 #### 任务 4：请将 Azure AD Premium v2 许可证转让给 Azure AD 用户。
 
    > **注**：要将 Azure AD Premium v2 许可证分配给 Azure AD 用户，首先必须设置其位置属性。
 
-1. 从“**用户-所有用户**”边栏选项卡，导航到“**aaduser1-个人资料**”边栏并将“**使用**”位置设置为 **美国**。
+1. 从 **用户-所有用户** 边栏选项卡，导航到 **aaduser1-个人资料** 边栏并将 **使用** 位置设置为 **美国**。
 
-1. 从“**aaduser1-个人资料**”边栏选项卡，导航到“**aaduser1-许可证**”边栏并为用户分配 Azure Active Directory Premium P2 许可证，启用所有许可选项。
+1. 从 **aaduser1-个人资料** 边栏选项卡，导航到 **aaduser1-许可证** 边栏并为用户分配 Azure Active Directory Premium P2 许可证，启用所有许可选项。
 
-1. 返回“**用户-所有用户**”边栏选项卡，导航到“**aaduser2-个人资料**”边栏并将“**使用**”位置设置为 **美国**。
+1. 返回 **用户-所有用户** 边栏选项卡，导航到 **aaduser2-个人资料** 边栏并将 **使用** 位置设置为 **美国**。
 
-1. 从“aaduser2-个人资料”边栏选项卡，导航到“aaduser2-许可证”边栏并为用户分配 Azure Active Directory Premium P2 许可证，启用所有许可选项。
+1. 从 **aaduser2-个人资料** 边栏选项卡，导航到 **aaduser2-许可证** 边栏并为用户分配 Azure Active Directory Premium P2 许可证，启用所有许可选项。
 
-1. 回到“**用户-所有用户**”边栏选项卡，导航到您用户帐户的“个人资料”条目并将“**使用**”位置设置为 **美国**。
+1. 回到 **用户-所有用户** 边栏选项卡，导航到您用户帐户的“个人资料”条目并将 **使用**位置设置为 **美国**。
 
-1. 导航到您用户帐户的“**许可证**”边栏选项卡，并为其分配 Azure Active Directory Premium P2 许可证，启用所有许可选项。
+1. 导航到您用户帐户的 **许可证** 边栏选项卡，并为其分配 Azure Active Directory Premium P2 许可证，启用所有许可选项。
 
 1. 从门户网站注销，然后使用您在本逻辑阵列模块中使用的相同帐户重新登录。 
 
@@ -199,19 +199,19 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
 #### 任务 5：配置 Azure MFA 设置。
 
-1. 在 Azure 门户中，导航到 AdatumLab101-4b Azure AD 租户的“**用户-所有用户**”边栏选项卡。
+1. 在 Azure 门户中，导航到 AdatumLab101-4b Azure AD 租户的 **用户-所有用户** 边栏选项卡。
 
-1. 从 AdatumLab101-4b Azure AD 租户的“**用户- 所有用户**”边栏选项卡，使用“**多重身份验**”链接打开多重身份验门户。 
+1. 从 AdatumLab101-4b Azure AD 租户的 **用户- 所有用户** 边栏选项卡，使用**多重身份验** 链接打开 **多重身份验** 门户。 
 
 1. 在 **多重身份验** 门户上，显示 **服务设置** 选项卡，查看其设置，并确保所有 **认证选项**，包含 **致电**，**发送短信至**，**通过移动应用程序通知**，以及 **来自移动应用程序的验证码或硬件预付码** 均启用。
 
 1. 在 **多重身份验** 门户上，切换至 **用户** 选项卡，选择 **aaduser1** 条目，并启用其多重身份验状态。
 
-1. 在 **多重身份验** 门户上，请注意 **aaduser1** 的多重身份验状态是否变为“**启用**”，并且，再次选择用户条目后，您可以选择将其更改为“**强制**”。
+1. 在 **多重身份验** 门户上，请注意 **aaduser1** 的多重身份验状态是否变为 **启用**，并且，再次选择用户条目后，您可以选择将其更改为 **强制**。
 
    > **注**：将用户状态从启用更改为强制仅影响不支持 Azure MFA 的旧版 Azure AD 集成应用程序，并且一旦状态更改为强制，则需要使用应用程序密码。
 
-1. 在选中 **aaduser1** 条目的 **多重身份验** 门户中，显示“**管理用户设置**”窗口并查看其选项，包括：
+1. 在选中 **aaduser1** 条目的 **多重身份验** 门户中，显示 **管理用户设置** 窗口并查看其选项，包括：
 
     - 要求所选用户再次提供联系方式
 
@@ -221,11 +221,11 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
 1. 不得对用户设置进行任何更改并切换回 Azure 门户。 
 
-1. 从 AdatumLab101-4b Azure AD 租户的“**用户 - 所有用户**”边栏选项卡，导航到“**AdatumLab101-4b-概述**”边栏选项卡。
+1. 从 AdatumLab101-4b Azure AD 租户的 **用户 - 所有用户** 边栏选项卡，导航到 **AdatumLab101-4b-概述** 边栏选项卡。
 
-1. 从“**AdatumLab101-4b-概述**”边栏选项卡，导航到“**AdatumLab101-4b - MFA**”边栏选项卡。
+1. 从 **AdatumLab101-4b-概述** 边栏选项卡，导航到 **AdatumLab101-4b - MFA** 边栏选项卡。
 
-1. 从“**AdatumLab101-4b-MFA**”边栏选项卡，导航到“**多重身份验- 欺诈警报**”边栏并配置以下设置：
+1. 从 **AdatumLab101-4b-MFA** 边栏选项卡，导航到 **多重身份验- 欺诈警报** 边栏并配置以下设置：
 
     - 允许用户提交欺诈警报： **开**
 
@@ -242,9 +242,9 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
    > **注**：您需要提供 **aaduser1** 用户帐户的完全限定名，包括 Azure AD 租户 DNS 域名，如本逻辑阵列模块先前所述。
 
-1. 当提示“**需要更多信息**”消息时，继续“**附加安全验证**”页面。
+1. 当提示 **需要更多信息** 消息时，继续 **附加安全验证** 页面。
 
-1. 在“**我们该如何与您联系？**”页面，请注意您需要至少设置以下选项之一：
+1. 在 **我们该如何与您联系？** 页面，请注意您需要至少设置以下选项之一：
 
     - **认证电话**
 
@@ -252,7 +252,7 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
     - **移动应用程序**
 
-1. 选择“**认证电话**”或“**办公室电话**”选项并选择“**联系本人**”联系方式。
+1. 选择 **认证电话** 或 **办公室电话** 选项并选择 **联系本人** 联系方式。
 
 1. 完成验证并记下自动生成的应用程序密码。 
 
@@ -268,9 +268,9 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
    > **注**：此时，您的帐户已被自动屏蔽。 
 
-1. 如需解禁 **aaduser1** 帐户，使用您用于创建 **AdatumLab101-4b** Azure AD 租户的 Microsoft 帐户登录 Azure 门户，导航到“**多重身份验-屏蔽/解禁用户**”边栏选项卡，并使用 **aaduser1** 条目旁的“**解禁**”链接来解禁该用户帐户。 
+1. 如需解禁 **aaduser1** 帐户，使用您用于创建 **AdatumLab101-4b** Azure AD 租户的 Microsoft 帐户登录 Azure 门户，导航到 **多重身份验-屏蔽/解禁用户** 边栏选项卡，并使用 **aaduser1** 条目旁的 **解禁** 链接来解禁该用户帐户。 
 
-   > **注**：如需解禁用户，您需要在“**解禁用户**”边栏上提供 **解禁原因**。 
+   > **注**：如需解禁用户，您需要在 **解禁用户** 边栏上提供 **解禁原因**。 
 
 
 ### 练习 2：实施 Azure AD Identity Protection：
@@ -288,24 +288,24 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
 #### 任务 1：启用 Azure AD Identity Protection
 
-1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，浏览 Azure 门户，网址 **http://portal.Azure.com** 并使用您用于创建 AdatumLab101-4b Azure AD 租户的 Microsoft 帐户登录。 
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，浏览 Azure 门户，网址 [**http://portal.azure.com**](http://portal.azure.com) 并使用您用于创建 **AdatumLab101-4b** Azure AD 租户的 Microsoft 帐户登录。 
 
-   > **注**：确保您已登录 **AdatumLab101-4b** Azure AD 租户。您可以使用“**目录+订阅筛选器**”在 Azure AD 租户之间切换。 
+   > **注**：确保您已登录 **AdatumLab101-4b** Azure AD 租户。您可以使用 **目录+订阅筛选器** 在 Azure AD 租户之间切换。 
 
-1. 在 Azure 门户中，请导航到“**新建**”边栏选项卡。
+1. 在 Azure 门户中，请导航到 **新建** 边栏选项卡。
 
-1. 从“**新建**”边栏选项卡，搜索“Azure 市场”中的“**Azure AD Identity Protection**”。
+1. 从 **新建** 边栏选项卡，搜索“Azure 市场”中的 **Azure AD Identity Protection**。
 
-1. 选择搜索结果列表中的“**Azure AD Identity Protection**”，继续创建与 **AdatumLab101-4b** Azure AD 租户相关联的 **Azure AD Identity Protection** 实例。
+1. 选择搜索结果列表中的 **Azure AD Identity Protection**，继续创建与 **AdatumLab101-4b** Azure AD 租户相关联的 **Azure AD Identity Protection** 实例。
 
-1. 在 Azure 门户中，导航到“**所有服务**”边栏并使用搜索筛选器显示“**Azure AD Identity Protection**”边栏选项卡。
+1. 在 Azure 门户中，导航到 **所有服务** 边栏并使用搜索筛选器显示 **Azure AD Identity Protection** 边栏选项卡。
 
 
 #### 任务 2：配置用户风险策略
 
-1. 从“**Azure AD Identity Protection**”边栏选项卡，导航到“**Azure AD Identity Protection-用户风险策略边栏**”
+1. 从 **Azure AD Identity Protection** 边栏选项卡，导航到 **Azure AD Identity Protection-用户风险策略边栏**
 
-1. 在“**Azure AD Identity Protection - 用户风险策略边栏**”中，配置“**用户风险补救策略**”，设置如下：
+1. 在 **Azure AD Identity Protection - 用户风险策略边栏** 中，配置 **用户风险补救策略**，设置如下：
 
     - 分配： 
 
@@ -326,9 +326,9 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
 #### 任务 3：配置登录风险策略
 
-1. 从“**Azure AD Identity Protection - 用户风险策略**”边栏选项卡，导航到“**Azure AD Identity Protection - 登录风险策略**”边栏
+1. 从 **Azure AD Identity Protection - 用户风险策略** 边栏选项卡，导航到 **Azure AD Identity Protection - 登录风险策略** 边栏
 
-1. 在“**Azure AD Identity Protection - 登录风险策略边栏**”中，配置“**登录风险补救策略**”，设置如下：
+1. 在 **Azure AD Identity Protection - 登录风险策略边栏** 中，配置 **登录风险补救策略**，设置如下：
 
     - 分配： 
 
@@ -363,7 +363,7 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
 1. 在新的浏览器窗口中，导航到 ToR 浏览器项目，网址[**https://www.torproject.org/projects/torbrowser.html.en**](https://www.torproject.org/projects/torbrowser.html.en)，下载 ToR 浏览器，并使用默认选项进行安装。
 
-1. 安装完成后，启动 ToR 浏览器，使用初始页面上的“**连接选项**”，然后导航到应用程序访问面板，网址 **https://myapps.Microsoft.com**
+1. 安装完成后，启动 ToR 浏览器，使用初始页面上的 **连接选项**，然后导航到应用程序访问面板，网址 [**https://myapps.microsoft.com**](https://myapps.microsoft.com)
 
 1. 出现提示时，使用您在上一项练习中创建的 **aaduser2** 帐户登录。
 
@@ -371,18 +371,18 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行身份保护。
 
 1. 使用 **“注销”并通过其他帐户选项** 以您在上一项练习中为多重身份验创建和配置的 **aaduser1** 帐户登录。
 
-1. 这一次，将会显示“**检测到可疑活动**”消息。同样地，由于此帐户通过多重身份验进行配置，预期会出现该消息。考虑到与 ToR 浏览器使用相关的登录风险增加，您必须根据您在上一个任务中配置的登录风险策略使用多重身份验。
+1. 这一次，将会显示 **检测到可疑活动** 消息。同样地，由于此帐户通过多重身份验进行配置，预期会出现该消息。考虑到与 ToR 浏览器使用相关的登录风险增加，您必须根据您在上一个任务中配置的登录风险策略使用多重身份验。
 
-1. 使用“**验证选项**”并指定是否要通过文本或致电来验证您的身份。 
+1. 使用 **验证选项** 并指定是否要通过文本或致电来验证您的身份。 
 
 1. 完成验证并确保您已成功登录到应用程序访问面板。
 
 1. 以 **aaduser1** 注销，并关闭 ToR 浏览器窗口。
 
-1. 启动 Internet Explorer，浏览 Azure 门户，网址：**http://portal.Azure.com** 并使用您用于创建 **AdatumLab101-4b** Azure AD 租户的 Microsoft 帐户登录。 
+1. 启动 Internet Explorer，浏览 Azure 门户，网址：[**http://portal.azure.com**](http://portal.azure.com) 并使用您用于创建 **AdatumLab101-4b** Azure AD 租户的 Microsoft 帐户登录。 
 
-1. 在 Azure 门户中，导航到“**Azure AD Identity Protection - 风险事件**”边栏并注意该条目代表 **从匿名 IP 地址登录**。
+1. 在 Azure 门户中，导航到 **Azure AD Identity Protection - 风险事件** 边栏并注意该条目代表 **从匿名 IP 地址登录**。
 
-1. 从“**Azure AD Identity Protection-风险事件**”边栏选项卡，导航到“**Azure AD Identity Protection-标记为风险的用户**”边栏并注意代表 **aaduser2** 的条目。
+1. 从 **Azure AD Identity Protection-风险事件** 边栏选项卡，导航到 **Azure AD Identity Protection-标记为风险的用户** 边栏并注意代表 **aaduser2** 的条目。
 
 > **结果**：完成本次练习后，您已通过模拟风险事件启用了“Azure AD Identity Protection”，配置用户风险策略和登录风险策略以及验证“Azure AD Identity Protection 配置”

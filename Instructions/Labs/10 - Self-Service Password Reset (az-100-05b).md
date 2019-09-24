@@ -307,7 +307,7 @@ Adatum Corporation 希望利用 Azure AD Premium 功能
 
 1. 在 **Microsoft OneDrive - 入门** 边栏选项卡，使用 **分配用户进行测试（必需）** 导航到的选项 用于 **Microsoft OneDrive** 的 **用户和组** 边栏选项卡 。 
 
-1. 从用于 **Microsoft OneDrive ** 的 **用户和组** 边栏选项卡，导航到 **添加作业** 边栏选项卡并添加以下任务：
+1. 从用于 **Microsoft OneDrive** 的 **用户和组** 边栏选项卡，导航到 **添加作业** 边栏选项卡并添加以下任务：
 
     - 用户和组 **销售和财务**
 

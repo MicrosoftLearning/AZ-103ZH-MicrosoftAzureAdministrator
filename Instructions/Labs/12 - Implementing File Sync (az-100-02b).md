@@ -1,5 +1,5 @@
 ﻿---
-lab：
+lab:
     title:'实施Azure文件同步'
     module:'实施和管理存储'
 ---
@@ -10,9 +10,9 @@ lab：
 
 逻辑阵列块文件： 
 
--  **Allfiles / Labfiles / AZ-100.2 / AZ-100-02b_azuredeploy.json**
+-  **Allfiles/Labfiles/AZ-100.2/az-100-02b_azuredeploy.json**
 
--  **Allfiles / Labfiles / AZ-100.2 / AZ-100-02b_azuredeploy.parameters.json**
+-  **Allfiles/Labfiles/AZ-100.2/az-100-02b_azuredeploy.parameters.json**
 
 ### 方案
   
@@ -40,7 +40,7 @@ Adatum Corporation在本地文件服务器中托管其文件共享。考虑到�
 
 1. 从逻辑阵列块虚拟机启动Microsoft Edge，浏览到Azure门户 [**http:////portal.azure.com**](http://portal.azure.com) 并使用在您打算在本实验中使用的Azure订阅中具有所有者角色的Microsoft帐户登录。
 
-1. 在Azure门户中，导航到 **New** 卡.
+1. 在Azure门户中，导航到 **新** 卡.
 
 1. 来自 **新** 卡片，搜索Azure Marketplace **模板部署**。
 
@@ -134,7 +134,7 @@ Adatum Corporation在本地文件服务器中托管其文件共享。考虑到�
 
 1. 从存储帐户卡片中，显示其文件服务的属性。
 
-1. 从存储帐户 **Create storage account** 边栏选项卡中，使用以下设置创建新文件共享：
+1. 从存储帐户 **文件** 边栏选项卡中，使用以下设置创建新文件共享：
 
     - 名称： **az10002bshare1**
 
@@ -155,9 +155,9 @@ Adatum Corporation在本地文件服务器中托管其文件共享。考虑到�
 
 1. 在Azure VM的RDP会话中，在服务器管理器中，导航到 **文件和存储服务**，找到连接到Azure VM的数据磁盘，将其初始化为 **GPT** 磁盘，并使用 **新卷向导** 使用以下设置创建占用整个磁盘的单个卷：
 
-    - 驱动器号？ **S**
+    - 驱动器号： **S**
 
-    - 文件系统？ **NTFS**
+    - 文件系统： **NTFS**
 
     - 分配单位大小： **默认**
 
@@ -175,7 +175,7 @@ Adatum Corporation在本地文件服务器中托管其文件共享。考虑到�
    Copy-Item -Path'C：\ WindowsAzure \ *'-Destination $ directory.FullName -Recurse
    ```
 
-   > **注意**: 要使用示例数据填充文件共享，我们使用C：\\ WindowsAzure文件夹的内容，该文件夹应包含大约100 MB的文件
+   > **注意**: 要使用示例数据填充文件共享，我们使用 C：\\WindowsAzure 文件夹的内容，该文件夹应包含大约100 MB的文件
 
 1. 在Windows PowerShell控制台中，通过运行以下命令安装最新的AzureRM模块：
 
@@ -240,7 +240,7 @@ Adatum Corporation在本地文件服务器中托管其文件共享。考虑到�
 
 1. 在Azure VM的RDP会话中，启动Internet Explorer，浏览到Azure门户 [**http://portal.azure.com**](http://portal.azure.com) 并使用您之前在本实验中使用的相同Microsoft帐户登录。
 
-1. 在Azure门户中，导航到 **New** 卡.
+1. 在Azure门户中，导航到 **新** 卡.
 
 1. 来自 **新** 卡片，搜索Azure Marketplace **Azure文件同步**。
 
@@ -331,7 +331,7 @@ Adatum Corporation在本地文件服务器中托管其文件共享。考虑到�
 
 1. 执行该脚本并验证其输出是否确认Z：驱动器成功映射到Azure存储文件服务共享。
 
-1. 在RDP会话中，启动文件资源管理器，导航到Z：驱动器，并验证它包含与S：\\ az10002bShare相同的内容
+1. 在RDP会话中，启动文件资源管理器，导航到Z：驱动器，并验证它包含与 S：\\az10002bShare 相同的内容
 
 1. 显示Z：驱动器上各个文件夹的“属性”窗口，查看“安全”选项卡，并注意这些条目表示分配给S：驱动器上相应文件夹的NTFS权限。
 

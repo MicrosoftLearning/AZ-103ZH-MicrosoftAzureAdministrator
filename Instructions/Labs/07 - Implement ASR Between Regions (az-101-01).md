@@ -1,7 +1,7 @@
 ﻿---
-lab：
-    title：'在Azure区域之间实施Azure站点恢复'
-    module：'迁移服务器'
+lab:
+    title: '在Azure区域之间实施Azure站点恢复'
+    module: '迁移服务器'
 ---
 
 # 逻辑阵列块：在Azure区域之间实施Azure站点恢复

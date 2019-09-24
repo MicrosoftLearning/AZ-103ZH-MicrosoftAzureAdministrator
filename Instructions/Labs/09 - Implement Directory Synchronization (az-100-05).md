@@ -1,5 +1,5 @@
 ﻿---
-lab：
+lab:
     title：'实现目录同步'
     module：'实施和管理混合身份'
 ---
@@ -84,9 +84,9 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
     - Dns前缀：您在上一个任务中标识的&lt;custom-label&gt; 
 
-    - _artifacts位置：接受默认值
+    - _artifacts 位置：接受默认值
 
-    - _artifacts位置Sas Token：留空
+    - _artifacts 位置Sas Token：留空
 
     - 位置：接受默认值
 
@@ -122,7 +122,7 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
   - 国家或地区： **美国**
 
-   > **注意**: **“初始域名”**文本框中的绿色复选标记将指示您键入的域名是否有效且唯一。 
+   > **注意**: **初始域名** 文本框中的绿色复选标记将指示您键入的域名是否有效且唯一。 
 
 
 #### 任务 2：将自定义DNS名称添加到新的Azure AD租户
@@ -150,7 +150,7 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
 1. 在Azure门户中，导航到 **AdatumSync** Azure AD租户的 **用户 - 所有用户** 边栏选项卡。
 
-1. 在“**用户 - 所有用户**”边栏选项卡中，使用以下设置创建新用户：
+1. 在 **用户 - 所有用户** 边栏选项卡中，使用以下设置创建新用户：
 
     - 名称： **syncadmin**
 
@@ -232,7 +232,7 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
 1. 在与 **adVM** 的RDP会话中，启动Internet Explorer并从 [**https://www.microsoft.com/zh-cn/download/details.aspx?id=47594**](https://www.microsoft.com/zh-cn/download/details.aspx?id=47594)下载 **Azure AD Connect** 
 
-1. 启动 **Microsoft Azure Active Directory Connect** 向导，接受许可条款，然后在“**快速设置**”页面上，选择“**自定义**”选项。
+1. 启动 **Microsoft Azure Active Directory Connect** 向导，接受许可条款，然后在 **快速设置** 页面上，选择 **自定义** 选项。
 
 1. 在 **安装所需组件** 页面上，取消选择所有可选配置选项并开始安装。
 

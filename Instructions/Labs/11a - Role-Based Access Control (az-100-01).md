@@ -1,7 +1,7 @@
 ﻿---
 lab:
-    title：'基于角色的访问控制'
-    module：'管理 Azure 订阅和资源'
+    title: '基于角色的访问控制'
+    module: '管理 Azure 订阅和资源'
 ---
 
 # 逻辑阵列模块：基于角色的访问控制 
@@ -52,7 +52,7 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure 策�
 
     - 名称： **aaduser100011**
 
-    - 用户名： **aaduser100011 @＆LT; DNS 域-名称＆gt;** 其中＆lt; DNS-domain-name＆gt;表示您在此任务中先前确定的主 DNS 域名。
+    - 用户名： **aaduser100011@&lt;DNS-domain-name&gt;** 其中 &lt;DNS-domain-name&gt; 表示您在此任务中先前确定的主 DNS 域名。
 
     - 个人资料： **未配置**
 
@@ -165,13 +165,13 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure 策�
 
    > **注**：如果这是您第一次在当前 Azure 订阅中启动 Cloud Shell，则会要求您创建 Azure 文件共享以保留 Cloud Shell 文件。如果是，接受默认设置，这样会在自动生成的资源组中创建存储帐户。
 
-1. 在 Cloud Shell 窗格中，运行以下命令，替换占位符＆lt; custom-label＆gt;任何可能是唯一的字符串和占位符＆lt; location-of-az1000101-RG＆gt;使用您在其中创建的 Azure 区域的名称 **az1000101-RG** 资源组。
+1. 在 Cloud Shell 窗格中，运行以下命令，替换占位符 &lt;custom-label&gt; 任何可能是唯一的字符串和占位符 &lt;location-of-az1000101-RG&gt; 使用您在其中创建的 Azure 区域的名称 **az1000101-RG** 资源组。
 
    ```
    Test-AzDnsAvailability -DomainNameLabel <custom-label> -Location '<location-of-az1000101-RG>'
    ```
 
-1. 验证返回的命令是否为 **真**。如果没有，请使用＆lt; custom-label＆gt;的不同值重新运行相同的命令。直到命令返回 **真**。 
+1. 验证返回的命令是否为 **真**。如果没有，请使用 &lt;custom-label&gt; 的不同值重新运行相同的命令。直到命令返回 **真**。 
 
 1. 请注意导致成功结果的<custom-label>的值。您将在下一个任务中使用它
 

@@ -1,7 +1,7 @@
 ﻿---
-lab：
-    title：'负载均衡器和流量管理器'
-    module：'实施高级虚拟网络'
+lab:
+    title: '负载均衡器和流量管理器'
+    module: '实施高级虚拟网络'
 ---
 
 # 逻辑阵列模块：负载均衡器和流量管理器
@@ -43,7 +43,7 @@ Adatum Corporation 希望通过利用 Azure 负载均衡器的负载均衡和网
 
 #### 任务 1：使用 Azure 资源管理器模板部署管理运行 Windows Server 2016 Datacenter 的 Azure VM，并将 Web 服务器（IIS）角色安装到第一个 Azure 区域中的可用性集中
 
-1. 从逻辑阵列模块虚拟机启动 Microsoft Edge 并浏览 Azure 门户，网址：[**http://portal.Azure.com**](http://portal.azure.com)并使用在目标 Azure 订阅中具有所有者角色的 Microsoft 帐户登录。
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge 并浏览 Azure 门户，网址：[**http://portal.azure.com**](http://portal.azure.com)并使用在目标 Azure 订阅中具有所有者角色的 Microsoft 帐户登录。
 
 1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
@@ -107,7 +107,7 @@ Adatum Corporation 希望通过利用 Azure 负载均衡器的负载均衡和网
 
     - 配置功能： **ContosoWebsite.ps1\\\\ContosoWebsite**
 
-   > **注**：如需识别您可以提供 Azure VM 的 Azure 区域，请查阅[**https://azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)。
+   > **注**：如需识别您可以提供 Azure VM 的 Azure 区域，请查阅 [**https://azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)。
 
    > **注**：请勿等待第一台虚拟机预配完成，继续进行下一项任务。 
 

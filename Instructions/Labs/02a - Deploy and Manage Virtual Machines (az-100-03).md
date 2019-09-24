@@ -1,22 +1,22 @@
 ﻿---
-lab：
-    title：'部署和管理虚拟机'
-    module：'部署和管理虚拟机'
+lab:
+    title: '部署和管理虚拟机'
+    module: '部署和管理虚拟机'
 ---
 
 # 逻辑阵列模块：部署和管理虚拟机
 
 本逻辑阵列模块中的所有任务均在 Azure 门户（包括 PowerShell Cloud Shell 会话）中执行，但练习 2 任务 2 和 练习 2 任务 3 除外，其中包括从远程桌面会话至 Azure VM 的执行步骤
 
-   > **注**：如果不使用 Cloud Shell ，则必须在逻辑阵列模块虚拟机上安装 Azure PowerShell 模块 **https://docs.microsoft.com/zh-cn/powershell/ Azure / Azure rm/install- Azure rm-ps**
+   > **注**：如果不使用 Cloud Shell ，则必须在逻辑阵列模块虚拟机上安装 Azure PowerShell 模块 [**https://docs.microsoft.com/zh-cn/powershell/azure/azurerm/install-azurerm-ps**](https://docs.microsoft.com/zh-cn/powershell/azure/azurerm/install-azurerm-ps)
 
 逻辑阵列模块文件： 
 
--  **Labfiles\\AZ100\\Mod03\\az-100-03_deploy_Azure _vm.ps1**
+-  **Labfiles\\AZ100\\Mod03\\az-100-03_deploy_azure_vm.ps1**
 
--  **Labfiles\\AZ100\\Mod03\\az-100-03_Azure deploy.json**
+-  **Labfiles\\AZ100\\Mod03\\az-100-03_azuredeploy.json**
 
--  **Labfiles\\AZ100\\Mod03\\az-100-03_Azure deploy.parameters.json**
+-  **Labfiles\\AZ100\\Mod03\\az-100-03_azuredeploy.parameters.json**
 
 -  **Labfiles\\AZ100\\Mod03\\az-100-03_install_iis_vmss.zip**
 
@@ -49,7 +49,7 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
 #### 任务 1：使用 Azure 门户将运行 Windows Server 2016 Datacenter 的 Azure VM 部署至可用性集
 
-1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，在 **http://portal.Azure.com** 上浏览至 Azure 门户，并使用在您计划用于本次逻辑阵列模块的 Azure 订阅中具有“所有者”角色的 Microsoft 帐户进行登录。
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，在 [**http://portal.azure.com**](http://portal.azure.com) 上浏览至 Azure 门户，并使用在您计划用于本次逻辑阵列模块的 Azure 订阅中具有“所有者”角色的 Microsoft 帐户进行登录。
 
 1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
@@ -111,7 +111,7 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
     - 启用备份： **关**
 
-   > **注**：如需识别您可以提供 Azure VM 的 Azure 区域，请查阅 **https:// Azure.Microsoft.com/zh-cn/regions/offers/**。
+   > **注**：如需识别您可以提供 Azure VM 的 Azure 区域，请查阅 [**https://azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)。
 
    > **注**：您将在本逻辑阵列模块的第二个练习中配置您在此任务中所创建的网络安全组
 
@@ -127,8 +127,8 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```
-   $vmName='az1000301-vm1'
-   $vmSize='Standard_DS1_v2'
+   $vmName = 'az1000301-vm1'
+   $vmSize = 'Standard_DS1_v2'
    ```
 
    > **注**：此命令集指定 Azure VM 名称及其大小的变量值
@@ -136,8 +136,8 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```
-   $resourceGroup=Get-AzResourceGroup-Name 'az1000301-RG'
-   $location=$resourceGroup.Location
+   $resourceGroup = Get-AzResourceGroup -Name 'az1000301-RG'
+   $location = $resourceGroup.Location
    ```
 
    > **注**：这些命令集指定目标资源组及其位置的变量值
@@ -145,9 +145,9 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```
-   $availabilitySet=Get-AzAvailabilitySet -ResourceGroupName $resourceGroup.ResourceGroupName -Name 'az1000301-avset0'
-   $vnet=Get-AzVirtualNetwork -Name 'az1000301-vnet0' -ResourceGroupName $resourceGroup.ResourceGroupName
-   $subnetid=（Get-AzVirtualNetworkSubnetConfig -Name 'subnet0' -VirtualNetwork $vnet）.Id
+   $availabilitySet = Get-AzAvailabilitySet -ResourceGroupName $resourceGroup.ResourceGroupName -Name 'az1000301-avset0'
+   $vnet = Get-AzVirtualNetwork -Name 'az1000301-vnet0' -ResourceGroupName $resourceGroup.ResourceGroupName
+   $subnetid = (Get-AzVirtualNetworkSubnetConfig -Name 'subnet0' -VirtualNetwork $vnet).Id
    ```
 
    > **注**：这些命令集指定可用性集，虚拟网络和子域网的变量值，您将在其中部署新的 Azure VM
@@ -155,9 +155,9 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```
-   $nsg=New-AzNetworkSecurityGroup -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -Name "$vmName-nsg"
-   $pip=New-AzPublicIpAddress -Name "$vmName-ip" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -AllocationMethod Dynamic 
-   $nic=New-AzNetworkInterface-Name "$（$vmName）$（Get-Random）" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -SubnetId $subnetid -PublicIpAddressId $pip.Id -NetworkSecurityGroupId $nsg.Id
+   $nsg = New-AzNetworkSecurityGroup -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -Name "$vmName-nsg"
+   $pip = New-AzPublicIpAddress -Name "$vmName-ip" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -AllocationMethod Dynamic 
+   $nic = New-AzNetworkInterface -Name "$($vmName)$(Get-Random)" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -SubnetId $subnetid -PublicIpAddressId $pip.Id -NetworkSecurityGroupId $nsg.Id
    ```
 
    > **注**：这些命令创建新的网络安全组、公共 IP 地址和网络接口，且这些将被新的 Azure VM 所使用
@@ -167,9 +167,9 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```
-   $adminUsername='Student'
-   $adminPassword='Pa55w.rd1234
-   $adminCreds=New-Object PSCredential $adminUsername，（$adminPassword | ConvertTo-SecureString-AsPlainText-Force）
+   $adminUsername = 'Student'
+   $adminPassword = 'Pa55w.rd1234'
+   $adminCreds = New-Object PSCredential $adminUsername, ($adminPassword | ConvertTo-SecureString -AsPlainText -Force)
    ```
 
    > **注**：这些命令集指定新 Azure VM 的本地管理员帐户凭据的变量值
@@ -177,9 +177,9 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```
-   $publisherName='MicrosoftWindowsServer'
-   $offerName='WindowsServer'
-   $skuName='2016-Datacenter'
+   $publisherName = 'MicrosoftWindowsServer'
+   $offerName = 'WindowsServer'
+   $skuName = '2016-Datacenter'
    ```
 
    > **注**：这些命令集指定将用于配置新 Azure VM 的 Azure 市场 图像属性的变量值
@@ -187,7 +187,7 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```
-   $osDiskType=（Get-AzResource -ResourceGroupName $resourceGroup.ResourceGroupName -ResourceType Microsoft.Compute/disks）[0].Sku.name
+   $osDiskType = (Get-AzResource -ResourceGroupName $resourceGroup.ResourceGroupName -ResourceType Microsoft.Compute/disks)[0].Sku.name
    ```
 
    > **注**：此命令集变指定新 Azure VM 的操作系统磁盘类型的变量值
@@ -195,11 +195,11 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```
-   $vmConfig=New-AzVMConfig -VMName $vmName -VMSize $vmSize -AvailabilitySetId $availabilitySet.Id
+   $vmConfig = New-AzVMConfig -VMName $vmName -VMSize $vmSize -AvailabilitySetId $availabilitySet.Id
    Add-AzVMNetworkInterface -VM $vmConfig -Id $nic.Id
    Set-AzVMOperatingSystem -VM $vmConfig -Windows -ComputerName $vmName -Credential $adminCreds 
    Set-AzVMSourceImage -VM $vmConfig -PublisherName $publisherName -Offer $offerName -Skus $skuName -Version 'latest'
-   Set-AzVMOSDisk -VM $vmConfig -Name "$（$vmName）_OsDisk_1_$（Get-Random）-StorageAccountType $osDiskType -CreateOption fromImage
+   Set-AzVMOSDisk -VM $vmConfig -Name "$($vmName)_OsDisk_1_$(Get-Random)" -StorageAccountType $osDiskType -CreateOption fromImage
    Set-AzVMBootDiagnostic -VM $vmConfig -Disable
    ```
 
@@ -215,7 +215,6 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
    > **注**：请勿等待第一台虚拟机预配完成，而是继续进行下一项任务。
 
-
 #### 任务 3：使用 Azure 资源管理器模板将运行 Linux 的两个 Azure VM 部署至可用性集
 
 1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
@@ -224,19 +223,19 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
 1. 使用搜索结果列表导航到 **部署自定义模板** 边栏选项卡。
 
-1. 在“**自定义部署**”边栏选项卡上，请选择“**在编辑器中构建自己的模板**”。
+1. 在 **自定义部署** 边栏选项卡上，请选择 **在编辑器中构建自己的模板**。
 
-1. 从 **编辑模板** 边栏选项卡，加载模板文件 **Labfiles\\AZ100\\Mod03\\az-100-03_Azure deploy.json**。 
+1. 从 **编辑模板** 边栏选项卡，加载模板文件 **Labfiles\\AZ100\\Mod03\\az-100-03_azuredeploy.json**。 
 
    > **注**：查看模板内容，并注意其定义的将两个托管 Linux Ubuntu 的 Azure VM 部署至可用性集和现有虚拟网络 az1000301-vnet0 中。
 
-1. 请保存模板并返回“**自定义部署**”边栏选项卡。 
+1. 请保存模板并返回 **自定义部署** 边栏选项卡。 
 
 1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数** 边栏选项卡
 
-1. 从 **编辑参数** 边栏中加载参数文件 **Labfiles\\AZ100\\Mod03\\az-100-03_Azure deploy.parameters.json**。 
+1. 从 **编辑参数** 边栏中加载参数文件 **Labfiles\\AZ100\\Mod03\\az-100-03_azuredeploy.parameters.json**。 
 
-1. 请保存参数并返回“**自定义部署**”边栏选项卡。 
+1. 请保存参数并返回 **自定义部署** 边栏选项卡。 
 
 1. 从 **自定义部署** 边栏选项卡，使用以下设置启动模板部署：
 
@@ -268,7 +267,7 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
    > **注**：在继续执行下一个任务前，请等待部署完成。该操作需约 5 分钟。
 
-> 结果：完成本次练习后，您已使用 Azure 门户运行 Windows Server 2016 Datacenter 的 Azure VM 部署至可用性集，使用 Azure PowerShell 将另一台运行 Windows Server 2016 Datacenter 的 Azure VM 部署至同一可用性集，并通过使用 Azure 资源管理器模板部署两个 Azure 的运行 Linux Ubuntu 的 VM 转换为可用性集。
+> **结果**：完成本次练习后，您已使用 Azure 门户运行 Windows Server 2016 Datacenter 的 Azure VM 部署至可用性集，使用 Azure PowerShell 将另一台运行 Windows Server 2016 Datacenter 的 Azure VM 部署至同一可用性集，并通过使用 Azure 资源管理器模板部署两个 Azure 的运行 Linux Ubuntu 的 VM 转换为可用性集。
 
    > **注**：您当然可以在一个任务中使用模板来部署两个托管 Windows Server 2016 datacenter 的 Azure VM （如同使用托管 Linux Ubuntu 服务器的两个 Azure VM ）。在两个单独的任务中部署此类 Azure VM 的原因是：让您有机会熟悉 Azure 门户和基于 Azure PowerShell 的部署。
 
@@ -288,17 +287,17 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
 1. 在 Azure 门户中，请导航到 **az1000301-vm0** 边栏选项卡。
 
-1. 从 **az1000301-vm0** 边栏选项卡，导航到 **az1000301-vm0-ip-Configuration** 边栏选项卡，显示公共 IP 地址的配置 **az1000301-vm0-ip**，分配给其网络接口。
+1. 从 **az1000301-vm0** 边栏选项卡，导航到 **az1000301-vm0-ip - Configuration** 边栏选项卡，显示公共 IP 地址的配置 **az1000301-vm0-ip**，分配给其网络接口。
 
-1. 从 **az1000301-vm0-ip-Configuration** 边栏选项卡，将分配的公共 IP 地址更改 **为静态**。
+1. 从 **az1000301-vm0-ip - Configuration** 边栏选项卡，将分配的公共 IP 地址更改 **为静态**。
 
    > **注**：记录分配给网络接口的公共 IP 地址 **az1000301-vm0**。在本次练习中，您后续将需要该域名。
 
 1. 在 Azure 门户中，请导航到 **az1000302-vm0** 边栏选项卡。
 
-1. 从 **az1000302-VM0** 边栏选项卡，显示 **az1000302-vm0 -Networking** 边栏选项卡。
+1. 从 **az1000302-vm0** 边栏选项卡，显示 **az1000302-vm0 - Networking** 边栏选项卡。
 
-1. 从 **az1000302-vm0- Networking** 边栏选项卡，导航到显示其网络接口属性的边栏选项卡。
+1. 从 **az1000302-vm0 - Networking** 边栏选项卡，导航到显示其网络接口属性的边栏选项卡。
 
 1. 边栏显示网络接口属性 **az1000302-vm0**，导航到其 **ipconfig1** 边栏选项卡。
 
@@ -313,9 +312,9 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
 1. 在 Azure 门户中，请导航到 **az1000301-vm0** 边栏选项卡。
 
-1. 从 **az1000301-VM0** 边栏选项卡，导航到 **az1000301-vm0-联网** 边栏选项卡。
+1. 从 **az1000301-vm0** 边栏选项卡，导航到 **az1000301-vm0 - Networking** 边栏选项卡。
 
-1. 在 **az1000301-vm0-联网** 边栏选项卡，查看分配给 **az1000301-vm0** 网络接口的网络安全组的入站端口规则。
+1. 在 **az1000301-vm0 - Networking** 边栏选项卡，查看分配给 **az1000301-vm0** 网络接口的网络安全组的入站端口规则。
 
    > **注**：由内置规则组成的默认配置阻止来自因特网的入站连接（包括经由 RDP 端口 TCP 3389 的连接）
 
@@ -337,9 +336,9 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
     - 名称： **AllowInternetRDPInBound**
 
-1. 在 Azure 门户中，显示 **az1000301-vm0** 边栏的“**概述**”窗格。 
+1. 在 Azure 门户中，显示 **az1000301-vm0** 边栏的 **概述** 窗格。 
 
-1. 来自“**概述**”窗格的 **az1000301-vm0** 边栏选项卡，生成 RDP 文件并使用它连接至 **az1000301-vm0**。
+1. 来自 **概述** 窗格的 **az1000301-vm0** 边栏选项卡，生成 RDP 文件并使用它连接至 **az1000301-vm0**。
 
 1. 出现提示时，通过指定以下凭据进行身份验证：
 
@@ -364,7 +363,7 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
 1. 在 **az1000301-vm0** 的 RDP 会话中，从服务器管理器暂时禁用 **IE 增强安全配置**。
 
-1. 在 **az1000301-vm0** 的 RDP 会话中，启动 IE 浏览器，访问以下网址下载 **putty.exe**：** https：//www.chiark.greenend.org.uk/~sgtatham/putty/latest.html 
+1. 在 **az1000301-vm0** 的 RDP 会话中，启动 IE 浏览器，访问以下网址下载 **putty.exe**：[**https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html**](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 
 
 1. 使用 **putty.exe** 验证您是否可以通过 **SSH** 协议（TCP 22）成功连接到其专用 IP 地址上的 **az1000302-vm0**。
 
@@ -378,13 +377,13 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
 1. 在逻辑阵列模块虚拟机的 Azure 门户中，导航到 **az1000302-vm0** 边栏选项卡。
 
-1. 从 **az1000302-vm0** 边栏选项卡，导航到 **az1000302-vm0-联网** 边栏选项卡。
+1. 从 **az1000302-vm0** 边栏选项卡，导航到 **az1000302-vm0 - Networking** 边栏选项卡。
 
-1. 在 **az1000302-vm0-联网** 边栏选项卡上，查看分配给 **az1000301-vm0** 网络接口的网络安全组的入站端口规则，以确定通过专用 IP 地址进行 SSH 连接的成功原因。
+1. 在 **az1000302-vm0 - Networking** 边栏选项卡上，查看分配给 **az1000301-vm0** 网络接口的网络安全组的入站端口规则，以确定通过专用 IP 地址进行 SSH 连接的成功原因。
 
    > **注**：由内置规则组成的默认配置允许 Azure 虚拟网络环境中的入站连接（包括经由 SSH 端口 TCP 22 的连接）。
 
-> 结果：完成本次练习后，您已配置 Azure VM 的静态专用和公有 IP 地址，通过公共 IP 地址连接到运行 Windows Server 2016 Datacenter 的 Azure VM，并通过专用 IP 地址连接到运行 Linux Ubuntu Server 的 Azure VM
+> **结果**：完成本次练习后，您已配置 Azure VM 的静态专用和公有 IP 地址，通过公共 IP 地址连接到运行 Windows Server 2016 Datacenter 的 Azure VM，并通过专用 IP 地址连接到运行 Linux Ubuntu Server 的 Azure VM
 
 
 ### 练习 3：部署和配置 Azure VM 规模集
@@ -402,26 +401,26 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
 1. 从 Azure 门户，在 Cloud Shell 窗格中启动 PowerShell 会话。 
 
-1. 在 Cloud Shell 窗格中，运行以下命令，将占位符&lt;custom-label&gt;替换为任何可能唯一的字符串，并将占位符&lt;location-of-az1000301-RG&gt;替换为您在其中创建 az1000301-RG 资源组的 Azure 区域的名称。
+1. 在 Cloud Shell 窗格中，运行以下命令，将占位符 &lt;custom-label&gt; 替换为任何可能唯一的字符串，并将占位符 &lt;location-of-az1000301-RG&gt; 替换为您在其中创建 **az1000301-RG** 资源组的 Azure 区域的名称。
 
    ```
-   Test-AzDnsAvailability -DomainNameLabel <custom-label> -Location'<location-of-az1000301-RG>'
+   Test-AzDnsAvailability -DomainNameLabel <custom-label> -Location '<location-of-az1000301-RG>'
    ```
 
-1. 验证返回的命令是否为 **真**。如果没有，请使用&lt;custom-label&gt;不同的值重新运行相同的命令，直至命令返回“**真**”。 
+1. 验证返回的命令是否为 **真**。如果没有，请使用 &lt;custom-label&gt; 不同的值重新运行相同的命令，直至命令返回 **真**。 
 
-1. 请记录获得成功结果的&lt;custom-label&gt;的值。您将在下一个任务中使用它
+1. 请记录获得成功结果的 &lt;custom-label&gt; 的值。您将在下一个任务中使用它
 
 
 #### 任务 2：部署 Azure VM 规模集
 
 1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. 从“**创建资源**”边栏选项卡，搜索 Azure 市场，以获取 **虚拟机规模集**。
+1. 从 **创建资源** 边栏选项卡，搜索 Azure 市场，以获取 **虚拟机规模集**。
 
-1. 使用搜索结果列表导航到“**创建虚拟机规模集**”边栏选项卡。
+1. 使用搜索结果列表导航到 **创建虚拟机规模集** 边栏选项卡。
 
-1. 使用“**创建虚拟机规模集**”边栏选项卡，通过以下设置部署虚拟机规模集：
+1. 使用 **创建虚拟机规模集** 边栏选项卡，通过以下设置部署虚拟机规模集：
 
     - 虚拟机规模集名称： **az1000303vmss0**
 
@@ -453,7 +452,7 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
     - 公共 IP 地址名称： **az1000303vmss0-ip**
 
-    - 域名标记：输入您在上一个任务中确定的 &lt;custom-label&gt;的值
+    - 域名标记：输入您在上一个任务中确定的 &lt;custom-label&gt; 的值
 
     - 虚拟网络：新虚拟网络的名称 **az1000303-vnet0**，设置如下：
 
