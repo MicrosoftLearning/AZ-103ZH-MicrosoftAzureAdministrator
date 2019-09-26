@@ -1,7 +1,7 @@
 ﻿---
-lab：
-    title：'实施并验证 Azure AD Identity Protection'
-    module：'安全标识'
+lab:
+    title: '实施并验证 Azure AD Identity Protection'
+    module: '安全标识'
 ---
 
 # 逻辑阵列模块：实施并验证 Azure AD Identity Protection

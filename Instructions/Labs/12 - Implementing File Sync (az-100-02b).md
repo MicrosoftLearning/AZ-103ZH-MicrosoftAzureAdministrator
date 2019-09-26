@@ -1,7 +1,7 @@
 ﻿---
 lab:
-    title:'实施Azure文件同步'
-    module:'实施和管理存储'
+    title: '实施Azure文件同步'
+    module: '实施和管理存储'
 ---
 
 # 逻辑阵列块：实现Azure文件同步

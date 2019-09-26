@@ -1,7 +1,7 @@
 ﻿---
 lab:
-    title：'实施 Azure 计划和资源锁的治理和合规'
-    module：'管理 Azure 订阅和资源'
+    title: '实施 Azure 计划和资源锁的治理和合规'
+    module: '管理 Azure 订阅和资源'
 ---
 
 # 逻辑阵列模块：实施 Azure 计划和资源锁的治理和合规
