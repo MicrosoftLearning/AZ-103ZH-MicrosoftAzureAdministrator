@@ -1,9 +1,12 @@
 ﻿# AZ-103 Microsoft Azure 管理员
 
-- **[下载最新的学生手册和 AllFiles 内容](../../releases/latest)**
 - **您是 MCT 吗？** - 查看我们的 [适用于 MCT 的 GitHub 用户指南](https://microsoftlearning.github.io/MCT-User-Guide-ZH/)
+- 需要手动构建实验室说明？**** -  可在 [MicrosoftLearning/Docker-Build](https://github.com/MicrosoftLearning/Docker-Build) 存储库获取相关说明
+- 查看 AZ-103 模块提供的实验室列表 - https://microsoftlearning.github.io/AZ-103-MicrosoftAzureAdministrator/
 
 > AZ-100 和 AZ-101 认证正在被新的 AZ-103 Microsoft Azure 管理员考试所取代！您可以在 Liberty Munson 的博客上阅读有关此公告的更多信息，网址为 https://www.microsoft.com/zh-cn/learning/community-blog-post.aspx?BlogId=8&Id=375217 
+
+> 若要获取有关课程内容的建议或一般评论，请务必使用 [MCT 课件论坛](https://www.microsoft.com/en-us/learning/mct-central.aspx)。此外，可在[课件支持论坛](https://trainingsupport.microsoft.com/en-us)上报告 bug 和课程错误。
  
 为了支持新的考试，我们从 2019 年 5 月 3 日开始推出一个新的 AZ-103 GitHub 存储库。那时，各自存储库中的所有 AZ-100 和 AZ-101 逻辑阵列模块都将被移动到此存储库中。这些逻辑阵列模块正在 AZ-103 中重复使用，我们只维护一个存储库。将保留 AZ-100 和 AZ-101 逻辑阵列模块编号系统，因此，如果您仍在教授 AZ-100 或 AZ-101 课程，您将能够轻松识别逻辑阵列模块。您还可以获得最新版本的逻辑阵列模块，并提交您发现的任何问题。
 
@@ -22,7 +25,6 @@
 -  实施和管理存储（az-100-02）
 -  负载均衡器和流量管理器（az-101-03）
 -  将本地 Hyper-V VM 迁移到 Azure（az-101-01b）
--  特权身份管理（az-101-04）
 -  基于角色的访问控制(az-100-01)
 -  自助密码重置 (az-100-05b)
 -  虚拟机和规模集(az-100-03b)
