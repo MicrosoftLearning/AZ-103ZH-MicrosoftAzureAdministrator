@@ -1,43 +1,43 @@
 ﻿---
 lab:
-    title: '使用 Azure 网络观察程序监控网络连通性和排除故障'
-    module: '实施高级虚拟网络'
+    title: “Azure 网络观察程序”
+    module: “模块 06 - 监视”
 ---
 
-# 逻辑阵列模块：使用 Azure 网络观察程序监控网络连通性和排除故障
+# 实验室：使用 Azure 网络观察程序监控网络连通性和排除故障
 
 本逻辑阵列模块中的所有任务都是从 Azure 门户执行的（包括 PowerShell Cloud Shell 会话）  
 
-   > **注**：不使用 Cloud Shell 时，逻辑阵列模块虚拟机必须安装 Azure PowerShell 1.2.0 模块（或更新版本） [https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps?view=azps-1.2.0](https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps?view=azps-1.2.0)
+   > **注意**： 不使用 Cloud Shell 时，实验室虚拟机必须安装 Azure PowerShell 1.2.0 模块（或更新版本）[https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps](https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps)
 
-逻辑阵列模块文件： 
+实验室文件： 
 
--  **Allfiles/Labfiles/AZ-101.3/az-101-03b_01_azuredeploy.json**
+-  **Labfiles\\Module_06\\Network_Watcher\\az-101-03b_01_azuredeploy.json**
 
--  **Allfiles/Labfiles/AZ-101.3/az-101-03b_02_azuredeploy.json**
+-  **Labfiles\\Module_06\\Network_Watcher\\az-101-03b_02_azuredeploy.json**
 
--  **Allfiles/Labfiles/AZ-101.3/az-101-03b_01_azuredeploy.parameters.json**
+-  **Labfiles\\Module_06\\Network_Watcher\\az-101-03b_01_azuredeploy.parameters.json**
 
--  **Allfiles/Labfiles/AZ-101.3/az-101-03b_02_azuredeploy.parameters.json**
+-  **Labfiles\\Module_06\\Network_Watcher\\az-101-03b_02_azuredeploy.parameters.json**
 
 
-### 方案
+### 场景
   
-Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟网络连通性。
+Adatum Corporation 希望使用 Azure 网络观察程序来监视 Azure 虚拟网络连接。
 
 
 ### 目标
   
-完成本逻辑阵列模块后，您将能够：
+完成本实验室后，你将能够：
 
--  使用 Azure 资源管理器模板部署 Azure VM， Azure 存储帐户和 Azure SQL 数据库实例
+-  使用 Azure 资源管理器模板来部署 Azure VM、Azure 存储帐户和 Azure SQL 数据库实例
 
 -  使用 Azure 网络观察程序来监控网络连通性
 
 
-### 练习 1：为基于 Azure 网络观察程序的监控准备基础设施
+### 练习 1：为基于 Azure 网络观察程序的监视准备基础设施
   
-本次练习的主要任务如下：
+本练习的主要任务如下：
 
 1. 使用 Azure 资源管理器模板部署 Azure VM、Azure 存储帐户和 Azure SQL 数据库实例
 
@@ -52,23 +52,23 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
 1. 从逻辑阵列模块虚拟机启动 Microsoft Edge 并浏览 Azure 门户，网址：[**http://portal.azure.com**](http://portal.azure.com) 并使用在目标 Azure 订阅中具有所有者角色的 Microsoft 帐户登录。
 
-1. 在 Azure 门户中，请导航到 **新建** 边栏选项卡。
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. 在 **新建** 边栏选项卡上，在Azure Marketplace 搜索 **模板部署**。
+1. 从 **创建资源** 边栏选项卡中搜索 Azure Marketplace 中的 **模板部署**。
 
-1. 请使用搜索结果列表，导航到 **自定义部署** 边栏选项卡。
+1. 在结果列表中，单击 **模板部署(使用自定义模板部署)**，再单击 **创建**。
 
-1. 在 **自定义部署** 边栏选项卡上，请选择 **在编辑器中构建自己的模板**。
+1. 在 **自定义部署** 边栏选项卡中，单击 **在编辑器中生成自己的模板** 链接。如果未看到此链接，请改为单击 **编辑模板**。
 
-1. 在 **编辑模板** 边栏选项卡上，请加载模板文件 **az-101-03b_01_azuredeploy.json**。 
+1. 在 **编辑模板** 边栏选项卡中，加载模板文件  **az-101-03b_01_azuredeploy.json**。 
 
-   > **注**：查看模板内容，并注意其中定义了 Azure VM、Azure SQL 数据库和 Azure 存储帐户的部署。
+   > **注意**： 查看模板内容，并注意其中定义了 Azure VM、Azure SQL 数据库和 Azure 存储帐户的部署。
 
 1. 请保存模板并返回 **自定义部署** 边栏选项卡。 
 
 1. 从 **自定义部署** 边栏选项卡，导航到 **编辑参数** 边栏选项卡
 
-1. 在 **编辑参数** 边栏选项卡上，请加载参数文件 **az-101-03b_01_azuredeploy.parameters.json**。 
+1. 在 **编辑参数** 边栏选项卡中，请加载参数文件 **az-101-03b_01_azuredeploy.parameters.json**。 
 
 1. 请保存参数并返回 **自定义部署** 边栏选项卡。 
 
@@ -80,17 +80,17 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
     - 位置：最靠近逻辑阵列模块位置的 Azure 区域的名称，您可以在其中配置 Azure VM 和 Azure SQL 数据库
 
-    - VM 大小： **Standard_DS1_v2**
+    - VM 大小： **Standard_DS2_v2**
 
-    - Vm 名称： **az1010301b-vm1**
+    - VM 名称： **az1010301b-vm1**
 
-    - 管理员用户名： **学生**
+    - 管理员用户名： **Student**
 
     - 管理员密码： **Pa55w.rd1234**
 
     - 虚拟网络名称： **az1010301b-vnet1**
 
-    - Sql 登录名： **学生**
+    - Sql 登录名： **Student**
 
     - Sql 登录密码： **Pa55w.rd1234**
 
@@ -100,61 +100,61 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
     - Sku 层级： **基本**
 
-   > **注**：如需识别给定区域内您订阅中的可用 VM 大小，请从 Cloud Shell 运行以下命令并查看 **限制列** 中的值（其中，&lt;location&gt;表示目标 Azure 区域）：
+   > **注意**： 如需识别给定区域内您订阅中的可用 VM 大小，请从 Cloud Shell 运行以下命令并查看 **限制列** 中的值（其中，&lt;location&gt;表示目标 Azure 区域）：
    
-   ```
+   ```pwsh
    Get-AzComputeResourceSku | where {$_.Locations -icontains "<location>"} | Where-Object {($_.ResourceType -ilike "virtualMachines")}
    ```
    
-   > **注**：如需确定是否可以在给定区域中配置 Azure SQL 数据库，请从 Cloud Shell 运行以下命令并确保生成的 **状态** 设置为 **可用** （其中，&lt;location&gt;表示目标 Azure 区域）：
+   > **注意**： 如需确定是否可以在给定区域中配置 Azure SQL 数据库，请从 Cloud Shell 运行以下命令并确保生成的 **状态** 设置为 **可用** （其中，&lt;location&gt;表示目标 Azure 区域）：
 
-   ```
-   Get-AzSqlCapability -LocationName <location>
+   ```pwsh
+   Get-AzSqlCapability -LocationName <regionname>
    ```
    
-   > **注**：请勿等待第一台虚拟机预配完成，继续进行下一项步骤。 
+   > **注意**：请勿等待第一台虚拟机预配完成，继续进行下一项步骤。 
 
-1. 在 Azure 门户中，请导航到 **新建** 边栏选项卡。
+1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. 在 **新建** 边栏选项卡上，在Azure Marketplace 搜索 **模板部署**。
+1. 在 **创建资源** 边栏选项卡中，在 Azure 市场中搜索 **模板部署**。
 
-1. 请使用搜索结果列表，导航到 **自定义部署** 边栏选项卡。
+1. 在结果中，单击 **模板部署(使用自定义模板部署)**，然后再单击 **创建**。
 
-1. 在 **自定义部署** 边栏选项卡上，请选择 **在编辑器中构建自己的模板**。
+1. 在 **自定义部署** 边栏选项卡中，单击 **在编辑器中生成自己的模板** 链接。如果未看到此链接，请改为单击 **编辑模板**。
 
-1. 在 **编辑模板** 边栏选项卡上，请加载模板文件 **az-101-03b_02_azuredeploy.json**。 
+1. 在 **编辑模板** 边栏选项卡中，加载模板文件 **az-101-03b_02_azuredeploy.json**。 
 
-   > **注**：查看模板内容，并注意其中定义了 Azure VM 的部署。
+   > **注意**： 查看模板内容，并注意其中定义了 Azure VM 的部署。
 
 1. 请保存模板并返回 **自定义部署** 边栏选项卡。 
 
-1. 从 **自定义部署**边栏选项卡，导航到 **编辑参数** 边栏选项卡
+1. 从 **自定义部署** 边栏选项卡中，导航到 **编辑参数** 边栏选项卡。
 
-1. 在 **编辑参数** 边栏选项卡上，请加载参数文件 **az-101-03b_02_azuredeploy.parameters.json**。 
+1. 在 **编辑参数** 边栏选项卡中，请加载参数文件 **az-101-03b_02_azuredeploy.parameters.json**。 
 
 1. 请保存参数并返回 **自定义部署** 边栏选项卡。 
 
 1. 从 **自定义部署** 边栏选项卡，使用以下设置启动模板部署：
 
-    - 订阅：在本次逻辑阵列模块中您所使用的订阅名称
+    - 订阅：用于本实验室的订阅名称
 
     - 资源组：新资源组 **az1010302b-RG** 的名称
 
-    - 位置：Azure 区域的名称，您可以在其中配置 Azure VM，但该区域与您在先前部署期间选择的区域不同， 
+    - 位置：Azure 区域的名称，可以在其中预配 Azure VM，但该区域与在先前部署期间选择的区域**不同**。 
 
-    - VM 大小： **Standard_DS1_v2**
+    - VM 大小： **Standard_DS2_v2**
 
-    - Vm 名称： **az1010302b-vm2**
+    - VM 名称： **az1010302b-vm2**
 
-    - 管理员用户名： **学生**
+    - 管理员用户名： **Student**
 
     - 管理员密码： **Pa55w.rd1234**
 
     - 虚拟网络名称： **az1010302b-vnet2**
 
-   > **注**：确保为此部署选择不同的 Azure 区域
+   > **注意**: 确保为此部署选择不同的 Azure 区域
 
-   > **注**：请勿等待第一台虚拟机预配完成，继续进行下一项步骤。 
+   > **注意**： 请勿等待第一台虚拟机预配完成，继续进行下一项步骤。 
 
 
 #### 任务 2：启用 Azure 网络观察程序服务
@@ -166,7 +166,7 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
 #### 任务 3：在 Azure 虚拟网络之间建立对等互连
 
-   > **注**：开始此任务之前，请确保您在本次练习的第一个任务中启动的模板部署已经完成。 
+   > **注意**： 开始此任务之前，请确保您在本次练习的第一个任务中启动的模板部署已经完成。 
 
 1. 在 Azure 门户中，导航到 **az1010301b-vnet1** 虚拟网络边栏选项卡。
 
@@ -178,58 +178,39 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
     - 虚拟网络部署模型： **资源管理器**
 
-    - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
+    - 订阅：用于本实验室的 Azure 订阅名称
 
     - 虚拟网络： **az1010302b-vnet2**
 
-    - 允许虚拟网络访问： **启用**
+    - 从 az1010302b-vnet2 到 az1010301b-vnet1 的对等互连名称： **az1010302b-vnet2-to-az1010301b-vnet1**
 
-    - 允许转发流量：禁用
+    - 允许虚拟网络访问： **已启用**
 
-    - 允许网关中转：禁用
+    - 允许转发流量： **禁用**
 
-    - 使用远程网关：禁用
+    - 允许网关中转： 禁用
 
-1. 在 Azure 门户中，导航到 **az1010302b-vnet2** 虚拟网络边栏选项卡。
+    > **注意**： 通过 Azure 门户，可以同时配置对等互连的两个方向。使用其他管理工具时，必须单独配置每个方向。 
 
-1. 从 **az1010302b-vnet2** 虚拟网络边栏选项卡，显示 **az1010302b-vnet2 - Peerings** 边栏选项卡。
-
-1. 从 **az1010302b-vnet2 - Peerings** 边栏选项卡，创建 VNet 对等互连，设置如下：
-
-    - 名称： **az1010302b-vnet2-to-az1010301b-vnet1**
-
-    - 虚拟网络部署模型： **资源管理器**
-
-    - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
-
-    - 虚拟网络： **az1010301b-vnet1**
-
-    - 允许虚拟网络访问：**启用**
-
-    - 允许转发流量：禁用
-
-    - 允许网关中转：禁用
-
-    - 使用远程网关：禁用
-
-
-#### 任务 4：建立至 Azure 存储帐户和 Azure SQL 数据库实例的服务终结点
+#### 任务 4：建立 Azure 存储帐户和 Azure SQL 数据库实例的服务终结点
 
 1. 在 Azure 门户中，导航到 **az1010301b-vnet1** 虚拟网络边栏选项卡。
 
-1. 从 **az1010301b-vnet1** 虚拟网络边栏选项卡，显示 **az1010301b-vnet1- 服务终结点** 边栏选项卡。
+1. 在 **az1010301b-vnet1** 虚拟网络边栏选项卡中，显示 **服务终结点** 边栏选项卡。
 
-1. 从 **az1010301b-vnet1- 服务终结点** 边栏选项卡，添加设置如下的服务终结点：
+1. 在 **az1010301b-vnet1 - 服务终结点** 边栏选项卡中，添加具有以下设置的服务终结点：
 
     - 服务： **Microsoft.Storage**
 
     - 子网： **subnet0**
 
+1. 重复此步骤以创建第二个服务终结点：
+
     - 服务： **Microsoft.Sql**
 
     - 子网： **subnet0**
 
-1. 在 Azure 门户中，导航到 **az1000301b-RG** 资源组边栏选项卡。
+1. 在 Azure 门户中，导航到 **az1010301b-RG** 资源组边栏选项卡。
 
 1. 从 **az1010301b-RG** 资源组边栏选项卡，导航到资源组中包含的存储帐户边栏选项卡。 
 
@@ -259,11 +240,11 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
 1. 在 Azure 门户中，导航到 **az1010301b-RG** 资源组边栏选项卡。
 
-1. 从 **az1010301b-RG** 资源组边栏选项卡，导航到 **az1010301b-db1** Azure SQL 数据库边栏选项卡。 
+1. 在 **az1010301b-RG** 资源组边栏选项卡中，导航到 **az1010301b** Azure SQL Server 边栏选项卡。 
 
-1. 从 **az1010301b-db1** Azure SQL 数据库边栏选项卡，导航到其服务器的 **防火墙设置** 边栏选项卡。
+1. 在 Azure SQL Server 边栏选项卡中，导航到其服务器的 **防火墙和虚拟网络** 边栏选项卡。
 
-1. 从 Azure SQL Database 服务器的 **防火墙设置** 边栏选项卡，配置以下设置：
+1. 在 Azure SQL 数据库服务器的 **防火墙和虚拟网络** 边栏选项卡中，配置以下设置：
 
     - 允许访问 Azure 服务： **开**
 
@@ -279,12 +260,12 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
         - 子网名称： **subnet0/10.203.0.0/24**
 
-> **结果**：完成本次练习后，您已使用 Azure 资源管理器模板部署 Azure VM、Azure 存储帐户和 Azure SQL 数据库实例；启用 Azure 网络观察程序服务；以及已建立 Azure 虚拟网络之间的全局对等互连以及已建立至 Azure 存储帐户和 Azure SQL 数据库实例的服务终结点。
+> **结果**： 完成本次练习后，您已使用 Azure 资源管理器模板部署 Azure VM、Azure 存储帐户和 Azure SQL 数据库实例；启用 Azure 网络观察程序服务；以及已建立 Azure 虚拟网络之间的全局对等互连以及已建立至 Azure 存储帐户和 Azure SQL 数据库实例的服务终结点。
 
 
-### 练习 2：使用 Azure 网络观察程序来监控网络连通性
+### 练习 2：使用 Azure 网络观察程序监视网络连接
   
-本次练习的主要任务如下：
+本练习的主要任务如下：
 
 1. 使用网络观察程序通过虚拟网络对等互连测试至 Azure VM 的网络连通性
 
@@ -295,11 +276,11 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
 #### 任务 1：使用网络观察程序通过虚拟网络对等互连测试至 Azure VM 的网络连通性
 
-1. 在 Azure 门户中，导航到 **虚拟监控器** 边栏选项卡。
+1. 在 Azure 门户中，导航到虚拟监控器边栏选项卡。
 
-1. 从网络观察程序边栏选项卡，导航到 **网络观察程序-连接故障排除**。
+1. 在 **网络观察程序** 边栏选项卡中，导航到 **连接故障排除**。
 
-1. 在 **网络观察程序-连接故障排除** 边栏选项卡上，使用以下设置启动检查：
+1. 在 **网络观察程序 - 连接故障排除** 边栏选项卡上，使用以下设置启动检查：
 
     - 来源： 
 
@@ -315,7 +296,7 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
         - URI、FQDN 或 IPv4： **10.203.16.4**
 
-      >注： **10.203.16.4** 是您部署到另一个 Azure 区域的第二个 Azure VM az1010301b-vm1 的私有 IP 地址
+      >**注意**： **10.203.16.4** 是您部署到另一个 Azure 区域的第二个 Azure VM az1010302b-vm1 的私有 IP 地址
 
     - 传感器设置：
 
@@ -329,19 +310,19 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
 1. 等到返回连接检查结果并验证状态是否为 **可到达**。查看网络路径并注意连接是否为直连，VM 之间无中间跳点。
 
-    > **注**：如果这是您首次使用网络观察程序，则检查最多可能需要 5 分钟。
+    > **注意**： 如果这是您首次使用网络观察程序，则检查最多可能需要 5 分钟。
 
 
 #### 任务 2：使用网络观察程序测试至 Azure 存储帐户的网络连通性
 
 1. 在 Azure 门户中，在 Cloud Shell 中启动 PowerShell 会话。 
 
-   > **注**：如果这是您第一次在当前 Azure 订阅中启动 Cloud Shell，则会要求您创建 Azure 文件共享以保留 Cloud Shell 文件。如果是，接受默认设置，这样会在自动生成的资源组中创建存储帐户。
+   > **注意**： 如果这是您第一次在当前 Azure 订阅中启动 Cloud Shell，则会要求您创建 Azure 文件共享以保留 Cloud Shell 文件。如果是，请接受默认设置，这样会在自动生成的资源组中创建存储帐户。
 
 1. 在 Cloud Shell 窗格中，运行以下命令以标识您在上一项练习中配置的 Azure 存储帐户的 blob 服务终结点 IP 地址：
 
-   ```
-   [System.Net.Dns]::GetHostAddresses($(Get-AzStorageAccount -ResourceGroupName 'az1010301b-RG')[0].StorageAccountName + '.blob.core.windows.net').IPAddressToString
+   ```pwsh
+   [System.Net.Dns]::GetHostAddresses($(Get-AzStorageAccount -ResourceGroupName 'az1010301b-RG')[0].StorageAccountName+'.blob.core.windows.net').IPAddressToString
    ```
 
 1. 请注意生成的字符串，并且从 **网络观察程序 - 连接故障排除** 边栏选项卡，使用以下设置启动检查：
@@ -372,9 +353,9 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
 1. 等到返回连接检查结果并验证状态是否为 **可到达**。查看网络路径并注意连接是否为直连，VM 之间无中间跳点，且延迟很短。 
 
-    > **注**：在您在上一项练习中创建的服务终结点处建立连接。要验证这一点，您将使用网络观察程序的 **下一跳点** 工具。
+    > **注意**： 在您在上一项练习中创建的服务终结点处建立连接。要验证这一点，您将使用网络观察程序的 **下一跳点** 工具。
 
-1. 从 **网络观察程序 - 连接故障排除** 边栏选项卡，导航到 **网络观察程序 - 下一跳点** 边栏并使用以下设置测试下一跳点：
+1. 从 **网络观察程序 - 连接故障排除** 边栏选项卡，导航到 **网络观察程序 - 下一跳** 点边栏并使用以下设置测试下一跳点：
 
     - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
@@ -418,9 +399,9 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
 1. 等到返回连接检查结果并验证状态是否为 **可到达**。 
 
-    > **注**：连接成功，但是，该连接是通过互联网建立的。如需验证这一点，您需要再次使用网络观察程序的 **下一跳点** 工具。
+    > **注意**： 连接成功，但是，该连接是通过互联网建立的。如需验证这一点，您需要再次使用网络观察程序的 **下一跳点** 工具。
 
-1. 从 **网络观察程序 - 连接故障排除** 边栏选项卡，导航到 **网络观察程序 - 下一跳点** 边栏并使用以下设置测试下一跳点：
+1. 从 **网络观察程序 - 连接故障排除** 边栏选项卡，导航到 **网络观察程序 - 下一跳** 点边栏并使用以下设置测试下一跳点：
 
     - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
@@ -443,7 +424,7 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
 1. 在 Cloud Shell 窗格中，运行以下命令以标识您在上一项练习中配置的 Azure SQL Database 服务器 IP 地址：
 
-   ```
+   ```pwsh
    [System.Net.Dns]::GetHostAddresses($(Get-AzSqlServer -ResourceGroupName 'az1010301b-RG')[0].FullyQualifiedDomainName).IPAddressToString
    ```
 
@@ -475,9 +456,9 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
 1. 等到返回连接检查结果并验证状态是否为 **可到达**。查看网络路径并注意连接是否为直连，VM 之间无中间跳点，且延迟短。 
 
-    > **注**：在您在上一项练习中创建的服务终结点处建立连接。要验证这一点，您将使用网络观察程序的 **下一跳点** 工具。
+    > **注意**： 在您在上一项练习中创建的服务终结点处建立连接。要验证这一点，您将使用网络观察程序的 **下一跳点** 工具。
 
-1. 从 **网络观察程序 - 连接故障排除** 边栏选项卡，导航到 **网络观察程序 - 下一跳点** 边栏并使用以下设置测试下一跳点：
+1. 从 **网络观察程序 - 连接故障排除** 边栏选项卡，导航到网络观察程序 - 下一跳点边栏并使用以下设置测试下一跳点：
 
     - 订阅：在本次逻辑阵列模块中您所使用的 Azure 订阅名称
 
@@ -521,7 +502,7 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 
 1. 等到返回连接检查结果并验证状态是否为 **可到达**。 
 
-    > **注**：连接成功，但是，该连接是通过互联网建立的。如需验证这一点，您需要再次使用网络观察程序的 **下一跳点** 工具。
+    > **注意**： 连接成功，但是，该连接是通过互联网建立的。如需验证这一点，您需要再次使用网络观察程序的 **下一跳点** 工具。
 
 1. 从 **网络观察程序 - 连接故障排除** 边栏选项卡，导航到 **网络观察程序 - 下一跳点** 边栏并使用以下设置测试下一跳点：
 
@@ -540,4 +521,32 @@ Adatum Corporation 希望使用 Azure 网络观察程序来监控 Azure 虚拟�
 1. 验证结果是否将下一个跳点类型标识为 **Internet**
 
 
-> **结果**：完成本次练习后，您已使用 Azure 网络观察程序通过虚拟网络对等互连测试至 Azure VM 的网络连通性，至 Azure 存储的网络连通性以及至 Azure SQL 数据库的网络连通性。
+> **结果**： 完成本次练习后，您已使用 Azure 网络观察程序通过虚拟网络对等互连测试至 Azure VM 的网络连通性，至 Azure 存储的网络连通性以及至 Azure SQL 数据库的网络连通性。
+
+## 练习 3：删除实验室资源
+
+#### 任务 1：打开 Cloud Shell
+
+1. 在门户顶部，单击 **Cloud Shell** 图标，打开 Cloud Shell 窗格。
+
+1. 在 Cloud Shell 界面中，选择 **Bash**。
+
+1. 在 **Cloud Shell** 命令提示符处，键入以下命令并按 **Enter**，列出在本实验室中创建的所有资源组：
+
+   ```sh
+   az group list --query "[?starts_with(name,'az1010')].name" --output tsv
+   ```
+
+1. 验证输出中是否仅包含在本实验室中创建的资源组。这些组将在下一个任务中删除。
+
+#### 任务 2：删除资源组
+
+1. 在 **Cloud Shell** 命令提示符处，键入以下命令并按 **Enter**，删除在本实验室中创建的资源组
+
+   ```sh
+   az group list --query "[?starts_with(name,'az1010')].name" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
+   ```
+
+1. 关闭门户底部的 **Cloud Shell** 提示。
+
+> **结果**： 在本练习中，你删除了本实验室中使用的资源。
