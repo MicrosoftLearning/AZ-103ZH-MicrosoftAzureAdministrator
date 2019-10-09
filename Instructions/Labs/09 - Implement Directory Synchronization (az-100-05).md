@@ -1,7 +1,7 @@
 ﻿---
 lab:
     title: '实现目录同步'
-    module:'模块 09 - Azure Active Directory'
+    module: '模块 09 - Azure Active Directory'
 ---
 
 # 实验室：实现目录同步
