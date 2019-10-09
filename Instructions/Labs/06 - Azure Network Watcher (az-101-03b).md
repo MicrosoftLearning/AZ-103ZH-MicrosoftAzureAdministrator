@@ -1,7 +1,7 @@
 ﻿---
 lab:
-    title: “Azure 网络观察程序”
-    module: “模块 06 - 监视”
+    title: 'Azure 网络观察程序'
+    module: '模块 06 - 监视'
 ---
 
 # 实验室：使用 Azure 网络观察程序监控网络连通性和排除故障

@@ -1,7 +1,7 @@
 ﻿---
 lab:
-    title: 基于角色的访问控制
-    module: “模块 11 - 治理与符合性”
+    title: '基于角色的访问控制'
+    module: '模块 11 - 治理与符合性'
 ---
 
 # 实验室：基于角色的访问控制 
@@ -52,7 +52,7 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure Polic
 
     - 名称：**aaduser100011**
 
-    - 用户名： **aaduser100011 @＆LT; DNS 域-名称＆gt;** 其中＆lt; DNS-domain-name＆gt;表示您在此任务中先前确定的主 DNS 域名。
+    - 用户名： **aaduser100011 @&LT; DNS 域-名称&gt;** 其中＆lt; DNS-domain-name&gt;表示您在此任务中先前确定的主 DNS 域名。
 
     - 个人资料：**未配置**
 
@@ -62,7 +62,7 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure Polic
 
     - 目录角色：**用户**
 
-    - 密码：选中 **“显示密码”** 复选框并记下 **“密码”** 文本框中出现的字符串。在本逻辑阵列模块中，您后续将需要该域名。
+    - 密码：选中 **显示密码** 复选框并记下 **密码** 文本框中出现的字符串。在本逻辑阵列模块中，您后续将需要该域名。
 
 1. 从 **用户 - 所有用户** 边栏选项卡，导航到 **群组 - 所有群组** 边栏选项卡。 
 
@@ -121,9 +121,9 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure Polic
 
 #### 任务 4：将内置 Azure 策略分配给 Azure 资源组
 
-1. 从 **“az1000101-RG”** 边栏选项卡，显示其 **“策略”边栏选项卡**。
+1. 从 **az1000101-RG** 边栏选项卡，显示其 **策略** 边栏选项卡。
 
-1. 从 **“策略 - 符合性”** 边栏选项卡，显示 **“分配策略”边栏选项卡**。
+1. 从 **策略 - 符合性** 边栏选项卡，显示 **分配策略边** 栏选项卡。
 
 1. 根据以下设置分配策略：
 
@@ -165,7 +165,7 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure Polic
 
    > **注意**：如果这是您第一次在当前 Azure 订阅中启动 Cloud Shell，则会要求您创建 Azure 文件共享以保留 Cloud Shell 文件。如果是，请接受默认设置，这样会在自动生成的资源组中创建存储帐户。
 
-1. 在 Cloud Shell 窗格中，运行以下命令，替换占位符＆lt; custom-label＆gt;任何可能是唯一的字符串和占位符＆lt; location-of-az1000101-RG＆gt;使用您在其中创建的 Azure 区域的名称 **az1000101-RG** 资源组。
+1. 在 Cloud Shell 窗格中，运行以下命令，替换占位符&lt; custom-label&gt;任何可能是唯一的字符串和占位符&lt; location-of-az1000101-RG&gt;使用您在其中创建的 Azure 区域的名称 **az1000101-RG** 资源组。
 
    ```pwsh
    Test-AzDnsAvailability -DomainNameLabel <custom-label> -Location '<location-of-az1000101-RG>'
@@ -198,7 +198,7 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure Polic
 
 1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。 
 
-1. 在 **“创建资源”** 边栏选项卡中，在 Azure 市场中搜索 **“模板部署”**。
+1. 在 **创建资源** 边栏选项卡中，在 Azure 市场中搜索 **模板部署**。
 
 1. 使用搜索结果列表导航到 **部署自定义模板** 边栏选项卡。
 
@@ -264,7 +264,7 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure Polic
 
 1. 在门户顶部，单击 **Cloud Shell** 图标，打开 Cloud Shell 窗格。
 
-1. 在 Cloud Shell 界面中，选择 **“Bash”**。
+1. 在 Cloud Shell 界面中，选择 **Bash**。
 
 1. 在 **Cloud Shell** 命令提示符处，键入以下命令并按 **Enter**，列出在本实验室中创建的所有资源组：
 

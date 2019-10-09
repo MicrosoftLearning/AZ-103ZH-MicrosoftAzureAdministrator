@@ -1,7 +1,7 @@
 ﻿---
 lab:
     title: '实现目录同步'
-    module: “模块 09 - Azure Active Directory”
+    module:'模块 09 - Azure Active Directory'
 ---
 
 # 实验室：实现目录同步
@@ -62,11 +62,11 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
 1. 在实验虚拟机中，启动另一个 Microsoft Edge 实例，浏览到 GitHub Azure 快速启动模板页面 [**https://github.com/Azure/azure-quickstart-templates**](https://github.com/Azure/azure-quickstart-templates)。
 
-1. 在“Azure 快速启动模板”页上，单击 **“active-directory-new-domain”**。
+1. 在“Azure 快速启动模板”页上，单击 **active-directory-new-domain**。
 
-1. 在 **“创建新的 Windows VM 并创建新的 AD 林、域和 DC”** 页上，右键单击 **“部署到 Azure”**，然后单击 **“在新的选项卡中打开”**。
+1. 在 **创建新的 Windows VM 并创建新的 AD 林、域和 DC** 页上，右键单击 **部署到 Azure**，然后单击 **在新的选项卡中打开**。
 
-1. 在 **“使用新的 AD 林创建 Azure VM”** 边栏选项卡，使用以下设置启动模板部署：
+1. 在 **使用新的 AD 林创建 Azure VM** 边栏选项卡，使用以下设置启动模板部署：
 
     - 订阅：用于本实验室的订阅名称
 
@@ -114,7 +114,7 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
 1. 使用搜索结果列表导航到 **创建目录** 边栏选项卡。
 
-1. 在 **“创建目录”** 边栏选项卡中，使用以下设置创建新的 Azure AD 租户： 
+1. 在 **创建目录** 边栏选项卡中，使用以下设置创建新的 Azure AD 租户： 
 
   - 组织名称：**AdatumSync**
 
@@ -122,7 +122,7 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
   - 国家或地区：**美国**
 
-   > **注意**：**“初始域名”** 文本框中的绿色复选标记将指示您键入的域名是否有效且唯一。 
+   > **注意**：**初始域名** 文本框中的绿色复选标记将指示您键入的域名是否有效且唯一。 
 
 
 #### 任务 2：将自定义DNS名称添加到新的Azure AD租户
@@ -150,11 +150,11 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
 1. 在Azure门户中，导航到 **AdatumSync** Azure AD租户的 **用户 - 所有用户** 边栏选项卡。
 
-1. 在 **“用户 - 所有用户”** 边栏选项卡中，使用以下设置创建新用户：
+1. 在 **用户 - 所有用户** 边栏选项卡中，使用以下设置创建新用户：
 
     - 名称：**syncadmin**
 
-    - 用户名称：** syncadmin @ *** <DNS-domain-name>*其中*<DNS-domain-name>*表示您在上一个任务中标识的默认主DNS域名。记下此用户名。本实验室稍后需要使用该用户名。
+    - 用户名称：**syncadmin@***<DNS-domain-name>* 其中 *<DNS-domain-name>* 表示您在上一个任务中标识的默认主DNS域名。记下此用户名。本实验室稍后需要使用该用户名。
 
     - 个人资料：**未配置**
 
@@ -200,7 +200,7 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
 1. 在Azure门户中，导航到 **adVM** 边栏选项卡，显示托管在本逻辑阵列块的第一个练习中部署的Active Directory域控制器的Azure VM属性。
 
-1. 在 **“adVM”** 的边栏选项卡的 **“概述”** 窗格中，生成 RDP 文件并将其用于连接到 **adVM**。
+1. 在 **adVM** 的边栏选项卡的 **概述** 窗格中，生成 RDP 文件并将其用于连接到 **adVM**。
 
 1. 出现提示时，通过指定以下凭据进行身份验证：
 
@@ -232,7 +232,7 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
 1. 在与 **adVM** 的 RDP 会话中，启动 Internet Explorer 并从 [**https://www.microsoft.com/zh-cn/download/details.aspx?id=47594**](https://www.microsoft.com/zh-cn/download/details.aspx?id=47594) 下载 **Azure AD Connect**
 
-1. 启动 **Microsoft Azure Active Directory Connect** 向导，接受许可条款，然后在 **“快速设置”** 页面上，选择 **“自定义”** 选项。
+1. 启动 **Microsoft Azure Active Directory Connect** 向导，接受许可条款，然后在 **快速设置** 页面上，选择 **自定义** 选项。
 
 1. 在 **安装所需组件** 页面上，取消选择所有可选配置选项并开始安装。
 
@@ -275,9 +275,9 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
 1. 在 **用户 - 所有用户** 边栏选项卡中，请注意用户对象列表包括 **aduser1** 帐户，与出现在 **资源** 柱中的 **Windows Server AD**。
 
-1. 在 **用户 - 所有用户** 边栏选项卡中，显示 **aduser1  - 预置文件** 边栏选项卡。请注意，未设置 **“部门”** 属性。
+1. 在 **用户 - 所有用户** 边栏选项卡中，显示 **aduser1  - 预置文件** 边栏选项卡。请注意，未设置 **部门** 属性。
 
-1. 在与 **adVM** 的 RDP 会话中，切换到 **“Active Directory 管理中心”**，打开显示 **aduser1** 用户帐户属性的窗口，并将 **“部门”** 属性的值设置为 **“销售”**。
+1. 在与 **adVM** 的 RDP 会话中，切换到 **Active Directory 管理中心**，打开显示 **aduser1** 用户帐户属性的窗口，并将 **部门** 属性的值设置为 **销售**。
 
 1. 在与 **adVM** 的 RDP 会话中，以管理员身份启动 **Windows PowerShell**。
 
@@ -293,7 +293,7 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
 1. 在Azure门户中，导航到 **用户 - 所有用户** 边栏选项卡并刷新页面。 
 
-1. 在 **用户 - 所有用户** 边栏选项卡中，显示 **aduser1  - 预置文件** 边栏选项卡。请注意， **部门** 属性设置为 **销售**。
+1. 在 **用户 - 所有用户** 边栏选项卡中，显示 **aduser1 - 预置文件** 边栏选项卡。请注意， **部门** 属性设置为 **销售**。
 
    > **注意**: 您可能需要等待一分钟，然后再次刷新页面如 **部门** 属性仍未设置。
 
@@ -305,7 +305,7 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
 1. 在门户顶部，单击 **Cloud Shell** 图标，打开 Cloud Shell 窗格。
 
-1. 在 Cloud Shell 界面中，选择 **“Bash”**。
+1. 在 Cloud Shell 界面中，选择 **Bash**。
 
 1. 在 **Cloud Shell** 命令提示符处，键入以下命令并按 **Enter**，列出在本实验室中创建的所有资源组：
 
@@ -357,19 +357,19 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
 1. 在实验室 VM 中，启动 Microsoft Edge，导航到 Azure 门户，然后使用 SyncAdmin 凭据登录。 
 
-1. 在 Azure 门户中，导航到 AdatumSync Azure AD 租户的 **“用户 - 所有用户”** 边栏选项卡，并删除除 AdatumSync 帐户之外的所有用户。
+1. 在 Azure 门户中，导航到 AdatumSync Azure AD 租户的 **用户 - 所有用户** 边栏选项卡，并删除除 AdatumSync 帐户之外的所有用户。
 
 > **注意**：你可能需要等待几个小时才能完成此步骤。
 
-1. 导航到“AdatumSync - 概述”边栏选项卡，然后单击 **“属性”**。
+1. 导航到AdatumSync - 概述”边栏选项卡，然后单击 **属性**。
 
-1. 在 Azure Active Directory 的 **“属性”** 边栏选项卡上，在 **“Azure 资源的访问管理”** 部分中单击 **“是”**，然后单击 **“保存”**。
+1. 在 Azure Active Directory 的 **属性** 边栏选项卡上，在 **Azure 资源的访问管理** 部分中单击 **是**，然后单击 **保存**。
 
 1. 从 Azure 门户注销，然后使用 SyncAdmin 凭据重新登录。 
 
-1. 导航到 **“AdatumSync - 概述”** 边栏选项卡，并通过单击 **“删除目录”** 删除 Azure AD 租户。
+1. 导航到 **AdatumSync - 概述** 边栏选项卡，并通过单击 **删除目录** 删除 Azure AD 租户。
 
-1. 在 **“删除目录 "AdatumSync"?”** 边栏选项卡上，单击 **“删除”**。
+1. 在 **删除目录 "AdatumSync"?** 边栏选项卡上，单击 **删除**。
 
 > **注意**：有关此任务的任何其他信息，请参阅 https://docs.microsoft.com/zh-cn/azure/active-directory/users-groups-roles/directory-delete-howto  
 
