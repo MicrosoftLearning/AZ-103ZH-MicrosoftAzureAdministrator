@@ -1,7 +1,7 @@
 ﻿# AZ-103 Microsoft Azure 管理员
 
 - **您是 MCT 吗？** - 查看我们的 [适用于 MCT 的 GitHub 用户指南](https://microsoftlearning.github.io/MCT-User-Guide-ZH/)
-- 需要手动构建实验室说明？**** -  可在 [MicrosoftLearning/Docker-Build](https://github.com/MicrosoftLearning/Docker-Build) 存储库获取相关说明
+- **需要手动构建实验室说明？** -  可在 [MicrosoftLearning/Docker-Build](https://github.com/MicrosoftLearning/Docker-Build) 存储库获取相关说明
 - 查看 AZ-103 模块提供的实验室列表 - https://microsoftlearning.github.io/AZ-103-MicrosoftAzureAdministrator/
 
 > AZ-100 和 AZ-101 认证正在被新的 AZ-103 Microsoft Azure 管理员考试所取代！您可以在 Liberty Munson 的博客上阅读有关此公告的更多信息，网址为 https://www.microsoft.com/zh-cn/learning/community-blog-post.aspx?BlogId=8&Id=375217 
@@ -61,7 +61,7 @@
 
 * 虽然不是必需的，但在完成每个逻辑阵列模块时，最好取消配置任何现有资源。这有助于降低超出默认 vCPU 配额限制的风险并最大限度地降低使用费用。
 
-* 这些区域中 Azure 区域和资源的可用性在某种程度上取决于您使用的订阅类型。要识别订阅中可用的 Azure 区域，请参阅 https://azure.microsoft.com/zh-cn/regions/offers/。要确定这些地区的可用资源，请参阅 https://azure.microsoft.com/zh-cn/global-infrastructure/services/。这些限制可能会导致模板验证或模板部署期间出现故障，尤其是在配置 Azure VM 时。如果发生这种情况，请查看错误消息并使用不同的 VM 大小或不同的区域重试部署。
+* 这些区域中 Azure 区域和资源的可用性在某种程度上取决于您使用的订阅类型。要识别订阅中可用的 Azure 区域，请参阅 https://azure.microsoft.com/zh-cn/regions/offers/ 。 要确定这些地区的可用资源，请参阅 https://azure.microsoft.com/zh-cn/global-infrastructure/services/ 。 这些限制可能会导致模板验证或模板部署期间出现故障，尤其是在配置 Azure VM 时。如果发生这种情况，请查看错误消息并使用不同的 VM 大小或不同的区域重试部署。
 
 * 首次启动 Azure Cloud Shell 时，可能会提示您创建 Azure 文件共享以保留 Cloud Shell 文件。如果是这样，您通常可以接受默认值，这将导致在自动生成的资源组中创建存储帐户。请注意，如果删除该存储帐户，可能会再次发生这种情况。
 
