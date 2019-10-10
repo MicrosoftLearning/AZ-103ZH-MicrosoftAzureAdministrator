@@ -1,7 +1,7 @@
 ﻿---
 lab:
     title: '部署和管理虚拟机'
-    module: '模块 01 - Azure 虚拟机'
+    module: '模块 02 - Azure 虚拟机'
 ---
 
 # 实验室：部署和管理虚拟机
