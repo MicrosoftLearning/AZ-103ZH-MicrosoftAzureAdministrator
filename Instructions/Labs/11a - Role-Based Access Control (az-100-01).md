@@ -40,7 +40,7 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure Polic
 
 #### 任务 1：请创建 Azure AD 用户和群组。
 
-1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，浏览到 Azure 门户 [** HTTP：//portal.azure.com**](http://portal.azure.com) 并使用 Microsoft 帐户登录，该帐户在您打算在本逻辑阵列模块中使用的 Azure 订阅中具有所有者角色，并且是与该订阅关联的 Azure AD 租户的全局管理员。
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，浏览到 Azure 门户 [**HTTP：//portal.azure.com**](http://portal.azure.com) 并使用 Microsoft 帐户登录，该帐户在您打算在本逻辑阵列模块中使用的 Azure 订阅中具有所有者角色，并且是与该订阅关联的 Azure AD 租户的全局管理员。
 
 1. 在 Azure 门户中，导航到 **Azure Active Directory** 边栏选项卡 
 
@@ -91,7 +91,7 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure Polic
 
     - 资源组位置：最靠近逻辑阵列模块位置的 Azure 区域的名称以及可以在其中设置 Azure VM 的位置。
 
-   > **注意**：要识别订阅中可用的 Azure 区域，请参阅 [** HTTPS：//azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)
+   > **注意**：要识别订阅中可用的 Azure 区域，请参阅 [**HTTPS：//azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)
 
 1. 从 **资源组** 边栏选项卡，使用以下设置创建第二个资源组：
 
@@ -233,7 +233,7 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure Polic
 
 #### 任务 3：作为委派管理员执行符合策略的 Azure VM 的自动部署
  
-1. 从 **部署一个简单的 Ubuntu Linux VM **边栏选项卡，导航到 **编辑模板**边栏选项卡。
+1. 从 **部署一个简单的 Ubuntu Linux VM** 边栏选项卡，导航到 **编辑模板**边栏选项卡。
 
 1. 在 **编辑模板**边栏选项卡，导航回到 **变量** 部分并找到 **vmSize** 条目。
 

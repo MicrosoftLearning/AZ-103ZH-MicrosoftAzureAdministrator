@@ -1,7 +1,7 @@
 ﻿---
 lab:
     title: 'Azure AD 标识保护'
-    module: '模块 10 - 保护标识'
+    module: '模块 10 - 保护身份'
 ---
 
 # 实验室：Azure AD 标识保护

@@ -331,7 +331,7 @@ Adatum Corporation 在本地文件服务器中托管其文件共享。考虑到�
 
 1. 在 Windows PowerShell ISE 会话中，打开脚本窗格并将该命令粘贴到本地剪贴板的内容中。
 
-1. 将 ` -Persist` 开关添加到包含 `New-PSDrive` cmdlet 的行的末尾。
+1. 将 `-Persist` 开关添加到包含 `New-PSDrive` cmdlet 的行的末尾。
 
 1. 执行脚本并验证其输出是否确认 Z: 驱动器成功映射到 Azure 存储文件服务共享。
 

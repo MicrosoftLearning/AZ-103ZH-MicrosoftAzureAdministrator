@@ -27,7 +27,7 @@ Adatum Corporation 希望通过利用 Azure 负载均衡器的负载均衡和网
 
 -  使用 Azure 资源管理器模板部署 Azure VM
 
--  [x] Azure 负载均衡器
+-  Azure 负载均衡器
 
 -  实施 Azure 流量管理器负载均衡
 
@@ -181,7 +181,7 @@ Adatum Corporation 希望通过利用 Azure 负载均衡器的负载均衡和网
 > **结果**：完成本练习后，你已使用 Azure 资源管理器模板启动运行 Windows Server 2016 Datacenter 的 Azure VM 的部署，并将 Web 服务器 (IIS) 角色安装到两个 Azure 区域的可用性集中。
 
 
-### 练习 1：[x] Azure 负载均衡器
+### 练习 1：Azure 负载均衡器
   
 本次练习的主要任务如下：
 
@@ -238,7 +238,7 @@ Adatum Corporation 希望通过利用 Azure 负载均衡器的负载均衡和网
 
     - 可用性集：**az1010301w-avset**
 
-    - 虚拟机：**az1010301w-vm0 **
+    - 虚拟机：**az1010301w-vm0**
 
     - 网络 IP 配置：**az1010301w-nic0/ipconfig1 (10.101.31.4)**
 
@@ -333,7 +333,7 @@ Adatum Corporation 希望通过利用 Azure 负载均衡器的负载均衡和网
 
     - 可用性集：**az1010302w-avset**
 
-    - 虚拟机：**az1010302w-vm0 **
+    - 虚拟机：**az1010302w-vm0**
 
     - 网络 IP 配置：**az1010302w-nic0/ipconfig1 (10.101.32.4)**
 
