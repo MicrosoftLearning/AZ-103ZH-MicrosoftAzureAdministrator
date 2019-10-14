@@ -1,7 +1,7 @@
 ﻿---
 lab:
     title: '部署和管理虚拟机'
-    module: '模块 01 - Azure 虚拟机'
+    module: '模块 02 - Azure 虚拟机'
 ---
 
 # 实验室：部署和管理虚拟机
@@ -97,7 +97,7 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
     - 子网地址范围：**10.103.0.0/24**
 
-1. 单击 **确定”**。
+1. 单击 **确定**。
 
 1. 保留所有其他默认值，然后单击 **查看并创建**。
 
@@ -105,7 +105,7 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
    > **注意**：你将在本实验室的第二个练习中配置你在此任务中所创建的网络安全组
 
-   > **注意**：在继续执行下一个任务前，请等待部署完成。该操作需约 **5** 分钟。
+   > **注意**：在继续执行下一个任务前，请等待部署完成。该操作需约 5 分钟。
 
 
 #### 任务 2：使用 Azure PowerShell 将运行 Windows Server 2016 Datacenter 的 Azure VM 部署至现有可用性集
@@ -117,8 +117,8 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```pwsh
-   $vmName='az1000301-vm1'
-   $vmSize='Standard_DS2_v2'
+   $vmName = 'az1000301-vm1'
+   $vmSize = 'Standard_DS2_v2'
    ```
 
    > **注意**：此命令设置用于指定 Azure VM 名称及其大小的变量值
@@ -126,8 +126,8 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```pwsh
-   $resourceGroup=Get-AzResourceGroup-Name 'az1000301-RG'
-   $location=$resourceGroup.Location
+   $resourceGroup = Get-AzResourceGroup -Name 'az1000301-RG'
+   $location = $resourceGroup.Location
    ```
 
    > **注意**：这些命令设置用于指定目标资源组及其位置的变量值
@@ -135,9 +135,9 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```pswh
-   $availabilitySet=Get-AzAvailabilitySet -ResourceGroupName $resourceGroup.ResourceGroupName -Name 'az1000301-avset0'
+   $availabilitySet = Get-AzAvailabilitySet -ResourceGroupName $resourceGroup.ResourceGroupName -Name 'az1000301-avset0'
    $vnet = Get-AzVirtualNetwork -Name 'az1000301-RG-vnet' -ResourceGroupName $resourceGroup.ResourceGroupName
-   $subnetid=（Get-AzVirtualNetworkSubnetConfig -Name 'subnet0' -VirtualNetwork $vnet）.Id
+   $subnetid = (Get-AzVirtualNetworkSubnetConfig -Name 'subnet0' -VirtualNetwork $vnet).Id
    ```
 
    > **注意**：这些命令设置用于指定可用性集、虚拟网络和子域网的变量值，你将在其中部署新的 Azure VM
@@ -145,9 +145,9 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```pwsh
-   $nsg=New-AzNetworkSecurityGroup -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -Name "$vmName-nsg"
-   $pip=New-AzPublicIpAddress -Name "$vmName-ip" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -AllocationMethod Dynamic 
-   $nic=New-AzNetworkInterface-Name "$（$vmName）$（Get-Random）" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -SubnetId $subnetid -PublicIpAddressId $pip.Id -NetworkSecurityGroupId $nsg.Id
+   $nsg = New-AzNetworkSecurityGroup -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -Name "$vmName-nsg"
+   $pip = New-AzPublicIpAddress -Name "$vmName-ip" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -AllocationMethod Dynamic 
+   $nic = New-AzNetworkInterface -Name "$($vmName)$(Get-Random)" -ResourceGroupName $resourceGroup.ResourceGroupName -Location $location -SubnetId $subnetid -PublicIpAddressId $pip.Id -NetworkSecurityGroupId $nsg.Id
    ```
 
    > **注意**：这些命令创建新的网络安全组、公共 IP 地址和网络接口，且这些将被新的 Azure VM 所使用
@@ -157,9 +157,9 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```pwsh
-   $adminUsername='Student'
-   $adminPassword='Pa55w.rd1234
-   $adminCreds=New-Object PSCredential $adminUsername，（$adminPassword | ConvertTo-SecureString-AsPlainText-Force）
+   $adminUsername = 'Student'
+   $adminPassword = 'Pa55w.rd1234'
+   $adminCreds = New-Object PSCredential $adminUsername, ($adminPassword | ConvertTo-SecureString -AsPlainText -Force)
    ```
 
    > **注意**：这些命令设置用于指定新 Azure VM 本地管理员帐户凭据的变量值
@@ -167,9 +167,9 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```pwsh
-   $publisherName='MicrosoftWindowsServer'
-   $offerName='WindowsServer'
-   $skuName='2016-Datacenter'
+   $publisherName = 'MicrosoftWindowsServer'
+   $offerName = 'WindowsServer'
+   $skuName = '2016-Datacenter'
    ```
 
    > **注意**：这些命令设置用于指定将用于预配新 Azure VM 的 Azure 市场图像属性的变量值
@@ -185,11 +185,11 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令：
 
    ```pwsh
-   $vmConfig=New-AzVMConfig -VMName $vmName -VMSize $vmSize -AvailabilitySetId $availabilitySet.Id
+   $vmConfig = New-AzVMConfig -VMName $vmName -VMSize $vmSize -AvailabilitySetId $availabilitySet.Id
    Add-AzVMNetworkInterface -VM $vmConfig -Id $nic.Id
    Set-AzVMOperatingSystem -VM $vmConfig -Windows -ComputerName $vmName -Credential $adminCreds 
    Set-AzVMSourceImage -VM $vmConfig -PublisherName $publisherName -Offer $offerName -Skus $skuName -Version 'latest'
-   Set-AzVMOSDisk -VM $vmConfig -Name "$（$vmName）_OsDisk_1_$（Get-Random）-StorageAccountType $osDiskType -CreateOption fromImage
+   Set-AzVMOSDisk -VM $vmConfig -Name "$($vmName)_OsDisk_1_$(Get-Random)" -StorageAccountType $osDiskType -CreateOption fromImage
    Set-AzVMBootDiagnostic -VM $vmConfig -Disable
    ```
 
@@ -282,9 +282,9 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
 1. 从 **网络** 边栏选项卡，单击代表公共 IP 地址的链接。
 
-1. 在 az1000301-vm0-ip 边栏选项卡上，单击 **配置”**。
+1. 在 az1000301-vm0-ip 边栏选项卡上，单击 **配置**。
 
-1. 将公共 IP 地址的分配更改为 **静态”**，然后单击 **保存”**。
+1. 将公共 IP 地址的分配更改为 **静态**，然后单击 **保存**。
 
    > **注意**：记录分配给网络接口的公共 IP 地址 **az1000301-vm0**。在本次练习中，你后续将需要该域名。
 
@@ -356,7 +356,7 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
    > **注意**：这是正常的。Azure 在虚拟网络中提供内置 DNS 名称解析。 
 
-1. 在 **az1000301-vm0** 的 RDP 会话中，从服务器管理器单击 **本地服务器**，然后禁用 **IE 增强安全配置”**。
+1. 在 **az1000301-vm0** 的 RDP 会话中，从服务器管理器单击 **本地服务器**，然后禁用 **IE 增强安全配置**。
 
 1. 在 **az1000301-vm0** 的 RDP 会话中，启动 IE 浏览器，访问以下网址下载 **putty.exe**：[**https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html**](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 
 
@@ -401,7 +401,7 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 1. 在 Cloud Shell 窗格中，运行以下命令，将占位符 &lt;custom-label&gt; 替换为任何可能唯一的字符串。
 
    ```pwsh
-   $rg=Get-AzResourceGroup -Name az1000301-RG
+   $rg = Get-AzResourceGroup -Name az1000301-RG
    Test-AzDnsAvailability -DomainNameLabel <custom-label> -Location $rg.Location
    ```
 
@@ -414,7 +414,7 @@ Adatum Corporation 希望通过使用 Azure 虚拟机（VM）和 Azure VM 规模
 
 1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
-1. 从 **创建资源** 边栏选项卡，在 Azure 市场中搜索 **虚拟机规模集”**。
+1. 从 **创建资源** 边栏选项卡，在 Azure 市场中搜索 **虚拟机规模集**。
 
 1. 使用搜索结果列表导航到 **创建虚拟机规模集** 边栏选项卡。
 

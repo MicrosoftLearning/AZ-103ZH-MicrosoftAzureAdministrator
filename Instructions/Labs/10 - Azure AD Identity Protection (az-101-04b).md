@@ -280,7 +280,7 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行标识保护。
 
 #### 任务 1：启用 Azure AD Identity Protection
 
-1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，浏览 Azure 门户，网址 **http://portal.Azure.com** 并使用您用于创建 **AdatumLab101-4b** Azure AD 租户的 Microsoft 帐户登录。 
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，浏览 Azure 门户，网址 [**http://portal.azure.com**](http://portal.azure.com) 并使用您用于创建 **AdatumLab101-4b** Azure AD 租户的 Microsoft 帐户登录。 
 
    > **注意**：确保您已登录 **AdatumLab101-4b** Azure AD 租户。您可以使用 **目录+订阅筛选器** 在 Azure AD 租户之间切换。 
 
@@ -361,7 +361,7 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行标识保护。
 
 1. 在新的浏览器窗口中，导航到 ToR 浏览器项目，网址[**https://www.torproject.org/projects/torbrowser.html.en**](https://www.torproject.org/projects/torbrowser.html.en)，下载 ToR 浏览器，并使用默认选项进行安装。
 
-1. 安装完成后，启动 ToR 浏览器，使用初始页面上的 **连接选项**，然后导航到应用程序访问面板，网址**https://myapps.Microsoft.com**
+1. 安装完成后，启动 ToR 浏览器，使用初始页面上的 **连接选项**，然后导航到应用程序访问面板，网址 [**https://myapps.microsoft.com**](https://myapps.microsoft.com)
 
 1. 出现提示时，使用您在上一项练习中创建的 **aaduser2** 帐户登录。
 
@@ -377,7 +377,7 @@ Adatum Corporation 希望利用 Azure AD Premium 功能进行标识保护。
 
 1. 以 **aaduser1** 注销，并关闭 ToR 浏览器窗口。
 
-1. 启动 Internet Explorer，浏览 Azure 门户，网址：**http://portal.Azure.com** 并使用您用于创建 **AdatumLab101-4b** Azure AD 租户的 Microsoft 帐户登录。 
+1. 启动 Internet Explorer，浏览 Azure 门户，网址：[**http://portal.azure.com**](http://portal.azure.com) 并使用您用于创建 **AdatumLab101-4b** Azure AD 租户的 Microsoft 帐户登录。 
 
 1. 在 Azure 门户中，导航到 **Azure AD Identity Protection - 风险事件** 边栏并注意该条目代表 **从匿名 IP 地址登录**。
 

@@ -154,7 +154,7 @@ Adatum Corporation希望将其活动目录与Azure Active Directory 集成
 
     - 名称：**syncadmin**
 
-    - 用户名称：**syncadmin@** *<DNS-domain-name>* 其中 *<DNS-domain-name>* 表示您在上一个任务中标识的默认主DNS域名。记下此用户名。本实验室稍后需要使用该用户名。
+    - 用户名称：**syncadmin@<DNS-domain-name>** 其中 <DNS-domain-name> 表示您在上一个任务中标识的默认主DNS域名。记下此用户名。本实验室稍后需要使用该用户名。
 
     - 个人资料：**未配置**
 

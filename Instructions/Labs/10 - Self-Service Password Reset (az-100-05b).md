@@ -328,7 +328,7 @@ Adatum Corporation 希望利用 Azure AD Premium 功能
 
 1. 打开 Microsoft Edge 窗口。
 
-1. 在 Microsoft Edge 窗口中，导航到位于的应用程序访问面板 [**HTTP：//myapps.microsoft.com**](http://myapps.microsoft.com) 并使用。登录 **aaduser2** 用户帐号。出现提示时，将密码更改为新值。
+1. 在 Microsoft Edge 窗口中，导航到位于的应用程序访问面板 [**http://myapps.microsoft.com**](http://myapps.microsoft.com) 并使用。登录 **aaduser2** 用户帐号。出现提示时，将密码更改为新值。
 
    > **注意**：需要提供 **aaduser2** 用户帐户的完全限定名称，包括 Azure AD 租户 DNS 域名，如本实验室前面所述。
 
@@ -336,7 +336,7 @@ Adatum Corporation 希望利用 Azure AD Premium 功能
 
 1. 出现提示时，添加 My Apps Secure Sign-in Extension 并启用它，包括 **允许 InPrivate 浏览** 选项。
 
-1. 再次导航到应用程序访问面板 [**HTTP：//myapps.microsoft.com**](http://myapps.microsoft.com) 并使用。登录 **aaduser2** 用户帐号。 
+1. 再次导航到应用程序访问面板 [**http://myapps.microsoft.com**](http://myapps.microsoft.com) 并使用。登录 **aaduser2** 用户帐号。 
 
 1. 在“访问面板应用程序”页面上，单击 **Microsoft OneDrive** 图标。
 

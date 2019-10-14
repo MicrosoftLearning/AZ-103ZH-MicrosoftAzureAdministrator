@@ -40,7 +40,7 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure Polic
 
 #### 任务 1：请创建 Azure AD 用户和群组。
 
-1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，浏览到 Azure 门户 [**HTTP：//portal.azure.com**](http://portal.azure.com) 并使用 Microsoft 帐户登录，该帐户在您打算在本逻辑阵列模块中使用的 Azure 订阅中具有所有者角色，并且是与该订阅关联的 Azure AD 租户的全局管理员。
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，浏览到 Azure 门户 [**http://portal.azure.com**](http://portal.azure.com) 并使用 Microsoft 帐户登录，该帐户在您打算在本逻辑阵列模块中使用的 Azure 订阅中具有所有者角色，并且是与该订阅关联的 Azure AD 租户的全局管理员。
 
 1. 在 Azure 门户中，导航到 **Azure Active Directory** 边栏选项卡 
 
@@ -52,7 +52,7 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure Polic
 
     - 名称：**aaduser100011**
 
-    - 用户名： **aaduser100011 @&LT; DNS 域-名称&gt;** 其中＆lt; DNS-domain-name&gt;表示您在此任务中先前确定的主 DNS 域名。
+    - 用户名： **aaduser100011@&lt;DNS-domain-name&gt;** 其中 &lt;DNS-domain-name&gt; 表示您在此任务中先前确定的主 DNS 域名。
 
     - 个人资料：**未配置**
 
@@ -91,7 +91,7 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure Polic
 
     - 资源组位置：最靠近逻辑阵列模块位置的 Azure 区域的名称以及可以在其中设置 Azure VM 的位置。
 
-   > **注意**：要识别订阅中可用的 Azure 区域，请参阅 [**HTTPS：//azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)
+   > **注意**：要识别订阅中可用的 Azure 区域，请参阅 [**https://azure.microsoft.com/zh-cn/regions/offers/**](https://azure.microsoft.com/zh-cn/regions/offers/)
 
 1. 从 **资源组** 边栏选项卡，使用以下设置创建第二个资源组：
 
@@ -165,7 +165,7 @@ Adatum Corporation 希望使用 Azure 基于角色的访问控制和 Azure Polic
 
    > **注意**：如果这是您第一次在当前 Azure 订阅中启动 Cloud Shell，则会要求您创建 Azure 文件共享以保留 Cloud Shell 文件。如果是，请接受默认设置，这样会在自动生成的资源组中创建存储帐户。
 
-1. 在 Cloud Shell 窗格中，运行以下命令，替换占位符&lt; custom-label&gt;任何可能是唯一的字符串和占位符&lt; location-of-az1000101-RG&gt;使用您在其中创建的 Azure 区域的名称 **az1000101-RG** 资源组。
+1. 在 Cloud Shell 窗格中，运行以下命令，替换占位符&lt;custom-label&gt;任何可能是唯一的字符串和占位符&lt;location-of-az1000101-RG&gt;使用您在其中创建的 Azure 区域的名称 **az1000101-RG** 资源组。
 
    ```pwsh
    Test-AzDnsAvailability -DomainNameLabel <custom-label> -Location '<location-of-az1000101-RG>'

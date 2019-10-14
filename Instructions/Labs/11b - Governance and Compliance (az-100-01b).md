@@ -48,7 +48,7 @@ Adatum Corporation 希望使用 Azure 策略和计划，以便在其 Azure 订�
 
 #### 任务 1：使用 Azure 资源管理器模板配置 Azure 资源。
 
-1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，在 **http://portal.Azure.com** 上浏览至 Azure 门户，并使用在您计划用于本次逻辑阵列模块的 Azure 订阅中具有“所有者”角色的 Microsoft 帐户进行登录。
+1. 从逻辑阵列模块虚拟机启动 Microsoft Edge，在 [**http://portal.azure.com**](http://portal.azure.com) 上浏览至 Azure 门户，并使用在您计划用于本次逻辑阵列模块的 Azure 订阅中具有“所有者”角色的 Microsoft 帐户进行登录。
 
 1. 在 Azure 门户中，导航到 **创建资源** 边栏选项卡。
 
@@ -199,7 +199,7 @@ Adatum Corporation 希望使用 Azure 策略和计划，以便在其 Azure 订�
 
 1. 导航到 **策略-定义** 边栏选项卡。
 
-1. 从 **策略-定义”** 边栏选项卡，导航到 **az10001b- 标记计划** 边栏选项卡。
+1. 从 **策略-定义** 边栏选项卡，导航到 **az10001b- 标记计划** 边栏选项卡。
 
 1. 从 **az10001b-标记计划** 边栏选项卡，导航到它的 **编辑计划定义** 边栏选项卡。
 
